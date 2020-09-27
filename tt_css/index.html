@@ -29,14 +29,19 @@
     }
 
     .d2 {
-        padding-bottom: 10px;
-        padding-top: 100px;
+        padding-bottom: 0px;
+        padding-top: 0px;
         border-style: solid;
         margin: -1px;
         background: var(--backColor, grey);
         display: grid;
         grid-template-columns: 50% 50%;
-        grid-template-rows: 50px 50px;
+        grid-template-rows: 50px;
+    }
+
+    #buttom {
+        justify-self: center;
+        align-self: center;
     }
 </style>
 
@@ -61,10 +66,10 @@
 
 <footer>
     <div class="d2">
-        <div class="d1">
+        <div class="d1" id="buttom">
             SETTINGS
         </div>
-        <div class="d1">
+        <div class="d1" id="buttom">
             PROFILE
         </div>
     </div>
