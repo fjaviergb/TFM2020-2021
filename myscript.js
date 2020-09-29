@@ -1,1 +1,2 @@
-alert('Esto es una prueba')
+var elem = document.getElementsByClassName("item7");
+elem[0].innerHTML = 'Aquí el output';
