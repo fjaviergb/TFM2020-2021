@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a CSS Tutorial">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Tutorial</title>
+</head>
+
+<body>
+<style>
+    :root {
+        --backColor: grey;
+    }
+    .custom {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        border-style: solid;
+        margin: -1px;
+    }
+
+    .d1 {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        border-style: solid;
+        margin: -1px;
+        background: var(--backColor, grey);
+    }
+
+    .d2 {
+        padding-bottom: 0px;
+        padding-top: 0px;
+        border-style: solid;
+        margin: -1px;
+        background: var(--backColor, grey);
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 50px;
+    }
+
+    #buttom {
+        justify-self: center;
+        align-self: center;
+    }
+</style>
+
+<header>
+    <div class="d1">
+        <h2 class="custom">TO DO</h2>
+    </div>
+</header>
+
+<main>
+    <div class="d1">
+        <ul class="custom">
+            <li class="custom">Attend mandatory classes</li>
+            <li class="custom">Read and get info about <i>trading</i></li>
+        </ul>
+    </div>
+    <div class="d1">
+        <p class="custom">IMPORTANTE: encontrar arte que represente el conocimiento</p>
+    </div>
+
+</main>
+
+<footer>
+    <div class="d2">
+        <div class="d1" id="buttom">
+            SETTINGS
+        </div>
+        <div class="d1" id="buttom">
+            PROFILE
+        </div>
+    </div>
+</footer>
+</body>
+</html>
