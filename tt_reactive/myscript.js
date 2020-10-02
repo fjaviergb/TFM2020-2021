@@ -15,13 +15,18 @@ class Observable {
     }
 }
 
-const observable = new Observable();
+const observable1 = new Observable();
+const observable2 = new Observable();
 
-observable.suscribe(x => console.log(x));
+const double = x => 2*x;
+
+observable1.suscribe(x => console.log(x));
+observable2.suscribe(x => console.log(double(x)))
 // En este ejemplo; x => console.log(x) equivaldría al observer.
 
-observable.emit(10);
-observable.emit(5);
-observable.emit(2.5);
-observable.emit(11);
+observable1.emit(10);
+observable1.emit(5);
+observable1.emit(2.5);
+observable1.emit(11);
+observable2.emit(11);
 
