@@ -16,17 +16,23 @@ class Observable {
 }
 
 const observable1 = new Observable();
-const observable2 = new Observable();
 
 const double = x => 2*x;
 
-observable1.suscribe(x => console.log(x));
-observable2.suscribe(x => console.log(double(x)))
+const tap = f => x => {f(x); return x;}
+// Permite aplicar funciones que se alimentan del dato en bruto sucesivamente
+
+const pipe = (f, g) => x => f(g(x))
+// pipe se emplea para leer una corriente de datos y pasárselos al observador
+// (f,g) implica que serán dos funciones
+// (...f) implica todos los argumentos, que son funciones, que se le pasen
+
+observable1.suscribe(pipe(console.log, tap(console.log)));
 // En este ejemplo; x => console.log(x) equivaldría al observer.
+// Funciona sin especificar la x
 
 observable1.emit(10);
 observable1.emit(5);
 observable1.emit(2.5);
 observable1.emit(11);
-observable2.emit(11);
 
