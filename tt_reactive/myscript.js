@@ -28,9 +28,11 @@ class Observable {
         // cb toma cada elemento del array, con valor: function (x) {console.log(x)}
         // Por ello, se pasa x como argumento de cb
     }
-    pipe(o) {
-        this.suscribe(x => o.emit(x))
-        return o;
+    pipe(...os) {
+        return os.reduce((acc,o) => { 
+            acc.suscribe(x => o.emit(x));
+            return o;
+        }, this)
     }
 }
 
@@ -57,9 +59,12 @@ Rx.map = f => new Mapper(f);
 // EXAMPLE
 // ===========================
 const observable = new Observable();
-const doubler = observable.pipe(new Mapper(x => x*2))
+const doubler = observable.pipe(Rx.map(x => x*2))
 const tripler = observable.pipe(Rx.map(x => x*3))
-const mixtopisto = observable.pipe(new Mapper(pipe(x=>x*2,x=>x+10)))
+const mixtopisto = observable.pipe(
+    Rx.map(x=>x*2),
+    Rx.map(x=>x+10)
+    )
 
 setTimeout(() => {
 observable.emit(10);
@@ -71,7 +76,7 @@ observable.emit(11);
 observable.suscribe(console.log);
 doubler.suscribe(console.log);
 tripler.suscribe(console.log)
-mixtopisto.suscribe(console.log)
+mixtopisto.suscribe(console.log);
 
 
 
