@@ -44,40 +44,47 @@ class Mapper {
         this.ob = new Observable();
         this.f = f;
     }
-    suscribe (cbs) {
-        this.ob.suscribe(cbs);
+    suscribe (cb) {
+        this.ob.suscribe(cb);
     }
     emit (x) {
         this.ob.emit(this.f(x));
     }
 }
 
+class Filter {
+    constructor (p) {
+        this.ob = new Observable();
+        this.p = p;
+    }
+    suscribe (cb) {
+        this.ob.suscribe(cb);
+    }
+    emit (x) {
+        if (this.p(x)) {
+            this.ob.emit(x);
+        }
+    }
+}
+
 const Rx = {};
 Rx.map = f => new Mapper(f);
 // Otra manera para llamar a Mapper. Permite agrupar distintas inicializaciones para Mapper
+Rx.filter = p => new Filter(p);
+
 
 // EXAMPLE
 // ===========================
 const observable = new Observable();
-const doubler = observable.pipe(Rx.map(x => x*2))
-const tripler = observable.pipe(Rx.map(x => x*3))
-const mixtopisto = observable.pipe(
-    Rx.map(x=>x*2),
-    Rx.map(x=>x+10)
-    )
 
 setTimeout(() => {
 observable.emit(10);
 observable.emit(5);
-observable.emit(2.5);
-observable.emit(11);
 }, 1000)
 
-observable.suscribe(console.log);
-doubler.suscribe(console.log);
-tripler.suscribe(console.log)
-mixtopisto.suscribe(console.log);
+observable.pipe(
+    Rx.filter(x => x > 1),
+    Rx.map(x => x*2)
+).suscribe(console.log)
 
-
-
-
+//04-10-2020. Duración: 4 horas
