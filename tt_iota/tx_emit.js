@@ -18,7 +18,7 @@ const messageInTrytes = Converter.asciiToTrytes(message);
 
 const transfers = [
     {
-        value: 0,
+        value: 1,
         address: address,
         message: messageInTrytes
     }
