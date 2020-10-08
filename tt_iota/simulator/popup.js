@@ -19,3 +19,5 @@ function onDomLoad() {
         area.innerHTML = data;
     }
 }
+
+// 08/10/2020. Duración: 3 horas
