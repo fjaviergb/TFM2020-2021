@@ -1,18 +1,46 @@
 // Fetch API o XMLHttpRequest en JS Vanilla
-// var xmlHttp = new XMLHttpRequest();
+// Express & Nodejs sin Vanilla
 
-document.addEventListener('DOMContentLoaded', onDomLoad, false);
+const express = require('express')
+const app = express()
+// Devuelve un objeto de tipo express, que es una aplicacion
 
-function onDomLoad() {
-    console.log('Prueba1')
-    document.querySelector('button').addEventListener('click', onclick, false)
+app.use(express.json());
+// Mandatory para acceder al cuerpo de los http request
 
-    function onclick (){     
-        console.log('Prueba2')
-        fetch('https://localhost:3000')
-        .then(response => response.json())
-        .then(data => console.log(data));    
-    }
+const courses = [
+    {id: 1, name: 'course1'},
+    {id: 2, name: 'course2'},
+    {id: 3, name: 'course3'},
+];
+// courses simula una 'base de datos'
 
-}
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
 
+app.get('/api/courses', (req, res) => {
+    res.send(JSON.stringify([1,2,3]));
+});
+
+app.get('/api/courses/:year/:month', (req, res) => {
+    res.send(req.query);
+});
+
+app.get('/api/courses/:id', (req, res) => {
+    let course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) {res.status(404).send('Not found');}
+    res.send(course)
+})
+
+app.post('/api/courses', (req,res) => {
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name,
+    };
+    courses.push(course);
+    res.send(course);
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {console.log(`Escuchando el puerto ${port} ...`);});
