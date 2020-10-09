@@ -16,37 +16,49 @@ const courses = [
 ];
 // courses simula una 'base de datos'
 
+function validateCourse(req) {
+    const schema = Joi.object({
+        name: Joi.string().min(3),
+    });
+
+    return schema.validate(req);
+};
+
+
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
 app.get('/api/courses', (req, res) => {
-    res.send(JSON.stringify([1,2,3]));
+    res.send(JSON.stringify(courses));
 });
 
-app.get('/api/courses/:year/:month', (req, res) => {
-    res.send(req.query);
-});
+// app.get('/api/courses/:year/:month', (req, res) => {
+//     res.send(req.query);
+// });
+//
+// Esto era un ejemplo
 
 app.get('/api/courses/:id', (req, res) => {
     let course = courses.find(c => c.id === parseInt(req.params.id));
     
-    if (!course) {res.status(404).send('Not found');}
+    if (!course) return res.status(404).send('Not found');
+
     res.send(course)
-})
+});
 
 app.post('/api/courses', (req,res) => {
     const schema = Joi.object({
         name: Joi.string().min(3),
     });
 
-    const result = schema.validate(req.body);
+    const { error } = validateCourse(req.body);
+    // result.error se podría sustituir por { error } = validateCourse(req.body);
+    // Es un método de desestructuración de js
+    // De esta manera no se necesita llamar a result.error si no a error
 
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
-
+    if (error) return res.status(400).send(error.details[0].message);
+        
     const course = {
         id: courses.length + 1,
         name: req.body.name,
@@ -58,20 +70,25 @@ app.post('/api/courses', (req,res) => {
 app.put('/api/courses/:id', (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
 
-    if (!course) {res.status(404).send('Not found');};
+    if (!course) return res.status(404).send('Not found');
+        
+    const { error } = validateCourse(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+        
+        
     
-    const schema = Joi.object({
-        name: Joi.string().min(3),
-    });
-
-    const result = schema.validate(req.body);
-
-    if (result.error){
-        res.status(400).send(result.error.details[0].message);
-        return;
-    }
     course.name = req.body.name;
     res.send(course)
+});
+
+app.delete('/api/courses/:id', (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) return res.status(404).send('Not found');
+
+    const index = courses.indexOf(course);
+    courses.splice(index,1);
+
+    res.send(course);
 });
 
 const port = process.env.PORT || 3000;
