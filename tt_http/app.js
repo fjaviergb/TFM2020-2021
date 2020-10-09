@@ -1,19 +1,19 @@
-const http = require('http');
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
 
-const server = http.createServer((req,res) => {
-    if (req.url === '/') {
-        res.write('Hello World');
-        res.end();
+var data = JSON.stringify({
+    "name": "new course"
+    });
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+        console.log(this.responseText);
     }
+    });
 
-    if (req.url === '/api/courses') {
-        res.write(JSON.stringify([1,2,3]));
-        res.end();
-    }
-
-});
-
-server.listen(3000);
-console.log('Listening to port 3000...');
+    xhr.open("POST", "https://www.google.es/");
+    xhr.send(data);
 
 

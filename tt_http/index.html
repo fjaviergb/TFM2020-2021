@@ -3,12 +3,24 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="This a University project for UPM">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name=”keywords” content="IOTADB">
 </head>
 
 <body>
-    <script src='index.js'></script>
+    <script>
+        var data = JSON.stringify({
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            document.write(this.responseText);
+        }
+        });
+
+        xhr.open("GET", "http://www.google.com");
+        xhr.send(data);
+    </script>
 </body>
 </html>
