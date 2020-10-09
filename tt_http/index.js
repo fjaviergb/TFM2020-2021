@@ -6,6 +6,25 @@ const express = require('express');
 const app = express();
 // Devuelve un objeto de tipo express, que es una aplicacion
 
+var cors = require('cors');
+
+// var allowedOrigins = ['http://localhost:3000'];
+// app.use(cors({
+//     origin: function(origin, callback){
+//       // allow requests with no origin 
+//       // (like mobile apps or curl requests)
+//       if(!origin) return callback(null, true);
+//       if(allowedOrigins.indexOf(origin) === -1){
+//         var msg = 'The CORS policy for this site does not ' +
+//                   'allow access from the specified Origin.';
+//         return callback(new Error(msg), false);
+//       }
+//       return callback(null, true);
+//     }
+//   }));
+
+app.use(cors({credentials: true, origin: 'http://127.0.0.1:5500'}));
+
 app.use(express.json());
 // Mandatory para acceder al cuerpo de los http request
 
@@ -31,27 +50,17 @@ app.get('/', (req, res) => {
 
 app.get('/api/courses', (req, res) => {
     res.send(JSON.stringify(courses));
+    //res.setHeader('Access-Control-Allow-Origin',true);
 });
-
-// app.get('/api/courses/:year/:month', (req, res) => {
-//     res.send(req.query);
-// });
-//
-// Esto era un ejemplo
 
 app.get('/api/courses/:id', (req, res) => {
     let course = courses.find(c => c.id === parseInt(req.params.id));
-    
     if (!course) return res.status(404).send('Not found');
 
     res.send(course)
 });
 
 app.post('/api/courses', (req,res) => {
-    const schema = Joi.object({
-        name: Joi.string().min(3),
-    });
-
     const { error } = validateCourse(req.body);
     // result.error se podría sustituir por { error } = validateCourse(req.body);
     // Es un método de desestructuración de js

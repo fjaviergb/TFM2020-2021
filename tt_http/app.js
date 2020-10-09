@@ -13,7 +13,7 @@ var data = JSON.stringify({
     }
     });
 
-    xhr.open("POST", "https://www.google.es/");
+    xhr.open("GET", "http://localhost:3000/api/courses");
     xhr.send(data);
 
 

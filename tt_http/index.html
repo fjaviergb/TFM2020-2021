@@ -7,7 +7,8 @@
 
 <body>
     <script>
-        var data = JSON.stringify({
+        const data = JSON.stringify({
+        name: "new course"
         });
 
         var xhr = new XMLHttpRequest();
@@ -18,8 +19,11 @@
             document.write(this.responseText);
         }
         });
-
-        xhr.open("GET", "http://www.google.com");
+        
+        xhr.open("POST", "http://localhost:3000/api/courses");
+        xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        xhr.setRequestHeader("content-type", "application/json");
+        xhr.setRequestHeader("cache-control", "no-cache");
         xhr.send(data);
     </script>
 </body>
