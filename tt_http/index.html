@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+</head>
+
+<body>
+    <script>
+        const data = JSON.stringify({
+        name: "new course"
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === 4) {
+            document.write(this.responseText);
+        }
+        });
+        
+        xhr.open("POST", "http://localhost:3000/api/courses");
+        xhr.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+        xhr.setRequestHeader("content-type", "application/json");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.send(data);
+    </script>
+</body>
+</html>
