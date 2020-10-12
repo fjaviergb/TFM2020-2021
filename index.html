@@ -1,3 +1,5 @@
+<!-- HTML Frontend 127.0.0.1:5500-->
+
 <!DOCTYPE html>
 <html>
 
@@ -5,48 +7,17 @@
 <meta charset="UTF-8">
 <meta name="description" content="This a University project for UPM">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name=”keywords” content=”IOTA, DB>
-<link rel="stylesheet" href="stylesheet.css">
+<meta name=”keywords” content="IOTADB">
 </head>
 
 <body>
+    <input type='text' id='address'></input></br>
+    <input type='text' id='hash'></input></br>
+    <input type='text' id='tag'></input></br>
+   
+    <button type='submit'>Search</button></br>
+    <textarea id='ouput'></textarea></br>
 
-    <div class="gridContainer">
-
-        <div class="item1">
-            
-            <div class="item1GridContainer">
-
-                <div class="item5">
-                    <div><input type="checkbox" class="boxOption" id="boxOption1" value="false" onclick="singleBox('boxOption1')">
-                    <label for="boxOption1">Addresses</label></div>
-
-                    <div><input type="checkbox" class="boxOption" id="boxOption2" value="false" onclick="singleBox('boxOption2')">
-                    <label for="boxOption2">Tag</label></div>
-
-                    <div><input type="checkbox" class="boxOption" id="boxOption3" value="false" onclick="singleBox('boxOption3')"> 
-                    <label for="boxOption3">Hash</label></div>                
-                </div>
-
-                <div class="item6" id="item6">
-                </div>
-
-                <div class="item7">
-                    <div><button type="submit" onclick="submit()">Submit Output</button></div>
-                    <div><textarea id="outputArea"></textarea></div>
-                </div>
-                    
-            </div>
-        </div>
-
-        <div class="item2">La barra de herramientas</div>
-        <div class="item3">El encabezado estético</div>
-        <div class="item4">La barra de contacto</div>
-    </div>
-
-<!-- 29/09/2020. Duración: 4 horas dedicadas-->
-<!-- 30/10/2020. Duración: 3 horas-->
-
-<script src="myscript.js"></script>
+    <script src='index.js'></script>
 </body>
 </html>
