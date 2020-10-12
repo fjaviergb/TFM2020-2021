@@ -23,7 +23,7 @@ server.on('submit', (req, sender, res) => {
 
     iota.getBundle(req)
     .then(bundle => {
-        message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
+        var message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
         console.log(trytesToAscii(message));
     })
     .catch(err => {
