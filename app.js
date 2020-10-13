@@ -28,9 +28,9 @@ app.post('', (req, res) => {
     /////////////////////////////
     const address = req.body.address;
     //const hash = req.body.hash;
-    const tag = req.body.tag;
+    //const tag = req.body.tag;
 
-    iota.findTransactions({addresses: [address], tags: [tag]})
+    iota.findTransactions({addresses: [address]})
         .then(bundle => {
             //res.send(Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187));
             res.send(bundle);

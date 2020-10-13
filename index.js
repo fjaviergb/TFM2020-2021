@@ -25,7 +25,7 @@ function onDomLoad() {
         var data = JSON.stringify({
             "address": `${address}`,
             //"hash": `${hash}`,
-            "tag": `${tag}`
+            //"tag": `${tag}`
             });
         // Specify data structure
         console.log(data)
