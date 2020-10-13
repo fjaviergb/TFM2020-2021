@@ -11,9 +11,19 @@ const trytesToAscii = (trytes) => {
 // Import modified @iota/converter methods
 
 const data = {};
+// Initialise data structure
 function addkey (key) {
-    data[key] = [];
-};
+    if (document.getElementById(key + 'box').value == 'true'){
+        data[key] = [];
+        document.getElementById(key + 'box').value = 'false';
+        }
+        // Create key if true
+    else {
+        delete data[key];
+        document.getElementById(key + 'box').value = 'true';
+        };
+        // Delete key if false
+    };
 // Structure data
 
 document.addEventListener('DOMContentLoaded', onDomLoad, false);
@@ -24,6 +34,9 @@ function onDomLoad() {
     // TODO. Listener to tag 'button' => function onclick()
 
     function onclick (){     
+        document.querySelector('textarea').innerHTML = '';
+        // Reset output textarea after 'search' button
+        
         for (let key in data) {
             data[key].push(document.getElementById(`${key}`).value)
         }
@@ -54,5 +67,10 @@ function onDomLoad() {
 
         xhr.send(JSON.stringify(data));
         // Send http request storaged in xhr
+        
+        for (let key in data) {
+            data[key] = [];
+        }
+        // Reset all values from existent data
     }
 }
