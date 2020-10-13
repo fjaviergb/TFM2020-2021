@@ -10,6 +10,12 @@ const trytesToAscii = (trytes) => {
 };
 // Import modified @iota/converter methods
 
+const data = {};
+function addkey (key) {
+    data[key] = [];
+};
+// Structure data
+
 document.addEventListener('DOMContentLoaded', onDomLoad, false);
 // Before imgs load, run the function onDomLoad
 
@@ -18,16 +24,11 @@ function onDomLoad() {
     // TODO. Listener to tag 'button' => function onclick()
 
     function onclick (){     
-        const address = document.getElementById('address').value;
-        const hash = document.getElementById('hash').value;
-        const tag = document.getElementById('tag').value;
-
-        var data = JSON.stringify({
-            "address": `${address}`,
-            //"hash": `${hash}`,
-            //"tag": `${tag}`
-            });
+        for (let key in data) {
+            data[key].push(document.getElementById(`${key}`).value)
+        }
         // Specify data structure
+        
         console.log(data)
         var xhr = new XMLHttpRequest();
         // Init http request object
@@ -51,7 +52,7 @@ function onDomLoad() {
                 // Convert callback response to Ascii from trytes
         };
 
-        xhr.send(data);
+        xhr.send(JSON.stringify(data));
         // Send http request storaged in xhr
     }
 }

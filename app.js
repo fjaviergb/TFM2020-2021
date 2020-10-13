@@ -22,15 +22,11 @@ app.use(express.json());
 // POST http listener
 /////////////////////////////
 app.post('', (req, res) => {
-
+    console.log(req.body);
     /////////////////////////////
     // FINTRANSACTION METHOD
     /////////////////////////////
-    const address = req.body.address;
-    //const hash = req.body.hash;
-    //const tag = req.body.tag;
-
-    iota.findTransactions({addresses: [address]})
+    iota.findTransactions(req.body)
         .then(bundle => {
             //res.send(Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187));
             res.send(bundle);
