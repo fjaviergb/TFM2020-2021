@@ -1,15 +1,10 @@
 // Backend 127.0.0.1:5500
 
-/////////////////////////////
-// INIT IMPORTS AND CONST
-/////////////////////////////
 const express = require('express');
 const Iota = require('@iota/core');
 const Tconverter = require('@iota/transaction-converter')
 var cors = require('cors');
 const Joi = require('joi');
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
 
 const app = express();
 // Init http protocol
@@ -24,10 +19,6 @@ app.use(cors({credentials: true, origin: 'http://127.0.0.1:5500'}));
 app.use(express.json());
 // Enable json http
 
-
-/////////////////////////////
-// FUNCTION VALIDATION
-/////////////////////////////
 function validateReq(req) {
     const schema = Joi.object({
         addresses: Joi.array().items(Joi.string().length(90)),
@@ -37,11 +28,9 @@ function validateReq(req) {
 
     return schema.validate(req);
 };
+// Function validate scheme request
 
 
-/////////////////////////////
-// REACTIVE PROGRAMMING
-/////////////////////////////
 class Observable {
     constructor () {
         this.cbs = [];
@@ -73,18 +62,6 @@ class Mapper {
     }
 };
 
-function sendReq(data) {
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.open("POST", "http://localhost:5500/trytes");
-
-    xhr.setRequestHeader("content-type", "application/json");
-    xhr.setRequestHeader("cache-control", "no-cache");
-
-    xhr.send(JSON.stringify(data));
-}
-
 const Rx = {};
 Rx.map = f => new Mapper(f);
 
@@ -92,26 +69,20 @@ const observable = new Observable();
 
 observable.pipe(
     Rx.map(elem => {
-        return({
+        console.log({
             'message': elem.substr(0,2187),
             'address': elem.substr(2187,90),
             'timestamp': elem.substr(2331,9),
             'bundle': elem.substr(2349,81),  
             'tag': elem.substr(2592,27),
+            
         })
     })
-).suscribe(sendReq);
+).suscribe(console.log);
 
 async function tryteTreatment(trytes) {
     for (let elem of trytes) {
-        let data = {
-            'message': elem.substr(0,2187),
-            'address': elem.substr(2187,90),
-            'timestamp': elem.substr(2331,9),
-            'bundle': elem.substr(2349,81),  
-            'tag': elem.substr(2592,27),
-        };
-        return data;
+        observable.emit(elem);
     };
 };
 
@@ -130,18 +101,8 @@ app.post('', (req, res) => {
     iota.findTransactions(req.body)
         .then(bundle => {
             iota.getTrytes(bundle)
-            .then(async trytes => {
-                for (let elem of trytes) {
-                    let data = {
-                        'message': elem.substr(0,2187),
-                        'address': elem.substr(2187,90),
-                        'timestamp': elem.substr(2331,9),
-                        'bundle': elem.substr(2349,81),  
-                        'tag': elem.substr(2592,27),
-                    };
-                    res.send(data);
-                };
-            })
+            .then(trytes => tryteTreatment(trytes));
+            res.send('Computing...')
         })
         .catch(err => {
             console.error(err);
@@ -151,6 +112,5 @@ app.post('', (req, res) => {
 
 app.listen(5500, () => {console.log(`Escuchando el puerto 5500...`);});
 // Script listen to specified port => initial message
-
 
 
