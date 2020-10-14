@@ -33,7 +33,7 @@ function onDomLoad() {
     document.querySelector('button').addEventListener('click', onclick, false)
     // TODO. Listener to tag 'button' => function onclick()
 
-    function onclick (){     
+    async function onclick (){     
         document.querySelector('textarea').innerHTML = '';
         // Reset output textarea after 'search' button
         
@@ -42,7 +42,6 @@ function onDomLoad() {
         }
         // Specify data structure
         
-        console.log(data)
         var xhr = new XMLHttpRequest();
         // Init http request object
         xhr.withCredentials = true;
@@ -74,3 +73,6 @@ function onDomLoad() {
         // Reset all values from existent data
     }
 }
+
+
+
