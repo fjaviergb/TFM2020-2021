@@ -11,9 +11,12 @@
 </head>
 
 <body>
-    <input type='text' id='address'></input></br>
-    <input type='text' id='hash'></input></br>
-    <input type='text' id='tag'></input></br>
+    <input type='checkbox' id='addressesbox' value='true' onclick="addkey('addresses')">
+    <input type='text' id='addresses'></input></br>
+    <input type='checkbox' id='bundlesbox' value='true' onclick="addkey('bundles')">
+    <input type='text' id='bundles'></input></br>
+    <input type='checkbox' id='tagsbox' value='true' onclick="addkey('tags')">
+    <input type='text' id='tags'></input></br>
    
     <button type='submit'>Search</button></br>
     <textarea id='ouput'></textarea></br>
