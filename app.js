@@ -15,15 +15,15 @@ const app = express();
 // Init http protocol
 
 const iota = Iota.composeAPI({
-    provider: 'https://nodes.thetangle.org:443'
+    'provider': 'http://79.153.255.183:80',
     });
 // Init iota comm
+
 
 app.use(cors({credentials: true, origin: 'http://127.0.0.1:5500'}));
 // Enable comm with http specified port
 app.use(express.json());
 // Enable json http
-
 
 /////////////////////////////
 // FUNCTION VALIDATION
@@ -102,18 +102,6 @@ observable.pipe(
     })
 ).suscribe(sendReq);
 
-async function tryteTreatment(trytes) {
-    for (let elem of trytes) {
-        let data = {
-            'message': elem.substr(0,2187),
-            'address': elem.substr(2187,90),
-            'timestamp': elem.substr(2331,9),
-            'bundle': elem.substr(2349,81),  
-            'tag': elem.substr(2592,27),
-        };
-        return data;
-    };
-};
 
 /////////////////////////////
 // POST http listener
@@ -127,21 +115,25 @@ app.post('', (req, res) => {
     /////////////////////////////
     // FINTRANSACTION METHOD
     /////////////////////////////
-    iota.findTransactions(req.body)
-        .then(bundle => {
-            iota.getTrytes(bundle)
-            .then(async trytes => {
-                for (let elem of trytes) {
-                    let data = {
-                        'message': elem.substr(0,2187),
-                        'address': elem.substr(2187,90),
-                        'timestamp': elem.substr(2331,9),
-                        'bundle': elem.substr(2349,81),  
-                        'tag': elem.substr(2592,27),
-                    };
-                    res.send(data);
-                };
-            })
+    iota.findTransactionObjects(req.body)
+        .then(bundle => { 
+            res.send(`${bundle.length}`);
+
+
+            // iota.getTrytes(bundle)
+            // .then(async trytes => {
+            //     let count = 0;
+            //     for (let elem of trytes) {
+            //         let data = {
+            //             'message': elem.substr(0,2187),
+            //             'address': elem.substr(2187,90),
+            //             'timestamp': elem.substr(2331,9),
+            //             'bundle': elem.substr(2349,81),  
+            //             'tag': elem.substr(2592,27),
+            //         };
+            //         count += 1;
+            //     };
+            // })
         })
         .catch(err => {
             console.error(err);

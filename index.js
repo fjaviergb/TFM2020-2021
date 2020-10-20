@@ -47,7 +47,7 @@ function onDomLoad() {
         xhr.withCredentials = true;
         // Enable cross-side comm
 
-        xhr.open("POST", "http://localhost:5500");
+        xhr.open("POST", 'http://localhost:5500');
         // Specify CRUD verb and LOCALPORT
 
         xhr.setRequestHeader("content-type", "application/json");
