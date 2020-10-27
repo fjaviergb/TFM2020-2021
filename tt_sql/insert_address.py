@@ -44,12 +44,14 @@ def query_to_addconntable(db,idcl,address):
 # Tres pasos
 # 1. Comprobar si ya se encuentra registrada esa address 
 add_recorded = check_addtable(db,address)
-conn_recorded = check_connector(db,idcl,address)
 
 # 2. Si no se encuentra, hacer una query sobre tabla ADDRESSES y otra sobre ADD_CONN
 if len(add_recorded) == 0:
     query_to_addtable(db,idcl,address)
 
-# 3. Hacer una query sobre tabla ADD_CONN
+# 3. Comprobar si se encuentra en tabla ADD_CONNECTOR
+conn_recorded = check_connector(db,idcl,address)
+
+# 4. Hacer una query sobre tabla ADD_CONN
 if len(conn_recorded) == 0:
     query_to_addconntable(db,idcl,address)
