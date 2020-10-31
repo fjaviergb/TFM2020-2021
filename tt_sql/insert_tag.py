@@ -36,7 +36,7 @@ def query_to_tagconntable(db, idcl, tag):
 # Mismo proceso que insertar direcciones
 # Simulamos que el cliente 1 - Javier González, introduce nuevas addresses
 idcl = 2
-tag = 'CORONAMINUSAUSSCHUSS99QISHV'
+tag = 'HORNET99INTEGRATED99999A9VO'
 
 # 1. Comprobamos si se encuentra en tabla TAGS
 tag_recorded = check_tagtable(db,tag)
