@@ -34,18 +34,18 @@ async def check_param(db,mycursor,param,row):
     hashes_list = iota.FindTransaction(param,[row[1]])
 
     #Version 1
-    task = asyncio.create_task(hashes_list.reque())
-    await task
-    data = json.loads(task.result())['hashes']
-    print(data)
-    await asyncio.create_task(check_trytes(db,mycursor,param,row,data))
-
-    #Version 2
-    # task = asyncio.create_task(hashes_list.reques())
+    # task = asyncio.create_task(hashes_list.reque())
     # await task
-    # print(len(task.result()['transactions']))
-    # for elem in task.result()['transactions']:
-    #     print(elem.hash)
+    # data = json.loads(task.result())['hashes']
+    # print(data)
+    # await asyncio.create_task(check_trytes(db,mycursor,param,row,data))
+
+    #Version 2/3 (cambiar reques() por areques())
+    task = asyncio.create_task(hashes_list.reques())
+    await task
+    print(len(task.result()['transactions']))
+    for elem in task.result()['transactions']:
+        print(elem.hash)
 
 async def getDb(db,mycursor,param):
     sql_query = "SELECT * FROM %s" % param

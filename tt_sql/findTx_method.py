@@ -2,8 +2,8 @@ from urllib import request
 import json
 import asyncio
 import aiohttp
-#Version 2
-from iota import Iota
+#Version 2/3
+from iota import Iota, AsyncIota
 
 class FindTransaction():
   def __init__(self,param,elem):
@@ -21,23 +21,27 @@ class FindTransaction():
     self.req = request.Request(url=self.url, data=self.command, headers=self.headers)
 
     #Version 2
-    self.iota = Iota("https://nodes.thetangle.org:443")
+    self._iota = Iota(self.url)
     self.param = param
     self.elem = elem
 
+    #Version 3
+    self._asynciota = AsyncIota(self.url)
+
+#Version 1
   async def reque(self):      
     async with aiohttp.ClientSession(headers=self.headers) as session:
         async with session.post(self.url, data=self.command) as response:
             return await response.text()
         await True
 
-  async def tx_coroutine(self):
-    return self.iota.findTransactionObjects(tags = self.elem)
-
-  #Version 2
+#Version 2
   async def reques(self):
-    task = asyncio.create_task(self.tx_coroutine())
-    return await task
+    return await self._iota.find_transaction_objects(tags = self.elem)
+
+  #Versión 3
+  async def areques(self):
+    return await self._asynciota.find_transaction_objects(tags = self.elem)
 
 # PRUEBA ASYNCIO PARA pruebasync.py
   # async def reque(self, param):

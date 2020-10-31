@@ -1,21 +1,17 @@
-from iota import AsyncIota
+from iota import AsyncIota, Iota
 import asyncio
 
-settings = {
-    'provider': "https://nodes.thetangle.org:443"
-}
-
-_iota = AsyncIota("https://nodes.thetangle.org:443")
-
-
+_provider = "https://nodes.thetangle.org:443"
 _address = ['CORONAMINUSAUSSCHUSSPUNKTDE9SPAMMER9999999999999999999999999999999999999999999999NNSPPHCJZ']
-_tag = ['MY9MAM999999999999999999999']
+_tag = ['HORNET99INTEGRATED99999A9VO']
 
-async def wait(loop):
-    res = await _iota.find_transactions(tags = _tag)
-    print(len(res['hashes']))
+_aiota = AsyncIota(_provider)
+_iota = Iota(_provider)
 
+async def main():
+    res = await _aiota.find_transaction_objects(tags = _tag)
+    print(res)
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(wait(loop))
+loop.run_until_complete(main())
 
