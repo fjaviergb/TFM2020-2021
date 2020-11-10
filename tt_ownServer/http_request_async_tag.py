@@ -5,10 +5,6 @@ import aiohttp
 import mysql.connector
 from datetime import datetime
 
-_midAdd = "UQZWLO9RDMPICQMIEZRVIQYNYXXMBQLFEBEHDKVPC9RXHZP9WFAASOIBULPHYZCAKVO9FEIPYPQEBQCEYXMFFMABOX"
-_lowAdd = "YP9JEFMZZZWQRB9I9BEVK9MTU9RLQFQYSYUVECCZJOOUSSTZVGGMGAI9JHKCUUGBVBSUHA9ZTJTSGTIXRALPUDMVXD"
-_hugeAdd = "FYYR9AJO9JFSOZMMAUMUITSEQPAEG9DGQEZSLEIP9JIZBRKQQ9TLGGKIOIREPCTLOJ9PS9HEJIRYXFEEZYHPYDAMSD"
-
 _headers = {
     'content-type': 'application/json',
     'X-IOTA-API-Version': '1'
@@ -43,8 +39,7 @@ async def _client(db,mycursor,_key,row):
                 else:
                     mycursor.execute(sql_fix, (row[0],datetime.now(),elem))
                     db.commit()
-                    
-#_addresses = [_hugeAdd,_lowAdd,_midAdd]
+
 async def main(db,mycursor,_key):
     sql_query = "SELECT * FROM %s" % _key
     mycursor.execute(sql_query)
