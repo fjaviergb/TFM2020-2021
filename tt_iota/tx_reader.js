@@ -16,12 +16,11 @@ const iota = Iota.composeAPI({
     provider: 'https://nodes.thetangle.org:443'
     });
 
-const tailTransactionHash = 'WPFRNTOUDPAJZUOFNMRKHSIOXCDXMICC9QZUQQNCDYDKUUNZMESJJHFVVBQCEYZKDVZCBUVXRPIY99999';
-
-iota.getBundle(tailTransactionHash)
-.then(bundle => {
-    message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
-    console.log(trytesToAscii(message));
+const _address = 'FYYR9AJO9JFSOZMMAUMUITSEQPAEG9DGQEZSLEIP9JIZBRKQQ9TLGGKIOIREPCTLOJ9PS9HEJIRYXFEEZYHPYDAMSD';
+iota.findTransactions({addresses: [_address]})
+.then(hashes => {
+    // message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
+    console.log(hashes);
 })
 .catch(err => {
     console.error(err);

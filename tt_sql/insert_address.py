@@ -5,14 +5,14 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="PutosRusosSQL13186",
-    database="iota_tx_reader"
+    database="iota_tx_reader2"
 )
 
 mycursor = db.cursor(buffered=True)
 
 # Simulamos que el cliente 1 - Javier González, introduce nuevas addresses
 idcl = 2
-address = 'CORONAMINUSAUSSCHUSSPUNKTDE9SPAMMER9999999999999999999999999999999999999999999999NNSPPHCJZ'
+address = 'HORNET99INTEGRATED99SPAMMER999999999999999999999999999999999999999999999999999999NP9HRUAKD'
 
 def query_to_addtable (db, idcl, address):
     mycursor = db.cursor(buffered=True)

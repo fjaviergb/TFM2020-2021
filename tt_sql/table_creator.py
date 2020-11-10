@@ -5,7 +5,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="PutosRusosSQL13186",
-    database="iota_tx_reader"
+    database="iota_tx_reader2"
 )
 
 mycursor=db.cursor()
