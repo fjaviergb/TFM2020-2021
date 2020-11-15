@@ -13,7 +13,7 @@ _headers = {
     'X-IOTA-API-Version': '1'
 }
 
-_local = 'http://79.159.208.251:80'
+_local = 'http://192.168.1.33:14265'
 _url = 'https://nodes.thetangle.org:443'
 
 async def fetch(client,_key,row):
@@ -21,7 +21,7 @@ async def fetch(client,_key,row):
         "command": "findTransactions",
         "%s" % _key: [row[1]]
         }).encode("utf-8")
-    async with client.post(_url, data=_data, headers=_headers) as resp:
+    async with client.post(_local, data=_data, headers=_headers) as resp:
         assert resp.status == 200
         return await resp.text()
 

@@ -12,7 +12,7 @@ mycursor = db.cursor(buffered=True)
 
 # Simulamos que el cliente 1 - Javier González, introduce nuevas addresses
 idcl = 2
-address = 'HORNET99INTEGRATED99SPAMMER999999999999999999999999999999999999999999999999999999NP9HRUAKD'
+address = 'FYYR9AJO9JFSOZMMAUMUITSEQPAEG9DGQEZSLEIP9JIZBRKQQ9TLGGKIOIREPCTLOJ9PS9HEJIRYXFEEZYHPYDAMSD'
 
 def query_to_addtable (db, idcl, address):
     mycursor = db.cursor(buffered=True)
