@@ -20,7 +20,7 @@ async def fetch(client,_key,row):
         "command": "findTransactions",
         "%s" % _key: [row[1]]
         }).encode("utf-8")
-    async with client.post(_url, data=_data, headers=_headers) as resp:
+    async with client.post(_local, data=_data, headers=_headers) as resp:
         #assert resp.status == 200
         return await resp.text()
 
@@ -37,7 +37,7 @@ async def _execute(db,mycursor,query,elem,row):
     db.commit()
 
 async def attachDB(db,mycursor,_key,row,html):
-    sql_file="LOAD DATA INFILE 'temp%s.csv' IGNORE INTO TABLE temphashes LINES TERMINATED BY ','"
+    sql_file="LOAD DATA INFILE 'temp%s.csv' IGNORE INTO TABLE temp_hashes LINES TERMINATED BY ','"
     mycursor.execute(sql_file, (row[0],))
     db.commit()
 
