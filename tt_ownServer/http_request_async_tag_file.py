@@ -62,4 +62,4 @@ db = mysql.connector.connect(
 mycursor = db.cursor(buffered=True)
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(db,mycursor,'addresses'))
+loop.run_until_complete(main(db,mycursor,'tags'))
