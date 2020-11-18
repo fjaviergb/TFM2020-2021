@@ -11,24 +11,26 @@ const trytesToAscii = (trytes) => {
     }
     return ascii;
 };
+const _local = 'http://192.168.1.33:14265'
+const _url = 'https://nodes.thetangle.org:443'
 
 const iota = Iota.composeAPI({
-    provider: 'https://nodes.thetangle.org:443'
+    provider: _local
     });
 
-const tailTransactionHash = 'WPFRNTOUDPAJZUOFNMRKHSIOXCDXMICC9QZUQQNCDYDKUUNZMESJJHFVVBQCEYZKDVZCBUVXRPIY99999';
-
-iota.getBundle(tailTransactionHash)
-.then(bundle => {
-    message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
-    console.log(trytesToAscii(message));
+const _tag = 'MINEIOTADOTCOM9999999999999'
+const _address = 'FYYR9AJO9JFSOZMMAUMUITSEQPAEG9DGQEZSLEIP9JIZBRKQQ9TLGGKIOIREPCTLOJ9PS9HEJIRYXFEEZYHPYDAMSD';
+iota.findTransactions({tags:[_tag]})
+.then(hashes => {
+    // message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
+    console.log(hashes);
 })
 .catch(err => {
     console.error(err);
 });
 
 // 2187 T signaturemessage
-// 81 T address
+// 90 T address
 // 27 T value
 // 27 T obsoletetag
 // 9 T timestamp

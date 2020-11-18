@@ -13,7 +13,7 @@ db = mysql.connector.connect(
 mycursor = db.cursor(buffered=True)
 
 #_tags = ['HORNET99INTEGRATED99999A9VO','CORONAMINUSAUSSCHUSS99SVLZT']
-_provider = "https://nodes.thetangle.org:443"
+_provider = 'http://79.152.49.211:80'
 _aiota = AsyncIota(_provider)
 #_hash = ['QBDXD9PIFCTPPT9N9DSMEIVLJCSVZTOLOBCPEGRHQTEMYAWI9HFWEGCPYESMECIGDKZJUSHXZ9FGA9999']
 
