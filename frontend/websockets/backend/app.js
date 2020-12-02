@@ -36,6 +36,7 @@ const io = SocketIO(_server);
 io.on('connection', (socket) => {
     console.log('Nueva conexión', socket.id);
     socket.on('trytes', (data) => {
+        io.sockets.emit('res',data.tg);
         console.log(data);
     })
 });

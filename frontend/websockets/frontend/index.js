@@ -1,5 +1,3 @@
-console.log('Hola....')
-
 // Gracias a socket.io importando en el html. io() se conecta al dominio de este momento
 // en este caso, localhost:5500
 // socket es todo el codigo del frontend que es capaz de enviar mensajes
@@ -18,7 +16,11 @@ submit.addEventListener('click', () => {
         'add': address.value,
         'tg': tag.value
     })
-    console.log('Enviando...');
+})
+
+socket.on('res', (data) => {
+    output.innerHTML += `<p>${data}</p>`;
+    console.log('Receiving data')
 })
 
 
