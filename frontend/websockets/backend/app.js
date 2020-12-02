@@ -33,7 +33,12 @@ const _server = app.listen(app.get('port'), () => {
 // esta conexion se guarda en la constante io; que entonces permite al server utilizar los websockets
 const io = SocketIO(_server);
 // on = listener. Cuando se recibe un mensaje 'connection', se ejecuta la funcion
-io.on('connection', () => console.log('Buenos días, ¿qué desea?'));
+io.on('connection', (socket) => {
+    console.log('Nueva conexión', socket.id);
+    socket.on('trytes', (data) => {
+        console.log(data);
+    })
+});
 
 
 
