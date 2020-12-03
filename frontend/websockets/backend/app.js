@@ -4,6 +4,17 @@
 // express maneja el servidor
 const express = require('express');
 const SocketIO = require('socket.io');
+const mysql = require('mysql');
+const redis = require('redis');
+
+var clients = []
+
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "PutosRusosSQL13186",
+    database: "iota_tx_reader2",
+  });
 
 // ##################################
 // SERVER
@@ -20,10 +31,7 @@ app.use(express.static('C:\\Master\\TFM\\code\\TFM2020-2021\\frontend\\websocket
 //Escucha al puerto especificado en app.set
 const _server = app.listen(app.get('port'), () => {
     console.log('Starting server on...', app.get('port'));
-})
-
-
-
+});
 
 // ##################################
 // WEBSOCKETS
@@ -32,14 +40,30 @@ const _server = app.listen(app.get('port'), () => {
 // SocketIO necesita un servidor, que es asignado con el listen() y el _server con alguna configuración
 // esta conexion se guarda en la constante io; que entonces permite al server utilizar los websockets
 const io = SocketIO(_server);
+
+con.connect( (err) => {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
+// RedisStore es una base de datos temporal para manipulacion de sesiones
+
 // on = listener. Cuando se recibe un mensaje 'connection', se ejecuta la funcion
 io.on('connection', (socket) => {
+    clients.push(socket.id);
     console.log('Nueva conexión', socket.id);
+    console.log(clients)
     socket.on('trytes', (data) => {
-        io.sockets.emit('res',data.tg);
-        console.log(data);
-    })
-});
+      var socketId = clients[socket.id]
+      var sql = `SELECT * FROM transactions WHERE transactions.tag = "${data.tg}"`
+      con.query(sql, (err, result) => {
+        if (err) throw err;
+        io.to(socket.id).emit('res',result[0].tag);
+        console.log("Result: " + result[0].tag);
+      });
+
+    }); 
+  });
 
 
 
