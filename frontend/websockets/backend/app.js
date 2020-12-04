@@ -46,7 +46,16 @@ con.connect( (err) => {
   console.log("Connected!");
 });
 
-// RedisStore es una base de datos temporal para manipulacion de sesiones
+async function _query(sql,socket){
+  const query = async function(sql,socket){
+      con.query(sql, (err, result) => {
+      if (err) throw err;
+      io.to(socket.id).emit('res',result[0].tag);
+      console.log("Result: " + result[0].tag);
+    });
+  }
+  await query(sql,socket);
+};
 
 // on = listener. Cuando se recibe un mensaje 'connection', se ejecuta la funcion
 io.on('connection', (socket) => {
@@ -56,12 +65,7 @@ io.on('connection', (socket) => {
     socket.on('trytes', (data) => {
       var socketId = clients[socket.id]
       var sql = `SELECT * FROM transactions WHERE transactions.tag = "${data.tg}"`
-      con.query(sql, (err, result) => {
-        if (err) throw err;
-        io.to(socket.id).emit('res',result[0].tag);
-        console.log("Result: " + result[0].tag);
-      });
-
+      _query(sql,socket)
     }); 
   });
 
