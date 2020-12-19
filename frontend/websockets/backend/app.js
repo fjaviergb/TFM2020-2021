@@ -55,8 +55,8 @@ con.connect( (err) => {
 async function _query(sql,socket){
   pool.query(sql, (err, result) => {
     if (err) throw err;
-    io.to(socket.id).emit('res',result[0].tag);
-    console.log("Result: " + result[0].tag);
+    result.forEach(elem => {io.to(socket.id).emit('res',elem.name);})
+    console.log("Result: " + result);
   });
 };
 
@@ -67,15 +67,18 @@ io.on('connection', (socket) => {
 
   // REGISTER
   socket.on('register', (data) => {
-    let sql = `CREATE USER '${data.name}'@'localhost' IDENTIFIED BY '${data.password}'`;
-    con.query(sql, (err, result) => {
-      if (err) throw err;
+    console.log('On registering...')
+    var data = {
+      'name':data.name,
+      'contact':data.email,
+    };
+    let sql = 'INSERT INTO users SET ?' 
+    pool.query(sql, data, (err, result) => {
+      if (err) {
+        io.to(socket.id).emit('registerRes',`<p>Failed to register - Errno ${err.errno}</p>`);
+      }
+      else {io.to(socket.id).emit('registerRes','<p>Success</p>')};
     });
-    let sql2 = `GRANT ALL PRIVILEGES ON iota_tx_reader2.transactions TO '${data.name}'@'localhost'`;
-    con.query(sql2, (err, result) => {
-      if (err) throw err;
-    });
-    console.log("Registro satisfactorio");
   }); 
 
   // LOGIN
@@ -84,7 +87,7 @@ io.on('connection', (socket) => {
   });  
 
   socket.on('trytes', (data) => {
-    let sql = `SELECT * FROM transactions WHERE transactions.tag = "${data.tg}"`
+    let sql = `SELECT name FROM transactions WHERE transactions.tag = "${data.tg}"`
     _query(sql,socket)
   }); 
   

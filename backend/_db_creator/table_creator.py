@@ -10,7 +10,7 @@ db = mysql.connector.connect(
 
 mycursor=db.cursor()
 
-mycursor.execute("CREATE TABLE user (idcl int PRIMARY KEY AUTO_INCREMENT, name varchar(100), created datetime, contact varchar(100))")
+mycursor.execute("CREATE TABLE users (idcl int PRIMARY KEY AUTO_INCREMENT, name varchar(100) NOT NULL UNIQUE, password varchar (100) NOT NULL, created datetime, contact varchar(100) NOT NULL UNIQUE)")
 mycursor.execute("CREATE TABLE addresses (idad int PRIMARY KEY AUTO_INCREMENT, name varchar(90) NOT NULL, created datetime)")
 mycursor.execute("CREATE TABLE tags (idta int PRIMARY KEY AUTO_INCREMENT, name varchar(27) NOT NULL, created datetime)")
 # DEP mycursor.execute("CREATE TABLE hashes (idha int PRIMARY KEY AUTO_INCREMENT, name varchar(81) NOT NULL, idad int NOT NULL, idta int NOT NULL, timestamp varchar(100) NOT NULL)")
