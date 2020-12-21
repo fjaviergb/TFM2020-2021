@@ -17,7 +17,8 @@ let regPassword = document.getElementById('regPassword');
 let regEmail = document.getElementById('regEmail');
 let logName = document.getElementById('logName');
 let logPassword = document.getElementById('logPassword');
-let forRed = document.getElementById('forReg');
+let forReg = document.getElementById('forReg');
+let forLog = document.getElementById('forLog');
 
 register.addEventListener('click', () => {
     socket.emit('register', {
@@ -33,12 +34,6 @@ login.addEventListener('click', () => {
         'password': logPassword.value,
     })
 })
-submit.addEventListener('click', () => {
-    socket.emit('trytes', {
-        'add': address.value,
-        'tg': tag.value
-    })
-})
 
 socket.on('res', (data) => {
     output.innerHTML += `<p>${data}</p>`;
@@ -50,3 +45,17 @@ socket.on('registerRes', (data) => {
     console.log('Receiving data')
 })
 
+socket.on('loginResStatus', (data) => {
+    forLog.innerHTML = data;
+    console.log('Receiving data')
+})
+
+socket.on('loginResSucc', (data) => {
+    submit.addEventListener('click', () => {
+        socket.emit('trytes', {
+            'idcl': data,
+            'add': address.value,
+            'tg': tag.value
+        })
+    })
+})

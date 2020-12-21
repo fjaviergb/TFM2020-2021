@@ -83,12 +83,25 @@ io.on('connection', (socket) => {
 
   // LOGIN
   socket.on('login', (data) => {
-    console.log('login' + data)
+    let sql = `SELECT * FROM users WHERE users.name = "${data.name}"`;
+    pool.query(sql, data, (err, result) => {
+      if (err) {
+        io.to(socket.id).emit('loginResStatus',`<p>Failed to login - Errno ${err.errno}</p>`);
+      }
+      else {
+        if (result.length > 0) {
+          io.to(socket.id).emit('loginResStatus','<p>Successful!</p>');
+          io.to(socket.id).emit('loginResSucc',result[0].idcl);
+      }
+        else {io.to(socket.id).emit('loginResStatus','<p>User Not found</p>')}
+      };
+    });
   });  
 
   socket.on('trytes', (data) => {
+    console.log(data);
     let sql = `SELECT name FROM transactions WHERE transactions.tag = "${data.tg}"`
-    _query(sql,socket)
+    //_query(sql,socket)
   }); 
   
 });
