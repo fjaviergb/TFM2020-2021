@@ -56,7 +56,6 @@ async function _query(sql,socket){
   pool.query(sql, (err, result) => {
     if (err) throw err;
     result.forEach(elem => {io.to(socket.id).emit('res',elem.name);})
-    console.log("Result: " + result);
   });
 };
 
@@ -77,12 +76,13 @@ io.on('connection', (socket) => {
       if (err) {
         io.to(socket.id).emit('registerRes',`<p>Failed to register - Errno ${err.errno}</p>`);
       }
-      else {io.to(socket.id).emit('registerRes','<p>Success</p>')};
+      else {io.to(socket.id).emit('registerRes','<p>Successful!</p>')};
     });
   }); 
 
   // LOGIN
   socket.on('login', (data) => {
+
     let sql = `SELECT * FROM users WHERE users.name = "${data.name}"`;
     pool.query(sql, data, (err, result) => {
       if (err) {
@@ -96,12 +96,14 @@ io.on('connection', (socket) => {
         else {io.to(socket.id).emit('loginResStatus','<p>User Not found</p>')}
       };
     });
+    socket.removeAllListeners('login')
   });  
 
   socket.on('trytes', (data) => {
-    console.log(data);
-    let sql = `SELECT name FROM transactions WHERE transactions.tag = "${data.tg}"`
-    //_query(sql,socket)
+    if (data.status = true) {socket.removeAllListeners('trytes')};
+      console.log(data);
+      let sql = `SELECT name FROM transactions WHERE transactions.tag = "${data.tg}"`
+      _query(sql,socket)
   }); 
   
 });

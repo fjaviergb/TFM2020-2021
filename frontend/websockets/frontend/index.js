@@ -1,4 +1,4 @@
-// Gracias a socket.io importando en el html. io() se conecta al dominio de este momento
+// Gracias a socket.io importando en el html. io() se conecta al dominio de este 
 // en este caso, localhost:5500
 // socket es todo el codigo del frontend que es capaz de enviar mensajes
 const socket = io()
@@ -28,12 +28,27 @@ register.addEventListener('click', () => {
     })
 })
 
+var logged = true;
 login.addEventListener('click', () => {
-    socket.emit('login', {
-        'name': logName.value,
-        'password': logPassword.value,
-    })
-})
+    switch (logged) {
+        case true:
+            socket.emit('login', {
+                'name': logName.value,
+                'password': logPassword.value,
+            })
+            login.innerHTML = 'LogOut';
+            logged = false;
+            break;
+        case false:
+            socket.emit('login', {
+                'name': logName.value,
+                'password': logPassword.value,
+            })
+            login.innerHTML = 'Login';
+            logged = true;
+            break;
+    };
+});
 
 socket.on('res', (data) => {
     output.innerHTML += `<p>${data}</p>`;
@@ -47,15 +62,18 @@ socket.on('registerRes', (data) => {
 
 socket.on('loginResStatus', (data) => {
     forLog.innerHTML = data;
-    console.log('Receiving data')
+    console.log(data)
 })
 
 socket.on('loginResSucc', (data) => {
-    submit.addEventListener('click', () => {
-        socket.emit('trytes', {
-            'idcl': data,
-            'add': address.value,
-            'tg': tag.value
-        })
-    })
-})
+    if (logged = true){
+        submit.addEventListener('click', () => {
+            socket.emit('trytes', {
+                'idcl': data,
+                'add': address.value,
+                'tg': tag.value,
+                'status': logged
+            })
+        });
+    };
+});
