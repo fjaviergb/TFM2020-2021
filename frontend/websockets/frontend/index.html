@@ -9,30 +9,12 @@
 </head>
 
 <body>
-    <div>
-        <input type='text' id='regName'>Name</input>
-        <input type='text' id='regPassword'>Password</input>
-        <input type='text' id='regEmail'>Email</input>
+    <div id='options'>
         <button id='register' type='submit'>Register</button>
-    </div>
-    <div id='forReg'></div>
-    <div>
-        <input type='text' id='logName'>Name</input>
-        <input type='text' id='logPassword'>Password</input>
         <button id='login' type='submit'>Login</button>
     </div>
-    <div id='forLog'></div>
 
-    <div id='addresses_container'>
-    <input type='checkbox' id='addressesbox' value='true' onclick="addkey('addresses')">
-    <input type='text' id='addresses'></input></br></div>
-    
-    <div id='tags_container'>
-    <input type='checkbox' id='tagsbox' value='true' onclick="addkey('tags')">
-    <input type='text' id='tags'></input></br></div>
-   
-    <div><button id='submit' type='submit'>Search</button></div>
-    <div id='output_container'></div>
+    <div id='optionsContainer'></div>
 
     <script src='/socket.io/socket.io.js'></script>
     <script src='index.js'></script>

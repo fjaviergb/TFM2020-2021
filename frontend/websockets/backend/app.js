@@ -5,7 +5,6 @@
 const express = require('express');
 const SocketIO = require('socket.io');
 const mysql = require('mysql');
-const redis = require('redis');
 
 var con = mysql.createConnection({
     host: "localhost",
@@ -47,70 +46,47 @@ const _server = app.listen(app.get('port'), () => {
 // esta conexion se guarda en la constante io; que entonces permite al server utilizar los websockets
 const io = SocketIO(_server);
 
-con.connect( (err) => {
-  if (err) throw err;
-  console.log("Connected!");
-});
-
-async function _query(sql,socket){
-  pool.query(sql, (err, result) => {
-    if (err) throw err;
-    result.forEach(elem => {io.to(socket.id).emit('res',elem.name);})
-  });
-};
-
-
-// on = listener. Cuando se recibe un mensaje 'connection', se ejecuta la funcion
 io.on('connection', (socket) => {
     console.log('Nueva conexión', socket.id);
 
-  // REGISTER
-  socket.on('register', (data) => {
-    console.log('On registering...')
-    var data = {
-      'name':data.name,
-      'contact':data.email,
-    };
-    let sql = 'INSERT INTO users SET ?' 
-    pool.query(sql, data, (err, result) => {
-      if (err) {
-        io.to(socket.id).emit('registerRes',`<p>Failed to register - Errno ${err.errno}</p>`);
-      }
-      else {io.to(socket.id).emit('registerRes','<p>Successful!</p>')};
+    socket.on('register', () => {
+        io.to(socket.id).emit('optionsContainer', {
+            'front':
+            '<div id=\'registerContainer\'>'+
+            '<input type=\'text\' id=\'regName\'>Name</input>'+
+            '<br>'+
+            '<input type=\'text\' id=\'regPassword\'>Password</input>'+
+            '<br>'+
+            '<input type=\'text\' id=\'regEmail\'>Email</input>'+
+            '<br>'+
+            '<button id=\'registerSubmit\' type=\'submit\'>Submit</button>'+
+            '</div>',
+            'back': 'registerSubmit',
+            '_data': ['regName','regPassword','regEmail']
+        })
     });
-  }); 
 
-  // LOGIN
-  socket.on('login', (data) => {
-
-    let sql = `SELECT * FROM users WHERE users.name = "${data.name}"`;
-    pool.query(sql, data, (err, result) => {
-      if (err) {
-        io.to(socket.id).emit('loginResStatus',`<p>Failed to login - Errno ${err.errno}</p>`);
-      }
-      else {
-        if (result.length > 0) {
-          io.to(socket.id).emit('loginResStatus','<p>Successful!</p>');
-          io.to(socket.id).emit('loginResSucc',result[0].idcl);
-      }
-        else {io.to(socket.id).emit('loginResStatus','<p>User Not found</p>')}
-      };
+    socket.on('login', () =>{
+        io.to(socket.id).emit('optionsContainer',{
+            'front':
+            '<div id=\'loginContainer\'>'+
+            '<input type=\'text\' id=\'logName\'>Name</input>'+
+            '<br>'+
+            '<input type=\'text\' id=\'logPassword\'>Password</input>'+
+            '<br>'+
+            '<button id=\'loginSubmit\' type=\'submit\'>Submit</button>'+
+            '</div>',
+            'back': `loginSubmit`,
+            '_data': ['logName','logPassword']
+        })
     });
-    socket.removeAllListeners('login')
-  });  
 
-  socket.on('trytes', (data) => {
-    if (data.status = true) {socket.removeAllListeners('trytes')};
-      console.log(data);
-      let sql = `SELECT name FROM transactions WHERE transactions.tag = "${data.tg}"`
-      _query(sql,socket)
-  }); 
-  
+    socket.on('registerSubmit', (data) => {
+        console.log(data)
+    });
+
+    socket.on('loginSubmit', (data) => {
+        console.log(data)
+    });
+
 });
-
-
-
-
-
-
-
