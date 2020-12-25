@@ -1,38 +1,55 @@
 // Gracias a socket.io importando en el html. io() se conecta al dominio de este 
 // en este caso, localhost:5500
+
 // socket es todo el codigo del frontend que es capaz de enviar mensajes
-const socket = io()
+var socket = io()
 
-// DOM elements
-let register = document.getElementById('register');
-let login = document.getElementById('login');
-let optionsContainer = document.getElementById('optionsContainer');
+var pageContainer = document.getElementById('pageContainer');
 
-register.addEventListener('click', () => {
-    console.log('Registering...')
-    socket.emit('register', '')
-})
+socket.on('page', (_data) => {
+    pageContainer.innerHTML = _data.front;
 
-login.addEventListener('click', () => {
-    console.log('Loging...')
-    socket.emit('login', '')
+    if (_data.page='frontPage') {
+        // DOM elements
+        let register = document.getElementById('register');
+        let login = document.getElementById('login');
+        let optionsContainer = document.getElementById('optionsContainer');
 
-})
-
-socket.on('optionsContainer', (data) =>{
-    console.log('Receiving')
-    optionsContainer.innerHTML=data.front
-    const frontPageSubmit = document.getElementById(`${data.back}`);
-
-
-    frontPageSubmit.addEventListener('click', () => {
-        var list = data._data
-        var res = []
-        list.map((obj) => {
-            res[list.indexOf(obj)] = document.getElementById(obj).value
+        register.addEventListener('click', () => {
+            console.log('Registering...')
+            socket.emit('register', '')
         })
-        console.log('Submiting...')
-        socket.emit(`${data.back}`, res)
-    });
-});
 
+        login.addEventListener('click', () => {
+            console.log('Loging...')
+            socket.emit('login', '')
+
+        })
+
+        socket.on('optionsContainer', (data) => {
+            optionsContainer.innerHTML=data.front
+
+            if (data.front = 'FrontPage') {
+                const frontPageSubmit = document.getElementById(`${data.back}`);
+                const frontPageStatus = document.getElementById(`${data.status}`);
+
+                frontPageSubmit.addEventListener('click', () => {
+                    let list = data._data
+                    let res = []
+                    list.map((obj) => {
+                        res[list.indexOf(obj)] = document.getElementById(obj).value
+                    })
+                    console.log('Submiting...')
+                    socket.emit(`${data.back}`, res)
+
+                    socket.on(`${data.status}`, (data) => {
+                        frontPageStatus.innerHTML = data;
+                    })
+                });
+            }
+        });
+
+    } else if (_data.page = 'backPage') {
+        console.log('Cambiando')
+    }
+});

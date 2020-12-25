@@ -48,6 +48,15 @@ const io = SocketIO(_server);
 
 io.on('connection', (socket) => {
     console.log('Nueva conexión', socket.id);
+    io.to(socket.id).emit('page', {
+        'front':
+        '<div id=\'options\'>'+
+        '<button id=\'register\' type=\'submit\'>Register</button>'+
+        '<button id=\'login\' type=\'submit\'>Login</button>'+
+        '</div>'+
+        '<div id=\'optionsContainer\'></div>',
+        'page': 'frontPage'
+    });
 
     socket.on('register', () => {
         io.to(socket.id).emit('optionsContainer', {
@@ -60,10 +69,13 @@ io.on('connection', (socket) => {
             '<input type=\'text\' id=\'regEmail\'>Email</input>'+
             '<br>'+
             '<button id=\'registerSubmit\' type=\'submit\'>Submit</button>'+
-            '</div>',
+            '</div>'+
+            '<div id=\'registerStatus\'></div>',
             'back': 'registerSubmit',
-            '_data': ['regName','regPassword','regEmail']
-        })
+            '_data': ['regName','regPassword','regEmail'],
+            'status': 'registerStatus',
+            'page':'FrontPage'
+        });
     });
 
     socket.on('login', () =>{
@@ -75,18 +87,59 @@ io.on('connection', (socket) => {
             '<input type=\'text\' id=\'logPassword\'>Password</input>'+
             '<br>'+
             '<button id=\'loginSubmit\' type=\'submit\'>Submit</button>'+
-            '</div>',
+            '</div>'+
+            '<div id=\'loginStatus\'></div>',
             'back': `loginSubmit`,
-            '_data': ['logName','logPassword']
-        })
+            '_data': ['logName','logPassword'],
+            'status': 'loginStatus',
+            'page':'FrontPage'
+        });
     });
 
     socket.on('registerSubmit', (data) => {
-        console.log(data)
+        var _data = {
+            'name': data[0],
+            //'password': data[1],
+            //'created': new.Date(),
+            'contact': data[2]
+        };
+        let sql = 'INSERT INTO users SET ?' 
+        pool.query(sql, _data, (err, result) => {
+          if (err) {
+            io.to(socket.id).emit('registerStatus',`<p>Failed to register - Errno ${err.errno}</p>`);
+          }
+          else {
+              io.to(socket.id).emit('registerStatus','<p>Successful!</p>')
+              io.to(socket.id).emit('optionsContainer',{
+                'front':'<div id=\'mainPage\'>HEMOS CAMBIADO</div>',
+                'page': 'backPage',
+                'user': _data,
+                });
+            };  
+        });   
     });
 
     socket.on('loginSubmit', (data) => {
-        console.log(data)
-    });
-
+        var _data = {
+            'name': data[0],
+            'password': data[1],
+        };
+        let sql = `SELECT * FROM users WHERE users.name = "${_data.name}"`;
+        pool.query(sql, _data, (err, result) => {
+            if (err) {
+                io.to(socket.id).emit('loginStatus',`<p>Failed to login - Errno ${err.errno}</p>`);
+              }
+              else {
+                if (result.length > 0) {
+                  io.to(socket.id).emit('loginStatus','<p>Successful!</p>');
+                  io.to(socket.id).emit('backPage',{
+                    'front':'<div id=\'mainPage\'>HEMOS CAMBIADO</div>',
+                    'page': 'backPage',
+                    'user': result,
+                    });
+                }
+                else {io.to(socket.id).emit('loginStatus','<p>User Not found</p>')}
+              };
+        });
+    }); 
 });
