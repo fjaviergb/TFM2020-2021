@@ -2,8 +2,74 @@
 
 socket.on('backPage', (_data) => {
     pageContainer.innerHTML = _data.front;
+    console.log(_data.user[0])
 
-    if (_data.page='backPage') {
-        pageContainer.innerHTML += '<p>\'GOLAAAZO\'</p>';
-    };
+    let searcher = document.getElementById('searcher');
+    let profile = document.getElementById('profile');
+    let optionsContainer2 = document.getElementById('optionsContainer2');
+
+    searcher.addEventListener('click', () => {
+        console.log('On Searching...')
+        socket.emit('searcher', '')
+    })
+
+    profile.addEventListener('click', () => {
+        console.log('On profiles...')
+        socket.emit('profile', '')
+    })
+
+    socket.on('optionsContainerProfile', (data) => {
+        optionsContainer2.innerHTML=data.front;
+
+        let addressSubmit = document.getElementById(data.back[0]);
+        let tagSubmit = document.getElementById(data.back[1]);
+        let listAddresses = document.getElementById(data.back[2]);
+        let listTags = document.getElementById(data.back[3]);
+
+        addressSubmit.addEventListener('click', () => {
+            socket.emit('addressSubmit', document.getElementById('regAddress').value)
+         });
+
+        tagSubmit.addEventListener('click', () => {
+            socket.emit('tagSubmit', document.getElementById('regTag').value)
+         });
+
+        socket.on('newTag', (_data) => {
+            listTags.innerHTML += _data;
+         });
+
+        socket.on('newAddress', (_data) => {
+            listAddresses.innerHTML += _data;
+         });
+    });
+    
+    socket.on('optionsContainerSearcher', (data) => {
+        optionsContainer2.innerHTML=data.front;
+
+        var searchSubmit = document.getElementById(data.back[0]);
+        var addSearch = document.getElementById(data.back[1]);
+        var cond = document.getElementById(data.back[2]);
+        var results = document.getElementById(data.back[3]);
+
+        var newParameter = () => {
+            let list = data._data
+            let res = []
+            list.map((obj) => {
+                res[list.indexOf(obj)] = document.getElementById(obj).value
+            })
+            console.log('Submiting...');
+            socket.emit('parameters', res);
+        };
+        addSearch.onclick = newParameter;
+    
+        var newSearch = () => {
+            socket.emit(`${data.back[0]}`,'')
+        };
+        socket.on('searchCond', (_data) => {
+            cond.innerHTML += _data.front
+        });
+        searchSubmit.addEventListener('click', newSearch);
+    
+    });
 });
+
