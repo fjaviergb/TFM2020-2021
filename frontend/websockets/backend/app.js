@@ -40,6 +40,8 @@ const _server = app.listen(app.get('port'), () => {
 const io = SocketIO(_server);
 
 io.on('connection', (socket) => {
+    var idcl = 0;
+
     console.log('Nueva conexión', socket.id);
     io.to(socket.id).emit('frontPage', {
         'front':
@@ -111,6 +113,7 @@ io.on('connection', (socket) => {
                 'page': 'backPage',
                 'user': result,
                 });
+                idcl = result[0].idcl;
             };  
         });   
     });
@@ -138,6 +141,7 @@ io.on('connection', (socket) => {
                     'page': 'backPage',
                     'user': result,
                     });
+                    idcl = result[0].idcl;
                 }
                 else {io.to(socket.id).emit('loginStatus','<p>User Not found</p>')}
               };
@@ -170,18 +174,18 @@ io.on('connection', (socket) => {
             '<br>'+
             '<select name=\'options\' id=\'ifOption\' multiple>'+
             '<option value=\'\'>YES</option>'+
-            '<option value=\'not\'>NOT</option>'+      
+            '<option value=\'NOT\'>NOT</option>'+      
             '</select>'+
             '<select name=\'options\' id=\'searchOption\' multiple>'+
-            '<option value=\'addresses\'>Address</option>'+
-            '<option value=\'tags\'>Tag</option>'+
+            '<option value=\'address\'>Address</option>'+
+            '<option value=\'tag\'>Tag</option>'+
             '</select>'+
             '<input type=\'text\' id=\'contentOption\'></input>'+
             // TODO: PONER LISTA DE ADDRESSES/TAGS ASOCIADAS AL CLIENTE
             '<select name=\'options\' id=\'logicOption\' multiple>'+
-            '<option value=\'and\'>AND</option>'+
-            '<option value=\'or\'>OR</option>'+
-            '<option value=\'xor\'>XOR</option>'+     
+            '<option value=\'AND\'>AND</option>'+
+            '<option value=\'OR\'>OR</option>'+
+            '<option value=\'XOR\'>XOR</option>'+     
             '<option value=\'\'>end</option>'+
             '</select>'+
             '<br>'+
@@ -225,8 +229,33 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit('searchCond', {'front': dataFormat})
     });
 
-    socket.on('searchSubmit', (data) => {
-        console.log(toSend);
+    socket.on('searchSubmit', () => {
+        let _data = toSend
+        let sql_query = '';
+        _data.forEach((el) => {
+            if (_data.indexOf(el) == 0) {
+                sql_query += ` ${el.object} = '${el.value}' ${el.logic}`
+            } else {
+                sql_query += ` ${el.if} ${el.object} = '${el.value}' ${el.logic}`
+            };
+        });
+
+        let _sql = `SELECT * FROM iota_tx_reader2.transactions WHERE` + sql_query;
+        console.log(_sql)
+        pool.query(_sql, (err, res) => {
+            res.forEach((el) => io.to(socket.id).emit('searchResponse', el))
+        });
     });
 
 });
+
+
+// LIST OF REGISTERED TAGS
+//HORNET99INTEGRATED99999AGMO
+//KILROY9WAS9HERE999999999999
+//MINEIOTADOTCOM9999999999999
+
+
+// LIST OF REGISTERED ADDRESSES
+//ONVRLQLQXGLSNWOZCPSXJ9RPG9ZJOCEUGFBHCVYBZS9KYIPBJSLRNWDROFZ9CWNQOWCAMLVXBDJRGXFG9
+//AUALLDPCZSJMHECUNTECFQJLJIKIENAKPLBGLOEXZX9RCNQNWFJZ9ENINZAHQKKLILIHRHNEM9WJUVWXD

@@ -70,6 +70,10 @@ socket.on('backPage', (_data) => {
         });
         searchSubmit.addEventListener('click', newSearch);
     
+        socket.on('searchResponse', (_data) => {
+            results.innerHTML += `<p>${_data.name}</p>`;
+        });
+
     });
 });
 
