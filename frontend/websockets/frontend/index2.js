@@ -1,5 +1,3 @@
-
-
 socket.on('backPage', (_data) => {
     pageContainer.innerHTML = _data.front;
     console.log(_data.user[0])
@@ -7,6 +5,7 @@ socket.on('backPage', (_data) => {
     let searcher = document.getElementById('searcher');
     let profile = document.getElementById('profile');
     let optionsContainer2 = document.getElementById('optionsContainer2');
+
 
     searcher.addEventListener('click', () => {
         console.log('On Searching...')
@@ -71,9 +70,29 @@ socket.on('backPage', (_data) => {
         searchSubmit.addEventListener('click', newSearch);
     
         socket.on('searchResponse', (_data) => {
-            results.innerHTML += `<p>${_data.name}</p>`;
+            results.innerHTML += _data.front
+            _data.buttons.forEach((el) => {
+                document.getElementById(el).addEventListener('click', () => socket.emit('expandThis',document.getElementById(el).value))
+            });
+        });     
+
+        socket.on('expandThat', (_data) => {
+            let modal = document.getElementById("myModal");
+            let modalContent = document.getElementsByClassName("modal-content")[0];
+            modalContent.innerHTML = _data.back;
+            let span = document.getElementsByClassName("close")[0];
+            modal.style.display = "block";
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         });
 
     });
 });
-

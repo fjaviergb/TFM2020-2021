@@ -193,9 +193,14 @@ io.on('connection', (socket) => {
             '</div>'+
             '<div id=\'searchCond\'><p>Search conditions:</p></div>'+
             '<br>'+
-            '<div id=\'searchResult\'><p>Results:</p></div>'+
+            '<button id=\'searchSubmit\' type=\'submit\'>Search</button>'+
             '<br>'+
-            '<button id=\'searchSubmit\' type=\'submit\'>Search</button>',
+            '<div id=\'searchResult\'><p>Results:</p></div>'+
+            '</div>'+
+            '<div id="myModal" class="modal">'+
+            '<div class="modal-content">'+
+            '</div>'+
+            '</div>',
             'back': ['searchSubmit','addSearch','searchCond','searchResult'],
             '_data': ['ifOption', 'searchOption', 'contentOption', 'logicOption']
         });
@@ -241,11 +246,36 @@ io.on('connection', (socket) => {
         });
 
         let _sql = `SELECT * FROM iota_tx_reader2.transactions WHERE` + sql_query;
-        console.log(_sql)
+        console.log(_sql);
+        var butList = [];
+        var toCache = [];
         pool.query(_sql, (err, res) => {
-            res.forEach((el) => io.to(socket.id).emit('searchResponse', el))
+            res.forEach((el) => {
+                toCache.push(el)
+                butList.push(`${el.name}Button`)
+                let _response = {
+                    'front': `<p>Hash: ${el.name}`+
+                    `<br>`+
+                    `Timestamp: ${el.timestamp}`+
+                    `<br>`+
+                    `<button id=${el.name}Button value=${toCache.indexOf(el)}>Expand</button>`+
+                    `</p>`,
+                    'back': el,
+                    'buttons': butList
+                };
+                io.to(socket.id).emit('searchResponse', _response)
+            });
+        });
+
+        socket.on('expandThis', (dataToExpand) => {
+            let res = {
+                'back': '<span class="close">&times;</span>'+
+                `<p class="text">${toCache[dataToExpand].trytes}</p>`
+            };
+            io.to(socket.id).emit('expandThat', res)    
         });
     });
+
 
 });
 
