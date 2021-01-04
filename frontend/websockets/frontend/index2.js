@@ -79,9 +79,45 @@ socket.on('backPage', (_data) => {
         socket.on('expandThat', (_data) => {
             let modal = document.getElementById("myModal");
             let modalContent = document.getElementsByClassName("modal-content")[0];
-            modalContent.innerHTML = _data.back;
+            if (_data[2] === true) {
+                modalContent.innerHTML = _data[0];
+            };
+            let _text = document.getElementsByClassName("text")[0];
+            if (_data[1].type === 'trytes') {_text.innerHTML =`${_data[1].content}`;}
+            else {
+                _text.innerHTML =
+                `Hash: ${_data[1].hash} <br>`+
+                `Timestamp: ${_data[1].timestamp} <br>`+
+                `Address: ${_data[1].address} <br>`+
+                `Tag: ${_data[1].tag} <br>`+
+                `Message: ${trytesToAscii(_data[1].message)}`
+            }
+            
             let span = document.getElementsByClassName("close")[0];
+            let trytesOption = document.getElementById("trytesOption");
+            let structOption = document.getElementById("structOption");
+            let submitDecrypt = document.getElementById("submitDecrypt");
+            let diffieHellman = document.getElementById("diffieHellman");
+            let RSA = document.getElementById("RSA");
+            let DSA = document.getElementById("DSA");
+            let pKey = document.getElementById("pKey");
+            let decryptRes = document.getElementsByClassName("text-decrypt")[0];
+            let form = document.querySelector("form");
+
             modal.style.display = "block";
+
+            submitDecrypt.addEventListener("click", () => {
+                let dataForm = new FormData(form);
+                socket.emit(`decrypt`,[dataForm.get('decrypyOptions'),dataForm.get('pKey'),trytesToAscii(_data[1].message)])
+            });
+
+            trytesOption.onclick = () => {
+                socket.emit(`swapExpand`,'trytes')
+            };
+
+            structOption.onclick = () => {
+                socket.emit(`swapExpand`,'structured')
+            };
 
             span.onclick = function() {
                 modal.style.display = "none";
@@ -92,7 +128,32 @@ socket.on('backPage', (_data) => {
                     modal.style.display = "none";
                 }
             }
+
+            socket.on('decryptResponse', (dataDecrypted) => {
+                decryptRes.innerHTML = dataDecrypted;
+            });
         });
 
     });
 });
+
+const TRYTE_ALPHABET = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+const asciiToTrytes = (input) => {
+    let trytes = '';
+    for (let i = 0; i < input.length; i++) {
+        var dec = input[i].charCodeAt(0);
+        trytes += TRYTE_ALPHABET[dec % 27];
+        trytes += TRYTE_ALPHABET[(dec - dec % 27) / 27];
+    }
+    return trytes;
+};
+
+const trytesToAscii = (trytes) => {
+    let ascii = '';
+    for (let i = 0; i < trytes.length - 1; i += 2) {
+        ascii += String.fromCharCode(TRYTE_ALPHABET.indexOf(trytes[i]) + TRYTE_ALPHABET.indexOf(trytes[i + 1]) * 27);
+    }
+    return ascii;
+};
+

@@ -269,10 +269,47 @@ io.on('connection', (socket) => {
 
         socket.on('expandThis', (dataToExpand) => {
             let res = {
-                'back': '<span class="close">&times;</span>'+
-                `<p class="text">${toCache[dataToExpand].trytes}</p>`
+                'trytes': {
+                    'type': 'trytes',
+                    'content':toCache[dataToExpand].trytes
+                },
+                'structured': {
+                    'type': 'structure',
+                    'hash': toCache[dataToExpand].name,
+                    'timestamp': toCache[dataToExpand].timestamp,
+                    'address': toCache[dataToExpand].trytes.slice(2187,2268),
+                    'tag': toCache[dataToExpand].trytes.slice(2592,2619),
+                    'message': toCache[dataToExpand].trytes.slice(0,2187),
+                    },
+                'options': '<span class="close">&times;</span>'+
+                `<input type="radio" id="structOption" name="expandOptions" value="true">`+
+                `<label for="structOption">Structured</label><br></br>`+
+                `<input type="radio" id="trytesOption" name="expandOptions" value="false">`+
+                `<label for="trytesOption">AsTrytes</label><br>`+
+                `<p class="text"></p>`+
+                `<form>`+
+                `<input type="radio" id="diffieHellman" name="decrypyOptions" value="diffieHellman">`+
+                `<label for="diffieHellman">Diffie-Hellman</label><br>`+
+                `<input type="radio" id="RSA" name="decrypyOptions" value="RSA">`+
+                `<label for="RSA">RSA</label><br>`+
+                `<input type="radio" id="DSA" name="decrypyOptions" value="DSA">`+
+                `<label for="DSA">DSA</label><br>`+
+                `<label for="pKey">Public Key:</label><br>`+
+                `<input type="text" id="pKey" name="pKey"><br>`+
+                `</form>`+
+                '<button id=\'submitDecrypt\'>Decrypt</button>'+
+                `<p class="text-decrypt"></p>`,
             };
-            io.to(socket.id).emit('expandThat', res)    
+            io.to(socket.id).emit('expandThat', [res.options,res.structured,true])   
+            
+            socket.on('swapExpand', (cond) => {
+                io.to(socket.id).emit('expandThat', [res.options,res[cond],false])   
+            });
+
+            socket.on('decrypt', (param) => {
+                io.to(socket.id).emit('decryptResponse', 'Recibida info, falta implementación')   
+            });
+
         });
     });
 

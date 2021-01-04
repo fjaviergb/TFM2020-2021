@@ -30,6 +30,9 @@
     word-break: break-all;
  }
   
+ .text-decrypt {
+  word-break: break-all;
+}
   /* The Close Button */
   .close {
     color: #aaa;
