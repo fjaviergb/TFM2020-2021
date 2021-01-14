@@ -49,12 +49,16 @@ socket.on('backPage', (_data) => {
         var addSearch = document.getElementById(data.back[1]);
         var cond = document.getElementById(data.back[2]);
         var results = document.getElementById(data.back[3]);
+        var searchContainer = document.getElementById(data.back[4]);
+
 
         var newParameter = () => {
+            let form = searchContainer.querySelector("form");
+            let dataForm = new FormData(form);
             let list = data._data
             let res = []
             list.map((obj) => {
-                res[list.indexOf(obj)] = document.getElementById(obj).value
+                res[list.indexOf(obj)] = dataForm.get(obj)
             })
             console.log('Submiting...');
             socket.emit('parameters', res);
@@ -97,12 +101,8 @@ socket.on('backPage', (_data) => {
             let trytesOption = document.getElementById("trytesOption");
             let structOption = document.getElementById("structOption");
             let submitDecrypt = document.getElementById("submitDecrypt");
-            let diffieHellman = document.getElementById("diffieHellman");
-            let RSA = document.getElementById("RSA");
-            let DSA = document.getElementById("DSA");
-            let pKey = document.getElementById("pKey");
             let decryptRes = document.getElementsByClassName("text-decrypt")[0];
-            let form = document.querySelector("form");
+            let form = modalContent.querySelector("form");
 
             modal.style.display = "block";
 

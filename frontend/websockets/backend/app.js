@@ -172,22 +172,24 @@ io.on('connection', (socket) => {
             'front':
             '<div id=\'searchContainer\'>Choose between options'+
             '<br>'+
-            '<select name=\'options\' id=\'ifOption\' multiple>'+
+            `<form>`+
+            '<select name=\'ifOptions\' id=\'ifOption\' multiple>'+
             '<option value=\'\'>YES</option>'+
             '<option value=\'NOT\'>NOT</option>'+      
             '</select>'+
-            '<select name=\'options\' id=\'searchOption\' multiple>'+
+            '<select name=\'searchOptions\' id=\'searchOption\' multiple>'+
             '<option value=\'address\'>Address</option>'+
             '<option value=\'tag\'>Tag</option>'+
             '</select>'+
-            '<input type=\'text\' id=\'contentOption\'></input>'+
+            '<input type=\'text\' name=\'contentOptions\' id=\'contentOption\'></input>'+
             // TODO: PONER LISTA DE ADDRESSES/TAGS ASOCIADAS AL CLIENTE
-            '<select name=\'options\' id=\'logicOption\' multiple>'+
+            '<select name=\'logicOptions\' id=\'logicOption\' multiple>'+
             '<option value=\'AND\'>AND</option>'+
             '<option value=\'OR\'>OR</option>'+
             '<option value=\'XOR\'>XOR</option>'+     
             '<option value=\'\'>end</option>'+
             '</select>'+
+            `</form>`+
             '<br>'+
             '<button id=\'addSearch\' type=\'submit\'>Add</button>'+
             '</div>'+
@@ -201,8 +203,8 @@ io.on('connection', (socket) => {
             '<div class="modal-content">'+
             '</div>'+
             '</div>',
-            'back': ['searchSubmit','addSearch','searchCond','searchResult'],
-            '_data': ['ifOption', 'searchOption', 'contentOption', 'logicOption']
+            'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer'],
+            '_data': ['ifOptions', 'searchOptions', 'contentOptions', 'logicOptions']
         });
     });
 
