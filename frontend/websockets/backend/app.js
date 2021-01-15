@@ -14,6 +14,17 @@ var pool = mysql.createPool({
   database: "iota_tx_reader2",
 });
 
+class Clients {
+    constructor() {
+        this.clientList = {};
+        this.saveClient = this.saveClient.bind(this)
+    }
+    saveClient(username,socketId){
+        this.clientList[username] = socketId;
+    }
+};
+const clients = new Clients();
+
 // ##################################
 // SERVER
 // ##################################
@@ -102,6 +113,9 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit('registerStatus',`<p>Failed to register - Errno ${err.errno}</p>`);
           }
           else {
+              clients.saveClient(data[0],socket.id)
+              //TODO: password
+              console.log(clients.clientList)
               io.to(socket.id).emit('registerStatus','<p>Successful!</p>')
               io.to(socket.id).emit('backPage',{
                 'front':
@@ -130,6 +144,9 @@ io.on('connection', (socket) => {
               }
               else {
                 if (result.length > 0) {
+                  clients.saveClient(data[0],socket.id)
+                  //TODO: password
+                  console.log(clients.clientList)
                   io.to(socket.id).emit('loginStatus','<p>Successful!</p>');
                   io.to(socket.id).emit('backPage',{
                     'front':
@@ -173,38 +190,56 @@ io.on('connection', (socket) => {
             '<div id=\'searchContainer\'>Choose between options'+
             '<br>'+
             `<form>`+
+
+            '<select name=\'parenthStart\' multiple>'+
+            '<option value=\'(\'>(</option>'+
+            '<option selected="selected" value=\'\'>null</option>'+      
+            '</select>'+
+
             '<select name=\'ifOptions\' id=\'ifOption\' multiple>'+
-            '<option value=\'\'>YES</option>'+
+            '<option selected="selected" value=\'\'>YES</option>'+
             '<option value=\'NOT\'>NOT</option>'+      
             '</select>'+
+
             '<select name=\'searchOptions\' id=\'searchOption\' multiple>'+
-            '<option value=\'address\'>Address</option>'+
-            '<option value=\'tag\'>Tag</option>'+
+            '<option value=\'address=\'>Address</option>'+
+            '<option value=\'tag=\'>Tag</option>'+
+            '<option selected="selected" value=\'\'>null</option>'+
             '</select>'+
+
             '<input type=\'text\' name=\'contentOptions\' id=\'contentOption\'></input>'+
             // TODO: PONER LISTA DE ADDRESSES/TAGS ASOCIADAS AL CLIENTE
+
+            '<select name=\'parenthEnd\' multiple>'+
+            '<option value=\')\'>)</option>'+
+            '<option selected="selected" value=\'\'>null</option>'+      
+            '</select>'+
+
             '<select name=\'logicOptions\' id=\'logicOption\' multiple>'+
             '<option value=\'AND\'>AND</option>'+
             '<option value=\'OR\'>OR</option>'+
             '<option value=\'XOR\'>XOR</option>'+     
-            '<option value=\'\'>end</option>'+
+            '<option selected="selected" value=\'\'>null</option>'+
             '</select>'+
+
             `</form>`+
             '<br>'+
             '<button id=\'addSearch\' type=\'submit\'>Add</button>'+
             '</div>'+
             '<div id=\'searchCond\'><p>Search conditions:</p></div>'+
+            '<button id=\'clearCond\' type=\'submit\'>Clear</button>'+
             '<br>'+
             '<button id=\'searchSubmit\' type=\'submit\'>Search</button>'+
             '<br>'+
-            '<div id=\'searchResult\'><p>Results:</p></div>'+
+            '<div id=\'searchResult\'><p>Results: </p></div>'+
+            '<button id=\'clearSearch\' type=\'submit\'>Clear</button>'+
             '</div>'+
             '<div id="myModal" class="modal">'+
             '<div class="modal-content">'+
             '</div>'+
             '</div>',
-            'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer'],
-            '_data': ['ifOptions', 'searchOptions', 'contentOptions', 'logicOptions']
+            'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer','clearCond','clearSearch'],
+            '_data': ['parenthStart','ifOptions', 'searchOptions', 'contentOptions', 'logicOptions','parenthEnd']
         });
     });
 
@@ -224,30 +259,25 @@ io.on('connection', (socket) => {
         };
     });
 
-    let toSend = []
+    let toSend = ''
     socket.on('parameters', (data) => {
-        dataFormat = `<div>${data[0]} <abbr title='${data[1]}'>${data[2]}</abbr> ${data[3]} <br></div>`;
-        toSend.push({
-            'if':data[0],
-            'object': data[1],
-            'value': data[2],
-            'logic': data[3]
+        dataFormat = `<div>${data[0]}${data[1]} <abbr title='${data[2]}'>${data[3]}</abbr>${data[4]} ${data[5]}<br></div>`;
+        data.forEach((el) =>{ 
+            if (el!=''){
+                if (data.indexOf(el) == 3){
+                    toSend += ` '${el}'`
+                } else {toSend += ` ${el}`}}
         });
         io.to(socket.id).emit('searchCond', {'front': dataFormat})
     });
 
-    socket.on('searchSubmit', () => {
-        let _data = toSend
-        let sql_query = '';
-        _data.forEach((el) => {
-            if (_data.indexOf(el) == 0) {
-                sql_query += ` ${el.object} = '${el.value}' ${el.logic}`
-            } else {
-                sql_query += ` ${el.if} ${el.object} = '${el.value}' ${el.logic}`
-            };
-        });
+    socket.on('clearCond', () => {
+        toSend = '';
+        io.to(socket.id).emit('clearCond', '')
+    })
 
-        let _sql = `SELECT * FROM iota_tx_reader2.transactions WHERE` + sql_query;
+    socket.on('searchSubmit', () => {
+        let _sql = `SELECT * FROM iota_tx_reader2.transactions WHERE` + toSend;
         console.log(_sql);
         var butList = [];
         var toCache = [];
@@ -269,24 +299,22 @@ io.on('connection', (socket) => {
             });
         });
 
-        socket.on('expandThis', (dataToExpand) => {
-            let res = {
-                'trytes': {
-                    'type': 'trytes',
-                    'content':toCache[dataToExpand].trytes
-                },
-                'structured': {
-                    'type': 'structure',
-                    'hash': toCache[dataToExpand].name,
-                    'timestamp': toCache[dataToExpand].timestamp,
-                    'address': toCache[dataToExpand].trytes.slice(2187,2268),
-                    'tag': toCache[dataToExpand].trytes.slice(2592,2619),
-                    'message': toCache[dataToExpand].trytes.slice(0,2187),
-                    },
+        var res = {
+            'trytes': {
+                'type': 'trytes',
                 'options': '<span class="close">&times;</span>'+
-                `<input type="radio" id="structOption" name="expandOptions" value="true">`+
+                `<input type="radio" id="structOption" name="expandOptions">`+
                 `<label for="structOption">Structured</label><br></br>`+
-                `<input type="radio" id="trytesOption" name="expandOptions" value="false">`+
+                `<input type="radio" id="trytesOption" name="expandOptions">`+
+                `<label for="trytesOption">AsTrytes</label><br>`+
+                `<p class="text"></p>`
+            },
+            'structured': {
+                'type': 'structure',
+                'options': '<span class="close">&times;</span>'+
+                `<input type="radio" id="structOption" name="expandOptions">`+
+                `<label for="structOption">Structured</label><br></br>`+
+                `<input type="radio" id="trytesOption" name="expandOptions">`+
                 `<label for="trytesOption">AsTrytes</label><br>`+
                 `<p class="text"></p>`+
                 `<form>`+
@@ -300,19 +328,36 @@ io.on('connection', (socket) => {
                 `<input type="text" id="pKey" name="pKey"><br>`+
                 `</form>`+
                 '<button id=\'submitDecrypt\'>Decrypt</button>'+
-                `<p class="text-decrypt"></p>`,
-            };
-            io.to(socket.id).emit('expandThat', [res.options,res.structured,true])   
-            
-            socket.on('swapExpand', (cond) => {
-                io.to(socket.id).emit('expandThat', [res.options,res[cond],false])   
-            });
+                `<p class="text-decrypt"></p>`
+                }
+        };
 
-            socket.on('decrypt', (param) => {
-                io.to(socket.id).emit('decryptResponse', 'Recibida info, falta implementación')   
-            });
+        socket.on('expandThis', (dataToExpand) => {
+            res['trytes']['content'] = toCache[dataToExpand].trytes;
+            res['structured']['hash'] = toCache[dataToExpand].name;
+            res['structured']['timestamp'] = toCache[dataToExpand].timestamp;
+            res['structured']['address'] = toCache[dataToExpand].trytes.slice(2187,2268);
+            res['structured']['tag'] = toCache[dataToExpand].trytes.slice(2592,2619);
+            res['structured']['message'] = toCache[dataToExpand].trytes.slice(0,2187);
+            io.to(socket.id).emit('expandThat', [res.structured.options,res.structured,true])   
 
+        });  
+
+        socket.on('swapExpand', (cond) => {
+            io.to(socket.id).emit('expandThat', [res[cond].options,res[cond],false])   
         });
+
+        socket.on('decrypt', () => {
+            io.to(socket.id).emit('decryptResponse', 'Recibida info, falta implementación')   
+        });
+
+        
+
+        socket.on('clearSearch', () => {
+            butList = [];
+            toCache = [];
+            io.to(socket.id).emit('clearSearch', '')
+        })
     });
 
 

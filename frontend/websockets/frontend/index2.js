@@ -50,7 +50,28 @@ socket.on('backPage', (_data) => {
         var cond = document.getElementById(data.back[2]);
         var results = document.getElementById(data.back[3]);
         var searchContainer = document.getElementById(data.back[4]);
+        var clearCond = document.getElementById(data.back[5]);
+        var clearSearch = document.getElementById(data.back[6]);
 
+        clearCond.onclick = () => {
+            console.log('Al menos clickado')
+            socket.emit('clearCond', '');
+        };
+
+        socket.on('clearCond', (data) => {
+            console.log('Al menos recibido')
+            cond.innerHTML = ''
+        });
+
+        clearSearch.onclick = () => {
+            console.log('Al menos clickado')
+            socket.emit('clearSearch', '');
+        };
+
+        socket.on('clearSearch', () => {
+            console.log('Al menos recibido')
+            results.innerHTML = ''
+        });
 
         var newParameter = () => {
             let form = searchContainer.querySelector("form");
@@ -83,9 +104,7 @@ socket.on('backPage', (_data) => {
         socket.on('expandThat', (_data) => {
             let modal = document.getElementById("myModal");
             let modalContent = document.getElementsByClassName("modal-content")[0];
-            if (_data[2] === true) {
-                modalContent.innerHTML = _data[0];
-            };
+            modalContent.innerHTML = _data[0];
             let _text = document.getElementsByClassName("text")[0];
             if (_data[1].type === 'trytes') {_text.innerHTML =`${_data[1].content}`;}
             else {
@@ -94,22 +113,29 @@ socket.on('backPage', (_data) => {
                 `Timestamp: ${_data[1].timestamp} <br>`+
                 `Address: ${_data[1].address} <br>`+
                 `Tag: ${_data[1].tag} <br>`+
-                `Message: ${trytesToAscii(_data[1].message)}`
+                `Message: ${trytesToAscii(_data[1].message)}`;
+
+                let submitDecrypt = document.getElementById("submitDecrypt");
+                let decryptRes = document.getElementsByClassName("text-decrypt")[0];
+                let form = modalContent.querySelector("form");
+    
+                submitDecrypt.addEventListener("click", () => {
+                    let dataForm = new FormData(form);
+                    socket.emit(`decrypt`,[dataForm.get('decrypyOptions'),dataForm.get('pKey'),trytesToAscii(_data[1].message)])
+                });
+    
+                socket.on('decryptResponse', (dataDecrypted) => {
+                    decryptRes.innerHTML = dataDecrypted;
+                });
+    
             }
             
             let span = document.getElementsByClassName("close")[0];
             let trytesOption = document.getElementById("trytesOption");
             let structOption = document.getElementById("structOption");
-            let submitDecrypt = document.getElementById("submitDecrypt");
-            let decryptRes = document.getElementsByClassName("text-decrypt")[0];
-            let form = modalContent.querySelector("form");
 
             modal.style.display = "block";
 
-            submitDecrypt.addEventListener("click", () => {
-                let dataForm = new FormData(form);
-                socket.emit(`decrypt`,[dataForm.get('decrypyOptions'),dataForm.get('pKey'),trytesToAscii(_data[1].message)])
-            });
 
             trytesOption.onclick = () => {
                 socket.emit(`swapExpand`,'trytes')
@@ -129,9 +155,6 @@ socket.on('backPage', (_data) => {
                 }
             }
 
-            socket.on('decryptResponse', (dataDecrypted) => {
-                decryptRes.innerHTML = dataDecrypted;
-            });
         });
 
     });
