@@ -52,24 +52,29 @@ socket.on('backPage', (_data) => {
         var searchContainer = document.getElementById(data.back[4]);
         var clearCond = document.getElementById(data.back[5]);
         var clearSearch = document.getElementById(data.back[6]);
+        var sortSearch = document.getElementById(data.back[7]);
+        var orderContainer = document.getElementById(data.back[8]);
+
+        sortSearch.onclick = () => {
+            results.innerHTML = '';
+            let form = orderContainer.querySelector("form");
+            let dataForm = new FormData(form);
+            socket.emit('sortThis', dataForm.get('order'));
+        };
 
         clearCond.onclick = () => {
-            console.log('Al menos clickado')
             socket.emit('clearCond', '');
         };
 
         socket.on('clearCond', (data) => {
-            console.log('Al menos recibido')
             cond.innerHTML = ''
         });
 
         clearSearch.onclick = () => {
-            console.log('Al menos clickado')
             socket.emit('clearSearch', '');
         };
 
         socket.on('clearSearch', () => {
-            console.log('Al menos recibido')
             results.innerHTML = ''
         });
 
@@ -86,12 +91,14 @@ socket.on('backPage', (_data) => {
         };
         addSearch.onclick = newParameter;
     
-        var newSearch = () => {
-            socket.emit(`${data.back[0]}`,'')
-        };
         socket.on('searchCond', (_data) => {
             cond.innerHTML += _data.front
         });
+
+        var newSearch = () => {
+            socket.emit(`${data.back[0]}`,'')
+            results.innerHTML = ''
+        };
         searchSubmit.addEventListener('click', newSearch);
     
         socket.on('searchResponse', (_data) => {

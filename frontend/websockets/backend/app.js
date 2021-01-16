@@ -231,14 +231,26 @@ io.on('connection', (socket) => {
             '<br>'+
             '<button id=\'searchSubmit\' type=\'submit\'>Search</button>'+
             '<br>'+
-            '<div id=\'searchResult\'><p>Results: </p></div>'+
+            '<p>Results: </p>'+
+            '<div id=\'searchResult\'></div>'+
             '<button id=\'clearSearch\' type=\'submit\'>Clear</button>'+
+
+            '<div id=\'orderContainer\'>'+
+            '<form>'+
+            '<select name=\'order\' multiple>'+
+            '<option value=\'desc\'>desc</option>'+
+            '<option value=\'asc\'>asc</option>'+ 
+            '<option selected="selected" value=\'\'>null</option>'+                 
+            '</select>'+
+            '</form>'+
+            '<button id=\'sortSearch\' type=\'submit\'>Sort</button>'+
+            '</div>'+
             '</div>'+
             '<div id="myModal" class="modal">'+
             '<div class="modal-content">'+
             '</div>'+
             '</div>',
-            'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer','clearCond','clearSearch'],
+            'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer','clearCond','clearSearch','sortSearch','orderContainer'],
             '_data': ['parenthStart','ifOptions', 'searchOptions', 'contentOptions', 'logicOptions','parenthEnd']
         });
     });
@@ -281,6 +293,7 @@ io.on('connection', (socket) => {
         console.log(_sql);
         var butList = [];
         var toCache = [];
+        var toCacheFix = [];
         pool.query(_sql, (err, res) => {
             res.forEach((el) => {
                 toCache.push(el)
@@ -288,7 +301,7 @@ io.on('connection', (socket) => {
                 let _response = {
                     'front': `<p>Hash: ${el.name}`+
                     `<br>`+
-                    `Timestamp: ${el.timestamp}`+
+                    `Date: ${new Date(el.timestamp*1000)}`+
                     `<br>`+
                     `<button id=${el.name}Button value=${toCache.indexOf(el)}>Expand</button>`+
                     `</p>`,
@@ -297,6 +310,7 @@ io.on('connection', (socket) => {
                 };
                 io.to(socket.id).emit('searchResponse', _response)
             });
+            toCacheFix = toCache.slice(0);
         });
 
         var res = {
@@ -331,6 +345,40 @@ io.on('connection', (socket) => {
                 `<p class="text-decrypt"></p>`
                 }
         };
+
+
+        socket.on('sortThis', (order) => {
+            let butListSorted = [];
+            let toCacheSorted = toCache;
+
+            if (order ==='desc') {
+            // https://stackoverflow.com/questions/7555025/fastest-way-to-sort-an-array-by-timestamp
+                toCacheSorted.sort((x,y) => {
+                    return x.timestamp - y.timestamp;
+                });
+            } else if (order ==='asc') {
+                toCacheSorted.sort((x,y) => {
+                    return y.timestamp - x.timestamp;
+                });
+            } else {toCacheSorted = toCacheFix;
+            toCache = toCacheFix
+            toCacheFix = toCache.slice(0)};
+
+            toCacheSorted.forEach((el) => {
+                butListSorted.push(`${el.name}Button`)
+                let _response = {
+                    'front': `<p>Hash: ${el.name}`+
+                    `<br>`+
+                    `Date: ${new Date(el.timestamp*1000)}`+
+                    `<br>`+
+                    `<button id=${el.name}Button value=${toCacheSorted.indexOf(el)}>Expand</button>`+
+                    `</p>`,
+                    'back': el,
+                    'buttons': butListSorted
+                    };
+                io.to(socket.id).emit('searchResponse', _response)
+            });
+        });
 
         socket.on('expandThis', (dataToExpand) => {
             res['trytes']['content'] = toCache[dataToExpand].trytes;
