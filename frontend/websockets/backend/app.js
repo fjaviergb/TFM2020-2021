@@ -276,7 +276,7 @@ io.on('connection', (socket) => {
         };
     });
 
-    let toSend = ''
+    var toSend = ''
     socket.on('parameters', (data) => {
         dataFormat = `<div>${data[0]}${data[1]} <abbr title='${data[2]}'>${data[3]}</abbr>${data[4]} ${data[5]}<br></div>`;
         data.forEach((el) =>{ 
@@ -298,7 +298,6 @@ io.on('connection', (socket) => {
         console.log(_sql);
         var butList = [];
         var toCache = [];
-        var toCacheFix = [];
         pool.query(_sql, (err, res) => {
             res.forEach((el) => {
                 toCache.push(el)
@@ -315,7 +314,6 @@ io.on('connection', (socket) => {
                 };
                 io.to(socket.id).emit('searchResponse', _response)
             });
-            toCacheFix = toCache.slice(0);
         });
 
         var res = {
@@ -355,28 +353,26 @@ io.on('connection', (socket) => {
         socket.on('sortThis', (order) => {
             let butListSorted = [];
             let toCacheSorted = toCache;
+            let toCacheTemp = []
+            io.to(socket.id).emit('clearSearch', '')
 
             toCacheSorted.forEach((el) => {
-                console.log(el.timestamp*1000,Date.parse(order[1]),Date.parse(order[2]))
-                // if (el.timestamp > Date.parse(order[2]) || el.timestamp < Date.parse(order[1])) {
-                //     console.log('Supuestamente eliminado')
-                //     toCacheSorted.splice(toCacheSorted.indexOf(el),1)}
+                if ((el.timestamp*1000 < Date.parse(order[2])) && (el.timestamp*1000 > Date.parse(order[1]))) {
+                    toCacheTemp.push(el);};
             });
 
             if (order[0] ==='desc') {
             // https://stackoverflow.com/questions/7555025/fastest-way-to-sort-an-array-by-timestamp
-                toCacheSorted.sort((x,y) => {
+                toCacheTemp.sort((x,y) => {
                     return x.timestamp - y.timestamp;
                 });
             } else if (order[0] ==='asc') {
-                toCacheSorted.sort((x,y) => {
+                toCacheTemp.sort((x,y) => {
                     return y.timestamp - x.timestamp;
                 });
-            } else {toCacheSorted = toCacheFix;
-            toCache = toCacheFix
-            toCacheFix = toCache.slice(0)};
+            };
 
-            toCacheSorted.forEach((el) => {
+            toCacheTemp.forEach((el) => {
                 butListSorted.push(`${el.name}Button`)
                 let _response = {
                     'front': `<p>Hash: ${el.name}`+
@@ -412,8 +408,6 @@ io.on('connection', (socket) => {
         });
 
         socket.on('clearSearch', () => {
-            butList = [];
-            toCache = [];
             io.to(socket.id).emit('clearSearch', '')
         })
     });
