@@ -242,9 +242,14 @@ io.on('connection', (socket) => {
             '<option value=\'asc\'>asc</option>'+ 
             '<option selected="selected" value=\'\'>null</option>'+                 
             '</select>'+
+            '<label for=\'startDate\'>Start date:</label>'+
+            '<input type=\'date\' id=\'startDate\' name=\'startDate\' value=\'2020-11-01\' min=\'2018-01-01\'></input>'+
+            '<label for=\'endDate\'>End date:</label>'+
+            '<input type=\'date\' id=\'endDate\' name=\'endDate\' value=\'2020-11-16\' min=\'2018-01-01\'></input>'+
             '</form>'+
             '<button id=\'sortSearch\' type=\'submit\'>Sort</button>'+
             '</div>'+
+
             '</div>'+
             '<div id="myModal" class="modal">'+
             '<div class="modal-content">'+
@@ -351,12 +356,19 @@ io.on('connection', (socket) => {
             let butListSorted = [];
             let toCacheSorted = toCache;
 
-            if (order ==='desc') {
+            toCacheSorted.forEach((el) => {
+                console.log(el.timestamp*1000,Date.parse(order[1]),Date.parse(order[2]))
+                // if (el.timestamp > Date.parse(order[2]) || el.timestamp < Date.parse(order[1])) {
+                //     console.log('Supuestamente eliminado')
+                //     toCacheSorted.splice(toCacheSorted.indexOf(el),1)}
+            });
+
+            if (order[0] ==='desc') {
             // https://stackoverflow.com/questions/7555025/fastest-way-to-sort-an-array-by-timestamp
                 toCacheSorted.sort((x,y) => {
                     return x.timestamp - y.timestamp;
                 });
-            } else if (order ==='asc') {
+            } else if (order[0] ==='asc') {
                 toCacheSorted.sort((x,y) => {
                     return y.timestamp - x.timestamp;
                 });
@@ -398,8 +410,6 @@ io.on('connection', (socket) => {
         socket.on('decrypt', () => {
             io.to(socket.id).emit('decryptResponse', 'Recibida info, falta implementación')   
         });
-
-        
 
         socket.on('clearSearch', () => {
             butList = [];

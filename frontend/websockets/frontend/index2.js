@@ -59,7 +59,7 @@ socket.on('backPage', (_data) => {
             results.innerHTML = '';
             let form = orderContainer.querySelector("form");
             let dataForm = new FormData(form);
-            socket.emit('sortThis', dataForm.get('order'));
+            socket.emit('sortThis', [dataForm.get('order'),dataForm.get('startDate'),dataForm.get('endDate')]);
         };
 
         clearCond.onclick = () => {
