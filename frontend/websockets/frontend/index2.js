@@ -1,6 +1,6 @@
 socket.on('backPage', (_data) => {
-    pageContainer.innerHTML = _data.front;
-    console.log(_data.user[0])
+    pageContainer.innerHTML = _data[0].front;
+    console.log(_data[1][0])
 
     let searcher = document.getElementById('searcher');
     let profile = document.getElementById('profile');
