@@ -90,7 +90,6 @@ io.on('connection', (socket) => {
               io.to(socket.id).emit('registerStatus','<p>Successful!</p>')
               io.to(socket.id).emit('backPage',[NAME.BACKPAGE.HTML, result]);
                 idcl = result.insertId;
-                refresh();
             };  
         });   
     });
@@ -114,7 +113,6 @@ io.on('connection', (socket) => {
                   io.to(socket.id).emit('loginStatus','<p>Successful!</p>');
                   io.to(socket.id).emit('backPage',[NAME.BACKPAGE.HTML,result]);
                   idcl = result[0].idcl;
-                  refresh();
                 }
                 else {io.to(socket.id).emit('loginStatus','<p>User Not found</p>')}
               };
@@ -128,10 +126,10 @@ io.on('connection', (socket) => {
     // ##########
     // PROFILE
     // ##########
-    var tagList = [];
-    var addList = [];
+    
+    socket.on('profile', () => {
+        io.to(socket.id).emit('optionsContainer2', NAME.OPTIONSCONTAINERPROFILE.HTML);
 
-    var refresh = () => {
         let _sql_tags = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_connector WHERE \
         iota_tx_reader2.tags.idta = iota_tx_reader2.tag_connector.idta AND iota_tx_reader2.tag_connector.idcl = ${idcl}`
         pool.query(_sql_tags, (err, res) => {
@@ -143,14 +141,12 @@ io.on('connection', (socket) => {
                         if (_res.length > 0) {
                             elem_name = _res[_res.length - 1].name;
                         };  
+                        io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,elem_name),'elem':el.name,'id': el.idta})
                     })
-                    //io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,elem_name),'elem':el.name,'id': el.idta})
-                    tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,elem_name),'elem':el.name,'id': el.idta,'name':elem_name})
-                    console.log(tagList)
                 });
             };
         });
-
+    
         let _sql_addresses = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_connector WHERE \
         iota_tx_reader2.addresses.idad = iota_tx_reader2.add_connector.idad AND iota_tx_reader2.add_connector.idcl = ${idcl}`
         pool.query(_sql_addresses, (err, res) => {
@@ -162,24 +158,15 @@ io.on('connection', (socket) => {
                         if (_res.length > 0) {
                             elem_name = _res[_res.length - 1].name;
                         };
+                        io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,elem_name),'elem':el.name,'id': el.idad});
                     });
-                    //io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,elem_name),'elem':el.name,'id': el.idad});
-                    addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,elem_name),'elem':el.name,'id': el.idad,'name':elem_name})
-                    console.log(addList)
                 });
             };
-        });
-    };
-    
-    socket.on('profile', () => {
-        io.to(socket.id).emit('optionsContainerProfile', NAME.OPTIONSCONTAINERPROFILE.HTML);
-        io.to(socket.id).emit('refrTags', tagList)
-        io.to(socket.id).emit('refrAdds', addList)
-        // TODO: buscar addresses y tags que tiene el usuario y displayearlas
+        });    
     });
 
     socket.on('addressSubmit', (data) => {
-        if (data.length === 90) {
+        if (data.length === 90 || data.length === 81) {
             let _sql = 'INSERT IGNORE INTO iota_tx_reader2.addresses SET ?' ;
             var _data_add = {
                 'name': data,
@@ -194,7 +181,6 @@ io.on('connection', (socket) => {
                     };
                     pool.query(_sql, _data_conn, (err, _res) => {
                         console.log('Succesfully saved')
-                        addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,''),'elem':data,'id': res.insertId})
                         io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,''),'elem':data,'id': res.insertId})    
                     });
                 };
@@ -218,7 +204,6 @@ io.on('connection', (socket) => {
                     };
                     pool.query(_sql, _data_conn, (err, res) => {
                         console.log('Succesfully saved')
-                        tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,''),'elem':data,'id': res.insertId})
                         io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,''),'elem':data,'id': res.insertId})    
                     });
                 };
@@ -231,7 +216,7 @@ io.on('connection', (socket) => {
             'name': data.name,
             'idcl': idcl,
         };
-        if (data.elem.length === 90) {
+        if (data.elem.length === 90 || data.elem.length === 81) {
             _query['idad'] = data.id;
             let _sql = 'INSERT INTO iota_tx_reader2.add_names SET ?' ;
             pool.query(_sql, _query, (err, res) => {
@@ -256,7 +241,10 @@ io.on('connection', (socket) => {
     // SEARCHER
     // ##########
     socket.on('searcher', () => {
-        io.to(socket.id).emit('optionsContainerSearcher', NAME.OPTIONSCONTAINERSEARCH.HTML);
+        io.to(socket.id).emit('optionsContainer2', NAME.OPTIONSCONTAINERSEARCH.HTML);
+        toSend = '';
+        butList = [];
+        toCache = [];
     });
 
     var toSend = '';
@@ -313,7 +301,6 @@ io.on('connection', (socket) => {
             });
 
             if (order[0] ==='desc') {
-            // https://stackoverflow.com/questions/7555025/fastest-way-to-sort-an-array-by-timestamp
                 toCacheTemp.sort((x,y) => {
                     return x.timestamp - y.timestamp;
                 });
@@ -362,7 +349,6 @@ io.on('connection', (socket) => {
             io.to(socket.id).emit('clearSearch', '')
         })
     });
-
 
 });
 

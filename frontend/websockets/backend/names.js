@@ -69,6 +69,7 @@ const BACKPAGE = {
 
 const OPTIONSCONTAINERPROFILE = {
     HTML: {
+        'type': 0,
         'front':
         '<div id=\'profileContainer\'>'+
         '<input type=\'text\' id=\'regAddress\'>New Address</input>'+
@@ -96,6 +97,7 @@ const OPTIONSCONTAINERPROFILE = {
 
 const OPTIONSCONTAINERSEARCH = {
     HTML: {
+        'type': 1,
         'front':
         '<div id=\'searchContainer\'>Choose between options'+
         '<br>'+

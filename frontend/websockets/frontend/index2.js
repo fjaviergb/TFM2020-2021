@@ -2,10 +2,10 @@ socket.on('backPage', (_data) => {
     pageContainer.innerHTML = _data[0].front;
     console.log(_data[1][0])
 
+    // DOM elements
     let searcher = document.getElementById('searcher');
     let profile = document.getElementById('profile');
     let optionsContainer2 = document.getElementById('optionsContainer2');
-
 
     searcher.addEventListener('click', () => {
         console.log('On Searching...')
@@ -15,178 +15,173 @@ socket.on('backPage', (_data) => {
     profile.addEventListener('click', () => {
         console.log('On profiles...')
         socket.emit('profile', '')
-    })
-
-    socket.on('optionsContainerProfile', (data) => {
-        optionsContainer2.innerHTML=data.front;
-
-        var addressSubmit = document.getElementById(data.back[0]);
-        var tagSubmit = document.getElementById(data.back[1]);
-        var listAddresses = document.getElementById(data.back[2]);
-        var listTags = document.getElementById(data.back[3]);
-
-        addressSubmit.addEventListener('click', () => {
-            socket.emit('addressSubmit', document.getElementById('regAddress').value)
-        });
-
-        tagSubmit.addEventListener('click', () => {
-            socket.emit('tagSubmit', document.getElementById('regTag').value)
-        });
-
-        socket.on('newTag', (_data) => {
-            listTags.innerHTML += _data.html;
-            document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
-        });
-
-        socket.on('newAddress', (_data) => {
-            listAddresses.innerHTML += _data.html;
-            document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
-        });
-
-        socket.on('refrTags', (_data) => {
-            console.log(_data)
-
-            _data.forEach((el) => {
-                console.log(`${el.elem}Button`)
-                listTags.innerHTML += el.html;
-                //document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
-            });
-        });
-
-        socket.on('refrAdds', (_data) => {
-            console.log(_data)
-            _data.forEach((el) => {
-                console.log(`${el.elem}Button`)
-                listAddresses.innerHTML += el.html;
-                //document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
-            });
-        });
-
     });
-    
-    socket.on('optionsContainerSearcher', (data) => {
+
+    socket.off('optionsContainer2').on('optionsContainer2', (data) => {
         optionsContainer2.innerHTML=data.front;
 
-        var searchSubmit = document.getElementById(data.back[0]);
-        var addSearch = document.getElementById(data.back[1]);
-        var cond = document.getElementById(data.back[2]);
-        var results = document.getElementById(data.back[3]);
-        var searchContainer = document.getElementById(data.back[4]);
-        var clearCond = document.getElementById(data.back[5]);
-        var clearSearch = document.getElementById(data.back[6]);
-        var sortSearch = document.getElementById(data.back[7]);
-        var orderContainer = document.getElementById(data.back[8]);
-
-        sortSearch.onclick = () => {
-            results.innerHTML = '';
-            let form = orderContainer.querySelector("form");
-            let dataForm = new FormData(form);
-            socket.emit('sortThis', [dataForm.get('order'),dataForm.get('startDate'),dataForm.get('endDate')]);
-        };
-
-        clearCond.onclick = () => {
-            socket.emit('clearCond', '');
-        };
-
-        socket.on('clearCond', (data) => {
-            cond.innerHTML = ''
-        });
-
-        clearSearch.onclick = () => {
-            socket.emit('clearSearch', '');
-        };
-
-        socket.on('clearSearch', () => {
-            results.innerHTML = ''
-        });
-
-        var newParameter = () => {
-            let form = searchContainer.querySelector("form");
-            let dataForm = new FormData(form);
-            let list = data._data
-            let res = []
-            list.map((obj) => {
-                res[list.indexOf(obj)] = dataForm.get(obj)
-            })
-            console.log('Submiting...');
-            socket.emit('parameters', res);
-        };
-        addSearch.onclick = newParameter;
+        if (data.type === 0) {
+            var addressSubmit = document.getElementById(data.back[0]);
+            var tagSubmit = document.getElementById(data.back[1]);
+            var listAddresses = document.getElementById(data.back[2]);
+            var listTags = document.getElementById(data.back[3]);
     
-        socket.on('searchCond', (_data) => {
-            cond.innerHTML += _data.front
-        });
-
-        var newSearch = () => {
-            socket.emit(`${data.back[0]}`,'')
-            results.innerHTML = ''
-        };
-        searchSubmit.addEventListener('click', newSearch);
-    
-        socket.on('searchResponse', (_data) => {
-            results.innerHTML += _data.front
-            _data.buttons.forEach((el) => {
-                document.getElementById(el).addEventListener('click', () => socket.emit('expandThis',document.getElementById(el).value))
+            addressSubmit.addEventListener('click', () => {
+                socket.emit('addressSubmit', document.getElementById('regAddress').value)
             });
-        });     
-
-        socket.on('expandThat', (_data) => {
-            let modal = document.getElementById("myModal");
-            let modalContent = document.getElementsByClassName("modal-content")[0];
-            modalContent.innerHTML = _data[0];
-            let _text = document.getElementsByClassName("text")[0];
-            if (_data[1].type === 'trytes') {_text.innerHTML =`${_data[1].content}`;}
-            else {
-                _text.innerHTML =
-                `Hash: ${_data[1].hash} <br>`+
-                `Timestamp: ${_data[1].timestamp} <br>`+
-                `Address: ${_data[1].address} <br>`+
-                `Tag: ${_data[1].tag} <br>`+
-                `Message: ${trytesToAscii(_data[1].message)}`;
-
-                let submitDecrypt = document.getElementById("submitDecrypt");
-                let decryptRes = document.getElementsByClassName("text-decrypt")[0];
-                let form = modalContent.querySelector("form");
     
-                submitDecrypt.addEventListener("click", () => {
-                    let dataForm = new FormData(form);
-                    socket.emit(`decrypt`,[dataForm.get('decrypyOptions'),dataForm.get('pKey'),trytesToAscii(_data[1].message)])
+            tagSubmit.addEventListener('click', () => {
+                socket.emit('tagSubmit', document.getElementById('regTag').value)
+            });
+    
+            socket.off('newTag').on('newTag', (_data) => {
+                listTags.innerHTML += _data.html;
+                document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
+            });
+    
+            socket.off('newAddress').on('newAddress', (_data) => {
+                listAddresses.innerHTML += _data.html;
+                document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
+            });
+    
+            socket.off('refrTags').on('refrTags', (_data) => {
+                _data.forEach((el) => {
+                    listTags.innerHTML += el.html;
+                    document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
                 });
+            });
     
-                socket.on('decryptResponse', (dataDecrypted) => {
-                    decryptRes.innerHTML = dataDecrypted;
+            socket.off('refrAdds').on('refrAdds', (_data) => {
+                _data.forEach((el) => {
+                    listAddresses.innerHTML += el.html;
+                    document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
                 });
+            });
     
-            }
-            
-            let span = document.getElementsByClassName("close")[0];
-            let trytesOption = document.getElementById("trytesOption");
-            let structOption = document.getElementById("structOption");
-
-            modal.style.display = "block";
-
-
-            trytesOption.onclick = () => {
-                socket.emit(`swapExpand`,'trytes')
+        } else {
+            var searchSubmit = document.getElementById(data.back[0]);
+            var addSearch = document.getElementById(data.back[1]);
+            var cond = document.getElementById(data.back[2]);
+            var results = document.getElementById(data.back[3]);
+            var searchContainer = document.getElementById(data.back[4]);
+            var clearCond = document.getElementById(data.back[5]);
+            var clearSearch = document.getElementById(data.back[6]);
+            var sortSearch = document.getElementById(data.back[7]);
+            var orderContainer = document.getElementById(data.back[8]);
+    
+            sortSearch.onclick = () => {
+                results.innerHTML = '';
+                let form = orderContainer.querySelector("form");
+                let dataForm = new FormData(form);
+                socket.emit('sortThis', [dataForm.get('order'),dataForm.get('startDate'),dataForm.get('endDate')]);
             };
-
-            structOption.onclick = () => {
-                socket.emit(`swapExpand`,'structured')
+    
+            clearCond.onclick = () => {
+                socket.emit('clearCond', '');
             };
-
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
+    
+            socket.off('clearCond').on('clearCond', (data) => {
+                cond.innerHTML = ''
+            });
+    
+            clearSearch.onclick = () => {
+                socket.emit('clearSearch', '');
+            };
+    
+            socket.off('clearSearch').on('clearSearch', () => {
+                results.innerHTML = ''
+            });
+    
+            var newParameter = () => {
+                let form = searchContainer.querySelector("form");
+                let dataForm = new FormData(form);
+                let list = data._data
+                let res = []
+                list.map((obj) => {
+                    res[list.indexOf(obj)] = dataForm.get(obj)
+                })
+                console.log('Submiting...');
+                socket.emit('parameters', res);
+            };
+            addSearch.onclick = newParameter;
+        
+            socket.off('searchCond').on('searchCond', (_data) => {
+                cond.innerHTML += _data.front
+            });
+    
+            var newSearch = () => {
+                socket.emit(`${data.back[0]}`,'')
+                results.innerHTML = ''
+            };
+            searchSubmit.addEventListener('click', newSearch);
+        
+            socket.off('searchResponse').on('searchResponse', (_data) => {
+                results.innerHTML += _data.front
+                _data.buttons.forEach((el) => {
+                    document.getElementById(el).addEventListener('click', () => socket.emit('expandThis',document.getElementById(el).value))
+                });
+            });     
+    
+            socket.off('expandThat').on('expandThat', (_data) => {
+                let modal = document.getElementById("myModal");
+                let modalContent = document.getElementsByClassName("modal-content")[0];
+                modalContent.innerHTML = _data[0];
+                let _text = document.getElementsByClassName("text")[0];
+                if (_data[1].type === 'trytes') {_text.innerHTML =`${_data[1].content}`;}
+                else {
+                    _text.innerHTML =
+                    `Hash: ${_data[1].hash} <br>`+
+                    `Timestamp: ${_data[1].timestamp} <br>`+
+                    `Address: ${_data[1].address} <br>`+
+                    `Tag: ${_data[1].tag} <br>`+
+                    `Message: ${trytesToAscii(_data[1].message)}`;
+    
+                    let submitDecrypt = document.getElementById("submitDecrypt");
+                    let decryptRes = document.getElementsByClassName("text-decrypt")[0];
+                    let form = modalContent.querySelector("form");
+        
+                    submitDecrypt.addEventListener("click", () => {
+                        let dataForm = new FormData(form);
+                        socket.emit(`decrypt`,[dataForm.get('decrypyOptions'),dataForm.get('pKey'),trytesToAscii(_data[1].message)])
+                    });
+        
+                    socket.off('decryptResponse').on('decryptResponse', (dataDecrypted) => {
+                        decryptRes.innerHTML = dataDecrypted;
+                    });
+        
+                }
+                
+                let span = document.getElementsByClassName("close")[0];
+                let trytesOption = document.getElementById("trytesOption");
+                let structOption = document.getElementById("structOption");
+    
+                modal.style.display = "block";
+    
+    
+                trytesOption.onclick = () => {
+                    socket.emit(`swapExpand`,'trytes')
+                };
+    
+                structOption.onclick = () => {
+                    socket.emit(`swapExpand`,'structured')
+                };
+    
+                span.onclick = function() {
                     modal.style.display = "none";
                 }
-            }
-
-        });
+    
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+    
+            });
+    
+        };
 
     });
+
 });
 
 const TRYTE_ALPHABET = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ';
