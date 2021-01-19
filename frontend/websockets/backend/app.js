@@ -75,8 +75,8 @@ io.on('connection', (socket) => {
         var _data = {
             'name': data[0],
             //'password': data[1],
-            'contact': data[2]
-            //'created': new.Date(),
+            'contact': data[2],
+            'created': new Date(),
         };
         let sql = 'INSERT INTO users SET ?' 
         pool.query(sql, _data, (err, result) => {
@@ -89,8 +89,8 @@ io.on('connection', (socket) => {
               console.log(clients.clientList)
               io.to(socket.id).emit('registerStatus','<p>Successful!</p>')
               io.to(socket.id).emit('backPage',[NAME.BACKPAGE.HTML, result]);
-                //idcl = result[0].idcl;
-                // TODO: arreglar idcl en REGISTER
+                idcl = result.insertId;
+                refresh();
             };  
         });   
     });
@@ -113,34 +113,149 @@ io.on('connection', (socket) => {
                   console.log(clients.clientList)
                   io.to(socket.id).emit('loginStatus','<p>Successful!</p>');
                   io.to(socket.id).emit('backPage',[NAME.BACKPAGE.HTML,result]);
-                    idcl = result[0].idcl;
+                  idcl = result[0].idcl;
+                  refresh();
                 }
                 else {io.to(socket.id).emit('loginStatus','<p>User Not found</p>')}
               };
         });
     }); 
 
-    // #########
-    // BACK-PAGE
-    // #########
-    socket.on('profile', (data) => {
-        // TODO: buscar addresses y tags que tiene el usuario y displayearlas
+// #########
+// BACK-PAGE
+// #########
+
+    // ##########
+    // PROFILE
+    // ##########
+    var tagList = [];
+    var addList = [];
+
+    var refresh = () => {
+        let _sql_tags = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_connector WHERE \
+        iota_tx_reader2.tags.idta = iota_tx_reader2.tag_connector.idta AND iota_tx_reader2.tag_connector.idcl = ${idcl}`
+        pool.query(_sql_tags, (err, res) => {
+            if (res) {
+                res.forEach((el) => {
+                    var elem_name = '';
+                    let _sql_name = `SELECT * FROM iota_tx_reader2.tag_names WHERE iota_tx_reader2.tag_names.idta=${el.idta} AND iota_tx_reader2.tag_names.idcl = ${idcl}`;
+                    pool.query(_sql_name, (err, _res) => {
+                        if (_res.length > 0) {
+                            elem_name = _res[_res.length - 1].name;
+                        };  
+                    })
+                    //io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,elem_name),'elem':el.name,'id': el.idta})
+                    tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,elem_name),'elem':el.name,'id': el.idta,'name':elem_name})
+                    console.log(tagList)
+                });
+            };
+        });
+
+        let _sql_addresses = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_connector WHERE \
+        iota_tx_reader2.addresses.idad = iota_tx_reader2.add_connector.idad AND iota_tx_reader2.add_connector.idcl = ${idcl}`
+        pool.query(_sql_addresses, (err, res) => {
+            if (res) {
+                res.forEach((el) => {
+                    var elem_name = '';
+                    let _sql_name = `SELECT * FROM iota_tx_reader2.add_names WHERE iota_tx_reader2.add_names.idad=${el.idad} AND iota_tx_reader2.add_names.idcl = ${idcl}`;
+                    pool.query(_sql_name, (err, _res) => {
+                        if (_res.length > 0) {
+                            elem_name = _res[_res.length - 1].name;
+                        };
+                    });
+                    //io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,elem_name),'elem':el.name,'id': el.idad});
+                    addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,elem_name),'elem':el.name,'id': el.idad,'name':elem_name})
+                    console.log(addList)
+                });
+            };
+        });
+    };
+    
+    socket.on('profile', () => {
         io.to(socket.id).emit('optionsContainerProfile', NAME.OPTIONSCONTAINERPROFILE.HTML);
+        io.to(socket.id).emit('refrTags', tagList)
+        io.to(socket.id).emit('refrAdds', addList)
+        // TODO: buscar addresses y tags que tiene el usuario y displayearlas
     });
 
     socket.on('addressSubmit', (data) => {
         if (data.length === 90) {
-            io.to(socket.id).emit('newAddress', NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data))
+            let _sql = 'INSERT IGNORE INTO iota_tx_reader2.addresses SET ?' ;
+            var _data_add = {
+                'name': data,
+                'created': new Date()
+            };
+            pool.query(_sql, _data_add, (err, res) => {
+                if (res) {
+                    let _sql = 'INSERT INTO iota_tx_reader2.add_connector SET ?';
+                    var _data_conn = {
+                        'idcl': idcl,
+                        'idad': res.insertId,
+                    };
+                    pool.query(_sql, _data_conn, (err, _res) => {
+                        console.log('Succesfully saved')
+                        addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,''),'elem':data,'id': res.insertId})
+                        io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,''),'elem':data,'id': res.insertId})    
+                    });
+                };
+            });
         };
     });
 
     socket.on('tagSubmit', (data) => {
         if (data.length === 27) {
-            io.to(socket.id).emit('newTag', NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data))
+            let _sql = 'INSERT IGNORE INTO iota_tx_reader2.tags SET ?' ;
+            var _data_tag = {
+                'name': data,
+                'created': new Date()
+            };
+            pool.query(_sql, _data_tag, (err, res) => {
+                if (res) {
+                    let _sql = 'INSERT INTO iota_tx_reader2.tag_connector SET ?';
+                    var _data_conn = {
+                        'idcl': idcl,
+                        'idta': res.insertId,
+                    };
+                    pool.query(_sql, _data_conn, (err, res) => {
+                        console.log('Succesfully saved')
+                        tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,''),'elem':data,'id': res.insertId})
+                        io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,''),'elem':data,'id': res.insertId})    
+                    });
+                };
+            });
         };
     });
 
-    socket.on('searcher', (data) => {
+    socket.on('nameThis', (data) => {
+        let _query = {
+            'name': data.name,
+            'idcl': idcl,
+        };
+        if (data.elem.length === 90) {
+            _query['idad'] = data.id;
+            let _sql = 'INSERT INTO iota_tx_reader2.add_names SET ?' ;
+            pool.query(_sql, _query, (err, res) => {
+                if (res) {
+                    console.log('Named')
+                };
+            });
+        } else {
+            _query['idta'] = data.id;
+            let _sql = 'INSERT INTO iota_tx_reader2.tag_names SET ?' ;
+            pool.query(_sql, _query, (err, res) => {
+                if (res) {
+                    console.log('Named')
+                };
+            });
+        };
+        _query = {};
+    });
+
+
+    // ##########
+    // SEARCHER
+    // ##########
+    socket.on('searcher', () => {
         io.to(socket.id).emit('optionsContainerSearcher', NAME.OPTIONSCONTAINERSEARCH.HTML);
     });
 
@@ -158,7 +273,7 @@ io.on('connection', (socket) => {
 
     socket.on('clearCond', () => {
         toSend = '';
-        io.to(socket.id).emit('clearCond', '')
+        io.to(socket.id).emit('clearCond', '');
     })
 
     socket.on('searchSubmit', () => {
@@ -185,7 +300,6 @@ io.on('connection', (socket) => {
         });
 
         var res = NAME.RESPONSE
-
 
         socket.on('sortThis', (order) => {
             let butListSorted = [];

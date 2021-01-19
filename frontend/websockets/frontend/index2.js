@@ -20,26 +20,48 @@ socket.on('backPage', (_data) => {
     socket.on('optionsContainerProfile', (data) => {
         optionsContainer2.innerHTML=data.front;
 
-        let addressSubmit = document.getElementById(data.back[0]);
-        let tagSubmit = document.getElementById(data.back[1]);
-        let listAddresses = document.getElementById(data.back[2]);
-        let listTags = document.getElementById(data.back[3]);
+        var addressSubmit = document.getElementById(data.back[0]);
+        var tagSubmit = document.getElementById(data.back[1]);
+        var listAddresses = document.getElementById(data.back[2]);
+        var listTags = document.getElementById(data.back[3]);
 
         addressSubmit.addEventListener('click', () => {
             socket.emit('addressSubmit', document.getElementById('regAddress').value)
-         });
+        });
 
         tagSubmit.addEventListener('click', () => {
             socket.emit('tagSubmit', document.getElementById('regTag').value)
-         });
+        });
 
         socket.on('newTag', (_data) => {
-            listTags.innerHTML += _data;
-         });
+            listTags.innerHTML += _data.html;
+            document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
+        });
 
         socket.on('newAddress', (_data) => {
-            listAddresses.innerHTML += _data;
-         });
+            listAddresses.innerHTML += _data.html;
+            document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
+        });
+
+        socket.on('refrTags', (_data) => {
+            console.log(_data)
+
+            _data.forEach((el) => {
+                console.log(`${el.elem}Button`)
+                listTags.innerHTML += el.html;
+                //document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
+            });
+        });
+
+        socket.on('refrAdds', (_data) => {
+            console.log(_data)
+            _data.forEach((el) => {
+                console.log(`${el.elem}Button`)
+                listAddresses.innerHTML += el.html;
+                //document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
+            });
+        });
+
     });
     
     socket.on('optionsContainerSearcher', (data) => {

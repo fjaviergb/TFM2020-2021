@@ -84,13 +84,13 @@ const OPTIONSCONTAINERPROFILE = {
         'back': ['addressSubmit','tagSubmit','listAddresses','listTags'],
     },
 
-    NEWADDRESS(data) {return `<p>${data}</p>
-    <p><button id=${data}Button> Name as</button>
-    <input type=\'text\' id=\'${data}Text\'></input></p>`},
+    NEWADDRESS(data,name) {return `<div>${data}`+
+    `<button id=${data}Button> Name as</button>`+
+    `<input type=\'text\' id=\'${data}\' placeholder=\'${name}\'></div>`},
 
-    NEWTAG(data) {return `<p>${data}</p>
-    <p><button id=${data}Button> Name as</button>
-    <input type=\'text\' id=\'${data}Text\'></input></p>`}
+    NEWTAG(data,name) {return `<div>${data}`+
+    `<button id=${data}Button> Name as</button>`+
+    `<input type=\'text\' id=\'${data}\' placeholder=\'${name}\'></div>`}
 
 };
 
