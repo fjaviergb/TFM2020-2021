@@ -135,7 +135,6 @@ io.on('connection', (socket) => {
         AND iota_tx_reader2.tag_names.idta = iota_tx_reader2.tag_connector.idta`;
         pool.query(_sql_tags, (err, res) => {
             if (res) {
-                console.log(res)
                 res.forEach((el) => {
                     io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,el.alias),'elem':el.name,'id': el.idta})
                 });
@@ -148,7 +147,6 @@ io.on('connection', (socket) => {
 
         pool.query(_sql_addresses, (err, res) => {
             if (res) {
-                console.log(res)
                 res.forEach((el) => {
                         io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,el.alias),'elem':el.name,'id': el.idad});
                     });
@@ -172,11 +170,11 @@ io.on('connection', (socket) => {
                     };
                     pool.query(_sql, _data_conn, (err, _res) => {
                         console.log('Succesfully saved')
-                        io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,''),'elem':data,'id': res.insertId})    
+                        io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data),'elem':data,'id': res.insertId})    
                     });
                     let _query = {
                         'idname': res.insertId.toString() + idcl.toString(),
-                        'alias': '',
+                        'alias': data,
                         'idcl': idcl,
                         'idad': res.insertId
                     };
@@ -207,11 +205,11 @@ io.on('connection', (socket) => {
                     };
                     pool.query(_sql, _data_conn, (err, res) => {
                         console.log('Succesfully saved')
-                        io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,''),'elem':data,'id': res.insertId})    
+                        io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data),'elem':data,'id': res.insertId})    
                     });
                     let _query = {
                         'idname': res.insertId.toString() + idcl.toString(),
-                        'alias': '',
+                        'alias': data,
                         'idcl': idcl,
                         'idta': res.insertId
                     };
@@ -257,16 +255,24 @@ io.on('connection', (socket) => {
     // SEARCHER
     // ##########
     socket.on('searcher', () => {
-        let _sql = `SELECT * FROM iota_tx_reader2.add_connector, iota_tx_reader2.add_names \
-                    WHERE iota_tx_reader2.add_connector.idcl = ${idcl}`
-        pool.query(_sql, (err,res) => {
-            //console.log(res)
-        });
-        
         io.to(socket.id).emit('optionsContainer2', NAME.OPTIONSCONTAINERSEARCH.HTML);
         toSend = '';
         butList = [];
         toCache = [];
+
+        let _sqlAdd = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_names \
+        WHERE iota_tx_reader2.add_names.idcl = ${idcl} AND \
+        iota_tx_reader2.add_names.idad = iota_tx_reader2.addresses.idad`
+        pool.query(_sqlAdd, (err,res) => {
+            io.to(socket.id).emit('savedAddresses', res);
+        });
+        let _sqlTag = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_names \
+                WHERE iota_tx_reader2.tag_names.idcl = ${idcl} AND \
+                iota_tx_reader2.tag_names.idta = iota_tx_reader2.tags.idta`
+        pool.query(_sqlTag, (err,res) => {
+            io.to(socket.id).emit('savedTags', res);
+
+        });
     });
 
     var toSend = '';

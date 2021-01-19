@@ -68,7 +68,19 @@ socket.on('backPage', (_data) => {
             var clearSearch = document.getElementById(data.back[6]);
             var sortSearch = document.getElementById(data.back[7]);
             var orderContainer = document.getElementById(data.back[8]);
-    
+            var contentOptions = document.getElementById(data.back[9]);
+
+            socket.off('savedAddresses').on('savedAddresses', (listAddresses) => {
+                listAddresses.forEach((el) => {
+                    contentOptions.innerHTML += `<option value=\'${el.name}\'>${el.alias}</option>`;
+                })
+            })
+            socket.off('savedTags').on('savedTags', (listTags) => {
+                listTags.forEach((el) => {
+                    contentOptions.innerHTML += `<option value=\'${el.name}\'>${el.alias}</option>`;
+                })
+            })
+
             sortSearch.onclick = () => {
                 results.innerHTML = '';
                 let form = orderContainer.querySelector("form");
@@ -122,7 +134,7 @@ socket.on('backPage', (_data) => {
                 });
             });     
     
-            socket.off('expandThat').on('expandThat', (_data) => {
+            socket.on('expandThat', (_data) => {
                 let modal = document.getElementById("myModal");
                 let modalContent = document.getElementsByClassName("modal-content")[0];
                 modalContent.innerHTML = _data[0];

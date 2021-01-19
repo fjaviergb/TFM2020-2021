@@ -119,7 +119,8 @@ const OPTIONSCONTAINERSEARCH = {
         '<option selected="selected" value=\'\'>null</option>'+
         '</select>'+
 
-        '<select name=\'contentOptions\' id=\'contentOption\'></select>'+
+        '<select name=\'contentOptions\' id=\'contentOptions\'>'+
+        '`<option selected="selected" value=\'\'>null</option>`</select>'+
         // TODO: PONER LISTA DE ADDRESSES/TAGS ASOCIADAS AL CLIENTE
 
         '<select name=\'parenthEnd\' multiple>'+
@@ -167,7 +168,7 @@ const OPTIONSCONTAINERSEARCH = {
         '<div class="modal-content">'+
         '</div>'+
         '</div>',
-        'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer','clearCond','clearSearch','sortSearch','orderContainer'],
+        'back': ['searchSubmit','addSearch','searchCond','searchResult','searchContainer','clearCond','clearSearch','sortSearch','orderContainer','contentOptions'],
         '_data': ['parenthStart','ifOptions', 'searchOptions', 'contentOptions', 'logicOptions','parenthEnd']
     }
 }
