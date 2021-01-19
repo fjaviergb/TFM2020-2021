@@ -19,6 +19,6 @@ mycursor.execute("CREATE TABLE tag_connector (idtacon int PRIMARY KEY AUTO_INCRE
 mycursor.execute("CREATE TABLE temp_hashes (name varchar(81) PRIMARY KEY NOT NULL)")
 # DEP mycursor.execute("CREATE TABLE raw_objects (idcl int PRIMARY KEY AUTO_INCREMENT, name varchar(81) NOT NULL, timestamp varchar(100) NOT NULL, address varchar(90) NOT NULL, tag varchar(27) NOT NULL, trytes varchar(2673) NOT NULL)")
 mycursor.execute("CREATE TABLE transactions (name varchar(81) PRIMARY KEY NOT NULL, timestamp varchar(100) NOT NULL, address varchar(90) NOT NULL, tag varchar(27) NOT NULL, trytes varchar(2673) NOT NULL)")
-mycursor.execute("CREATE TABLE tag_names (idname int PRIMARY KEY AUTO_INCREMENT, name varchar(81) NOT NULL, idcl int NOT NULL, idta int NOT NULL)")
-mycursor.execute("CREATE TABLE add_names (idname int PRIMARY KEY AUTO_INCREMENT, name varchar(81) NOT NULL, idcl int NOT NULL, idad int NOT NULL)")
+mycursor.execute("CREATE TABLE tag_names (idname varchar(81) PRIMARY KEY, alias varchar(81) NOT NULL, idcl int NOT NULL, idta int NOT NULL)")
+mycursor.execute("CREATE TABLE add_names (idname varchar(81) PRIMARY KEY, alias varchar(81) NOT NULL, idcl int NOT NULL, idad int NOT NULL)")
 

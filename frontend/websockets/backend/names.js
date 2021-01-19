@@ -119,7 +119,7 @@ const OPTIONSCONTAINERSEARCH = {
         '<option selected="selected" value=\'\'>null</option>'+
         '</select>'+
 
-        '<input type=\'text\' name=\'contentOptions\' id=\'contentOption\'></input>'+
+        '<select name=\'contentOptions\' id=\'contentOption\'></select>'+
         // TODO: PONER LISTA DE ADDRESSES/TAGS ASOCIADAS AL CLIENTE
 
         '<select name=\'parenthEnd\' multiple>'+
