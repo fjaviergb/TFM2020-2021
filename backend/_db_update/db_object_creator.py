@@ -65,7 +65,10 @@ async def main(db,mycursor):
 
         records = mycursor.fetchall()
         print(len(records))
-        iter_num = math.ceil(len(records) / 10000)
+        if len(records) > 10000:
+            iter_num = math.ceil(len(records) / 10000)
+        else: 
+            iter_num = 1
         tasks=[]
         for iter in np.array_split(records,iter_num):
             print('Sending... %s' % len(iter))

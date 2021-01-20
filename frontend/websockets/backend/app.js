@@ -126,32 +126,48 @@ io.on('connection', (socket) => {
     // ##########
     // PROFILE
     // ##########
-    
+
+    var tagList = new Array();
+    var tagResult = '';
+    var addList = new Array();
+    var addResult = '';
+
     socket.on('profile', () => {
         io.to(socket.id).emit('optionsContainer2', NAME.OPTIONSCONTAINERPROFILE.HTML);
 
-        let _sql_tags = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_connector, iota_tx_reader2.tag_names WHERE \
-        iota_tx_reader2.tags.idta = iota_tx_reader2.tag_connector.idta AND iota_tx_reader2.tag_connector.idcl = ${idcl} \
-        AND iota_tx_reader2.tag_names.idta = iota_tx_reader2.tag_connector.idta`;
+        tagList = new Array();
+        tagResult = '';
+        addList = new Array();
+        addResult = ''; 
+
+        let _sql_tags = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_names WHERE \
+        iota_tx_reader2.tags.idta = iota_tx_reader2.tag_names.idta AND iota_tx_reader2.tag_names.idcl = ${idcl}`;
         pool.query(_sql_tags, (err, res) => {
             if (res) {
                 res.forEach((el) => {
-                    io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,el.alias),'elem':el.name,'id': el.idta})
+                    tagResult += NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,el.alias);
+                    tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(el.name,el.alias),'elem':el.name,'id': el.idta})
                 });
             };
+            io.to(socket.id).emit('newTag', {'html': tagResult, 'content': tagList})
+            io.to(socket.id).emit('newTagDel', {'html': tagResult, 'content': tagList})
+            
         });
 
-        let _sql_addresses = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_connector, iota_tx_reader2.add_names WHERE \
-        iota_tx_reader2.addresses.idad = iota_tx_reader2.add_connector.idad AND iota_tx_reader2.add_connector.idcl = ${idcl} \
-        AND iota_tx_reader2.add_names.idad = iota_tx_reader2.add_connector.idad`;
+        let _sql_addresses = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_names WHERE \
+        iota_tx_reader2.addresses.idad = iota_tx_reader2.add_names.idad AND iota_tx_reader2.add_names.idcl = ${idcl}`;
 
         pool.query(_sql_addresses, (err, res) => {
             if (res) {
                 res.forEach((el) => {
-                        io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,el.alias),'elem':el.name,'id': el.idad});
+                        addResult += NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,el.alias);
+                        addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(el.name,el.alias),'elem':el.name,'id': el.idad})
                     });
             };
-        });    
+            io.to(socket.id).emit('newAddress', {'html': addResult, 'content': addList});
+            io.to(socket.id).emit('newAddDel', {'html': addResult, 'content': addList});
+
+        });   
     });
 
     socket.on('addressSubmit', (data) => {
@@ -170,7 +186,11 @@ io.on('connection', (socket) => {
                     };
                     pool.query(_sql, _data_conn, (err, _res) => {
                         console.log('Succesfully saved')
-                        io.to(socket.id).emit('newAddress', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data),'elem':data,'id': res.insertId})    
+                        addResult += NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data);
+                        addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data),'elem':data,'id': res.insertId})
+                        io.to(socket.id).emit('newAddress', {'html': addResult, 'content': addList});
+                        io.to(socket.id).emit('newAddDel', {'html': addResult, 'content': addList});
+
                     });
                     let _query = {
                         'idname': res.insertId.toString() + idcl.toString(),
@@ -180,6 +200,7 @@ io.on('connection', (socket) => {
                     };
                     let _sql_name = 'REPLACE INTO iota_tx_reader2.add_names SET ?' ;
                     pool.query(_sql_name, _query, (err, res) => {
+                        console.log(err)
                         if (res) {
                             console.log('Named')
                         };
@@ -205,7 +226,11 @@ io.on('connection', (socket) => {
                     };
                     pool.query(_sql, _data_conn, (err, res) => {
                         console.log('Succesfully saved')
-                        io.to(socket.id).emit('newTag', {'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data),'elem':data,'id': res.insertId})    
+                        tagResult += NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data);
+                        tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data),'elem':data,'id': res.insertId})
+                        io.to(socket.id).emit('newTag', {'html': tagResult, 'content': tagList})
+                        io.to(socket.id).emit('newTagDel', {'html': tagResult, 'content': tagList})
+
                     });
                     let _query = {
                         'idname': res.insertId.toString() + idcl.toString(),
@@ -215,6 +240,7 @@ io.on('connection', (socket) => {
                     };
                     let _sql_name = 'REPLACE INTO iota_tx_reader2.tag_names SET ?' ;
                     pool.query(_sql_name, _query, (err, res) => {
+                        console.log(err)
                         if (res) {
                             console.log('Named')
                         };
@@ -250,6 +276,26 @@ io.on('connection', (socket) => {
         _query = {};
     });
 
+    socket.on('delAdd', (data) => {
+        let idname = data.id.toString() + idcl.toString()
+        let _sql = `DELETE FROM iota_tx_reader2.add_names \
+         WHERE iota_tx_reader2.add_names.idname = ${idname}`;
+        pool.query(_sql, (err, res) => {
+            console.log('Eliminado')
+            io.to(socket.id).emit('refProfile', '');
+        });
+    });
+
+    socket.on('delTag', (data) => {
+        let idname = data.id.toString() + idcl.toString()
+        let _sql = `DELETE FROM iota_tx_reader2.tag_names \
+         WHERE iota_tx_reader2.tag_names.idname = ${idname}`;
+        pool.query(_sql, (err, res) => {
+            console.log('Eliminado')
+            io.to(socket.id).emit('refProfile', '');
+        });
+
+    });
 
     // ##########
     // SEARCHER
@@ -295,78 +341,56 @@ io.on('connection', (socket) => {
     socket.on('searchSubmit', () => {
         let _sql = `SELECT * FROM iota_tx_reader2.transactions WHERE` + toSend;
         console.log(_sql);
-        var butList = [];
         var toCache = [];
+        var toHtml = '';
         pool.query(_sql, (err, res) => {
             res.forEach((el) => {
-                toCache.push(el)
-                butList.push(`${el.name}Button`)
-                let _response = {
-                    'front': `<p>Hash: ${el.name}`+
-                    `<br>`+
-                    `Date: ${new Date(el.timestamp*1000)}`+
-                    `<br>`+
-                    `<button id=${el.name}Button value=${toCache.indexOf(el)}>Expand</button>`+
-                    `</p>`,
-                    'back': el,
-                    'buttons': butList
-                };
-                io.to(socket.id).emit('searchResponse', _response)
+                toCache.push({'html': NAME.NEWRESPONSE.HTML(el), 'object': el})
+                toHtml += NAME.NEWRESPONSE.HTML(el);
             });
+            io.to(socket.id).emit('searchResponse', {'html': toHtml, 'toCache': toCache})
         });
 
         var res = NAME.RESPONSE
 
         socket.on('sortThis', (order) => {
-            let butListSorted = [];
             let toCacheSorted = toCache;
             let toCacheTemp = []
+            toHtml = '';
             io.to(socket.id).emit('clearSearch', '')
 
             toCacheSorted.forEach((el) => {
-                if ((el.timestamp*1000 < Date.parse(order[2])) && (el.timestamp*1000 > Date.parse(order[1]))) {
+                if ((el.object.timestamp*1000 < Date.parse(order[2])) && (el.object.timestamp*1000 > Date.parse(order[1]))) {
                     toCacheTemp.push(el);};
             });
 
             if (order[0] ==='desc') {
                 toCacheTemp.sort((x,y) => {
-                    return x.timestamp - y.timestamp;
+                    return x.object.timestamp - y.object.timestamp;
                 });
             } else if (order[0] ==='asc') {
                 toCacheTemp.sort((x,y) => {
-                    return y.timestamp - x.timestamp;
+                    return y.object.timestamp - x.object.timestamp;
                 });
             };
-
             toCacheTemp.forEach((el) => {
-                butListSorted.push(`${el.name}Button`)
-                let _response = {
-                    'front': `<p>Hash: ${el.name}`+
-                    `<br>`+
-                    `Date: ${new Date(el.timestamp*1000)}`+
-                    `<br>`+
-                    `<button id=${el.name}Button value=${toCacheSorted.indexOf(el)}>Expand</button>`+
-                    `</p>`,
-                    'back': el,
-                    'buttons': butListSorted
-                    };
-                io.to(socket.id).emit('searchResponse', _response)
+                toHtml += NAME.NEWRESPONSE.HTML(el.object);
             });
+            io.to(socket.id).emit('searchResponse', {'html': toHtml, 'toCache': toCacheTemp})
         });
 
         socket.on('expandThis', (dataToExpand) => {
-            res['trytes']['content'] = toCache[dataToExpand].trytes;
-            res['structured']['hash'] = toCache[dataToExpand].name;
-            res['structured']['timestamp'] = toCache[dataToExpand].timestamp;
-            res['structured']['address'] = toCache[dataToExpand].trytes.slice(2187,2268);
-            res['structured']['tag'] = toCache[dataToExpand].trytes.slice(2592,2619);
-            res['structured']['message'] = toCache[dataToExpand].trytes.slice(0,2187);
-            io.to(socket.id).emit('expandThat', [res.structured.options,res.structured,true])   
-
+            res['trytes']['content'] = dataToExpand.trytes;
+            res['structured']['hash'] = dataToExpand.name;
+            res['structured']['timestamp'] = dataToExpand.timestamp;
+            res['structured']['address'] = dataToExpand.trytes.slice(2187,2268);
+            res['structured']['tag'] = dataToExpand.trytes.slice(2592,2619);
+            res['structured']['message'] = dataToExpand.trytes.slice(0,2187);
+            io.to(socket.id).emit('expandThat', [res.structured.options,res.structured])   
         });  
 
         socket.on('swapExpand', (cond) => {
-            io.to(socket.id).emit('expandThat', [res[cond].options,res[cond],false])   
+            io.to(socket.id).emit('expandThat', [res[cond].options,res[cond]])   
         });
 
         socket.on('decrypt', () => {

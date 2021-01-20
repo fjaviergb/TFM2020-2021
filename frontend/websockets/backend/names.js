@@ -77,21 +77,23 @@ const OPTIONSCONTAINERPROFILE = {
         '<br>'+
         '<input type=\'text\' id=\'regTag\'>New Tag</input>'+
         '<button id=\'tagSubmit\' type=\'submit\'>Add</button>'+
-        '<br>'+
-        '<div id=\'listAddresses\'><p>List of addresses</p></div>'+
-        '<br>'+
-        '<div id=\'listTags\'><p>List of tags</p></div>'+
+        '<br><p>List of addresses</p>'+
+        '<div id=\'listAddresses\'></div>'+
+        '<br><p>List of tags</p>'+
+        '<div id=\'listTags\'></div>'+
         '</div>',
         'back': ['addressSubmit','tagSubmit','listAddresses','listTags'],
     },
 
     NEWADDRESS(data,name) {return `<div>${data}`+
     `<button id=${data}Button> Name as</button>`+
-    `<input type=\'text\' id=\'${data}\' placeholder=\'${name}\'></div>`},
+    `<input type=\'text\' id=\'${data}\' placeholder=\'${name}\'></div>`+
+    `<button id=${data}Del>Delete</button>`},
 
     NEWTAG(data,name) {return `<div>${data}`+
     `<button id=${data}Button> Name as</button>`+
-    `<input type=\'text\' id=\'${data}\' placeholder=\'${name}\'></div>`}
+    `<input type=\'text\' id=\'${data}\' placeholder=\'${name}\'></div>`+
+    `<button id=${data}Del>Delete</button>`}
 
 };
 
@@ -206,6 +208,13 @@ const RESPONSE = {
         }
 };
 
+const NEWRESPONSE = {
+    HTML(el) { return `<p>Hash: ${el.name} <br>`+
+    `Date: ${new Date(el.timestamp*1000)} <br>`+
+    `<button id=${el.name}Button value=${el.name}>Expand</button>`+
+    `</p>`}
+};
+
 module.exports.DATABASE = DATABASE;
 module.exports.FRONTPAGE = FRONTPAGE;
 module.exports.OPTIONSCONTAINER = OPTIONSCONTAINER;
@@ -213,4 +222,5 @@ module.exports.BACKPAGE = BACKPAGE;
 module.exports.OPTIONSCONTAINERPROFILE = OPTIONSCONTAINERPROFILE;
 module.exports.OPTIONSCONTAINERSEARCH = OPTIONSCONTAINERSEARCH;
 module.exports.RESPONSE = RESPONSE;
+module.exports.NEWRESPONSE = NEWRESPONSE;
 
