@@ -35,28 +35,27 @@ socket.on('backPage', (_data) => {
             });
     
             socket.off('newTag').on('newTag', (_data) => {
-                listTags.innerHTML += _data.html;
-                document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
+                listTags.innerHTML = _data.html;
+                _data.content.forEach((el) => {document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':document.getElementById(`${el.elem}`).value}))})
             });
-    
+
+            socket.off('newTagDel').on('newTag', (_data) => {
+                _data.content.forEach((el) => {document.getElementById(`${el.elem}Del`).addEventListener('click', () => socket.emit('delTag',{'elem':el.elem,'id':el.id}))})                
+            });
+   
             socket.off('newAddress').on('newAddress', (_data) => {
-                listAddresses.innerHTML += _data.html;
-                document.getElementById(`${_data.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':_data.elem,'id':_data.id,'name':document.getElementById(`${_data.elem}`).value}))
+                listAddresses.innerHTML = _data.html;
+                _data.content.forEach((el) => {document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':document.getElementById(`${el.elem}`).value}))})
+            });
+
+            socket.off('newAddDel').on('newAddress', (_data) => {
+                _data.content.forEach((el) => {document.getElementById(`${el.elem}Del`).addEventListener('click', () => socket.emit('delAdd',{'elem':el.elem,'id':el.id}))})
+            });
+
+            socket.off('refProfile').on('refProfile', () => {
+                socket.emit('profile', '')
             });
     
-            socket.off('refrTags').on('refrTags', (_data) => {
-                _data.forEach((el) => {
-                    listTags.innerHTML += el.html;
-                    document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
-                });
-            });
-    
-            socket.off('refrAdds').on('refrAdds', (_data) => {
-                _data.forEach((el) => {
-                    listAddresses.innerHTML += el.html;
-                    document.getElementById(`${el.elem}Button`).addEventListener('click', () => socket.emit('nameThis',{'elem':el.elem,'id':el.id,'name':el.name}))
-                });
-            });
     
         } else {
             var searchSubmit = document.getElementById(data.back[0]);
@@ -128,9 +127,9 @@ socket.on('backPage', (_data) => {
             searchSubmit.addEventListener('click', newSearch);
         
             socket.off('searchResponse').on('searchResponse', (_data) => {
-                results.innerHTML += _data.front
-                _data.buttons.forEach((el) => {
-                    document.getElementById(el).addEventListener('click', () => socket.emit('expandThis',document.getElementById(el).value))
+                results.innerHTML = _data.html;
+                _data.toCache.forEach((el) => {
+                    document.getElementById(`${el.object.name}Button`).addEventListener('click', () => socket.emit('expandThis',el.object))
                 });
             });     
     
