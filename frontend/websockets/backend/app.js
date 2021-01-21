@@ -74,7 +74,7 @@ io.on('connection', (socket) => {
     socket.on('registerSubmit', (data) => {
         var _data = {
             'name': data[0],
-            //'password': data[1],
+            'password': data[1],
             'contact': data[2],
             'created': new Date(),
         };
@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
             'password': data[1],
         };
         // CAMBIAR DATA DE ENTRADA POR CORREO
-        let sql = `SELECT * FROM users WHERE users.name = "${_data.name}"`;
+        let sql = `SELECT * FROM users WHERE users.name = "${_data.name}" AND users.password = "${_data.password}"`;
         pool.query(sql, _data, (err, result) => {
             if (err) {
                 io.to(socket.id).emit('loginStatus',`<p>Failed to login - Errno ${err.errno}</p>`);
@@ -114,7 +114,7 @@ io.on('connection', (socket) => {
                   io.to(socket.id).emit('backPage',[NAME.BACKPAGE.HTML,result]);
                   idcl = result[0].idcl;
                 }
-                else {io.to(socket.id).emit('loginStatus','<p>User Not found</p>')}
+                else {io.to(socket.id).emit('loginStatus','<p>User Not found or Incorrect Credentials</p>')}
               };
         });
     }); 
@@ -140,8 +140,8 @@ io.on('connection', (socket) => {
         addList = new Array();
         addResult = ''; 
 
-        let _sql_tags = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_names WHERE \
-        iota_tx_reader2.tags.idta = iota_tx_reader2.tag_names.idta AND iota_tx_reader2.tag_names.idcl = ${idcl}`;
+        let _sql_tags = `SELECT * FROM TFM_DB.tags, TFM_DB.tag_names WHERE \
+        TFM_DB.tags.idta = TFM_DB.tag_names.idta AND TFM_DB.tag_names.idcl = ${idcl}`;
         pool.query(_sql_tags, (err, res) => {
             if (res) {
                 res.forEach((el) => {
@@ -154,8 +154,8 @@ io.on('connection', (socket) => {
             
         });
 
-        let _sql_addresses = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_names WHERE \
-        iota_tx_reader2.addresses.idad = iota_tx_reader2.add_names.idad AND iota_tx_reader2.add_names.idcl = ${idcl}`;
+        let _sql_addresses = `SELECT * FROM TFM_DB.addresses, TFM_DB.add_names WHERE \
+        TFM_DB.addresses.idad = TFM_DB.add_names.idad AND TFM_DB.add_names.idcl = ${idcl}`;
 
         pool.query(_sql_addresses, (err, res) => {
             if (res) {
@@ -172,36 +172,53 @@ io.on('connection', (socket) => {
 
     socket.on('addressSubmit', (data) => {
         if (data.length === 90 || data.length === 81) {
-            let _sql = 'INSERT IGNORE INTO iota_tx_reader2.addresses SET ?' ;
+            let _sql = 'INSERT INTO TFM_DB.addresses SET ?' ;
             var _data_add = {
                 'name': data,
                 'created': new Date()
             };
             pool.query(_sql, _data_add, (err, res) => {
-                if (res) {
-                    let _sql = 'INSERT INTO iota_tx_reader2.add_connector SET ?';
-                    var _data_conn = {
-                        'idcl': idcl,
-                        'idad': res.insertId,
-                    };
-                    pool.query(_sql, _data_conn, (err, _res) => {
+                if (err) {
+                    console.log('Existing address')
+                    let sql_idad = `SELECT idad FROM TFM_DB.addresses WHERE name = '${data}'`
+                    pool.query(sql_idad, (err, _res) => {
+                        addResult += NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data);
+                        addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data),'elem':data,'id': _res[0].idad})
+                        io.to(socket.id).emit('newAddress', {'html': addResult, 'content': addList});
+                        io.to(socket.id).emit('newAddDel', {'html': addResult, 'content': addList});
+                        
+                        let _query = {
+                            'idname': _res[0].idad.toString() + idcl.toString(),
+                            'alias': data,
+                            'idcl': idcl,
+                            'idad': _res[0].idad
+                        };
+
+                        let _sql_name = 'REPLACE INTO TFM_DB.add_names SET ?' ;
+                        pool.query(_sql_name, _query, (err, __res) => {
+                            if (__res) {
+                                console.log('Named')
+                            };
+                        });        
+                    });
+
+                } else if (res) {
+                
                         console.log('Succesfully saved')
                         addResult += NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data);
                         addList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWADDRESS(data,data),'elem':data,'id': res.insertId})
                         io.to(socket.id).emit('newAddress', {'html': addResult, 'content': addList});
                         io.to(socket.id).emit('newAddDel', {'html': addResult, 'content': addList});
 
-                    });
                     let _query = {
                         'idname': res.insertId.toString() + idcl.toString(),
                         'alias': data,
                         'idcl': idcl,
                         'idad': res.insertId
                     };
-                    let _sql_name = 'REPLACE INTO iota_tx_reader2.add_names SET ?' ;
-                    pool.query(_sql_name, _query, (err, res) => {
-                        console.log(err)
-                        if (res) {
+                    let _sql_name = 'REPLACE INTO TFM_DB.add_names SET ?' ;
+                    pool.query(_sql_name, _query, (err, _res) => {
+                        if (_res) {
                             console.log('Named')
                         };
                     });        
@@ -212,36 +229,53 @@ io.on('connection', (socket) => {
 
     socket.on('tagSubmit', (data) => {
         if (data.length === 27) {
-            let _sql = 'INSERT IGNORE INTO iota_tx_reader2.tags SET ?' ;
+            let _sql = 'INSERT INTO TFM_DB.tags SET ?' ;
             var _data_tag = {
                 'name': data,
                 'created': new Date()
             };
             pool.query(_sql, _data_tag, (err, res) => {
-                if (res) {
-                    let _sql = 'INSERT INTO iota_tx_reader2.tag_connector SET ?';
-                    var _data_conn = {
-                        'idcl': idcl,
-                        'idta': res.insertId,
-                    };
-                    pool.query(_sql, _data_conn, (err, res) => {
-                        console.log('Succesfully saved')
+                if (err) {
+                    console.log('Existing tag')
+                    let sql_idta = `SELECT idta FROM TFM_DB.tags WHERE name = '${data}'`
+                    pool.query(sql_idta, (err, _res) => {
                         tagResult += NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data);
-                        tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data),'elem':data,'id': res.insertId})
+                        tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data),'elem':data,'id': _res[0].idta})
                         io.to(socket.id).emit('newTag', {'html': tagResult, 'content': tagList})
                         io.to(socket.id).emit('newTagDel', {'html': tagResult, 'content': tagList})
-
+    
+                        let _query = {
+                            'idname': _res[0].idta.toString() + idcl.toString(),
+                            'alias': data,
+                            'idcl': idcl,
+                            'idta': _res[0].idta
+                        };
+                        let _sql_name = 'REPLACE INTO TFM_DB.tag_names SET ?' ;
+                        pool.query(_sql_name, _query, (err, __res) => {
+                            console.log(err)
+                            if (__res) {
+                                console.log('Named')
+                            };
+                        });
                     });
+
+                } else if (res) {
+                    console.log('Succesfully saved')
+                    tagResult += NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data);
+                    tagList.push({'html': NAME.OPTIONSCONTAINERPROFILE.NEWTAG(data,data),'elem':data,'id': res.insertId})
+                    io.to(socket.id).emit('newTag', {'html': tagResult, 'content': tagList})
+                    io.to(socket.id).emit('newTagDel', {'html': tagResult, 'content': tagList})
+
                     let _query = {
                         'idname': res.insertId.toString() + idcl.toString(),
                         'alias': data,
                         'idcl': idcl,
                         'idta': res.insertId
                     };
-                    let _sql_name = 'REPLACE INTO iota_tx_reader2.tag_names SET ?' ;
-                    pool.query(_sql_name, _query, (err, res) => {
+                    let _sql_name = 'REPLACE INTO TFM_DB.tag_names SET ?' ;
+                    pool.query(_sql_name, _query, (err, _res) => {
                         console.log(err)
-                        if (res) {
+                        if (_res) {
                             console.log('Named')
                         };
                     });
@@ -258,7 +292,7 @@ io.on('connection', (socket) => {
         };
         if (data.elem.length === 90 || data.elem.length === 81) {
             _query['idad'] = data.id;
-            let _sql = 'REPLACE INTO iota_tx_reader2.add_names SET ?' ;
+            let _sql = 'REPLACE INTO TFM_DB.add_names SET ?' ;
             pool.query(_sql, _query, (err, res) => {
                 if (res) {
                     console.log('Named')
@@ -266,7 +300,7 @@ io.on('connection', (socket) => {
             });
         } else {
             _query['idta'] = data.id;
-            let _sql = 'REPLACE INTO iota_tx_reader2.tag_names SET ?' ;
+            let _sql = 'REPLACE INTO TFM_DB.tag_names SET ?' ;
             pool.query(_sql, _query, (err, res) => {
                 if (res) {
                     console.log('Named')
@@ -278,8 +312,8 @@ io.on('connection', (socket) => {
 
     socket.on('delAdd', (data) => {
         let idname = data.id.toString() + idcl.toString()
-        let _sql = `DELETE FROM iota_tx_reader2.add_names \
-         WHERE iota_tx_reader2.add_names.idname = ${idname}`;
+        let _sql = `DELETE FROM TFM_DB.add_names \
+         WHERE TFM_DB.add_names.idname = ${idname}`;
         pool.query(_sql, (err, res) => {
             console.log('Eliminado')
             io.to(socket.id).emit('refProfile', '');
@@ -288,8 +322,8 @@ io.on('connection', (socket) => {
 
     socket.on('delTag', (data) => {
         let idname = data.id.toString() + idcl.toString()
-        let _sql = `DELETE FROM iota_tx_reader2.tag_names \
-         WHERE iota_tx_reader2.tag_names.idname = ${idname}`;
+        let _sql = `DELETE FROM TFM_DB.tag_names \
+         WHERE TFM_DB.tag_names.idname = ${idname}`;
         pool.query(_sql, (err, res) => {
             console.log('Eliminado')
             io.to(socket.id).emit('refProfile', '');
@@ -306,15 +340,15 @@ io.on('connection', (socket) => {
         butList = [];
         toCache = [];
 
-        let _sqlAdd = `SELECT * FROM iota_tx_reader2.addresses, iota_tx_reader2.add_names \
-        WHERE iota_tx_reader2.add_names.idcl = ${idcl} AND \
-        iota_tx_reader2.add_names.idad = iota_tx_reader2.addresses.idad`
+        let _sqlAdd = `SELECT * FROM TFM_DB.addresses, TFM_DB.add_names \
+        WHERE TFM_DB.add_names.idcl = ${idcl} AND \
+        TFM_DB.add_names.idad = TFM_DB.addresses.idad`
         pool.query(_sqlAdd, (err,res) => {
             io.to(socket.id).emit('savedAddresses', res);
         });
-        let _sqlTag = `SELECT * FROM iota_tx_reader2.tags, iota_tx_reader2.tag_names \
-                WHERE iota_tx_reader2.tag_names.idcl = ${idcl} AND \
-                iota_tx_reader2.tag_names.idta = iota_tx_reader2.tags.idta`
+        let _sqlTag = `SELECT * FROM TFM_DB.tags, TFM_DB.tag_names \
+                WHERE TFM_DB.tag_names.idcl = ${idcl} AND \
+                TFM_DB.tag_names.idta = TFM_DB.tags.idta`
         pool.query(_sqlTag, (err,res) => {
             io.to(socket.id).emit('savedTags', res);
 
@@ -327,7 +361,7 @@ io.on('connection', (socket) => {
         data.forEach((el) =>{ 
             if (el!=''){
                 if (data.indexOf(el) == 3){
-                    toSend += ` '${el}'`
+                    toSend += ` ${el}`
                 } else {toSend += ` ${el}`}}
         });
         io.to(socket.id).emit('searchCond', {'front': dataFormat})
@@ -339,7 +373,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('searchSubmit', () => {
-        let _sql = `SELECT * FROM iota_tx_reader2.transactions WHERE` + toSend;
+        let _sql = `SELECT * FROM TFM_DB.transactions WHERE` + toSend;
         console.log(_sql);
         var toCache = [];
         var toHtml = '';

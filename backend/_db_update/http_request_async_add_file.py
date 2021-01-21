@@ -56,7 +56,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="PutosRusosSQL13186",
-    database="iota_tx_reader2",
+    database="TFM_DB",
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)

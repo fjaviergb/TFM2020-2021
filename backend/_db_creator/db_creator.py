@@ -8,4 +8,4 @@ db = mysql.connector.connect(
 )
 
 mycursor = db.cursor()
-mycursor.execute('CREATE DATABASE iota_tx_reader2')
+mycursor.execute('CREATE DATABASE TFM_DB')

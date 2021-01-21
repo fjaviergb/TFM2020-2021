@@ -71,12 +71,12 @@ socket.on('backPage', (_data) => {
 
             socket.off('savedAddresses').on('savedAddresses', (listAddresses) => {
                 listAddresses.forEach((el) => {
-                    contentOptions.innerHTML += `<option value=\'${el.name}\'>${el.alias}</option>`;
+                    contentOptions.innerHTML += `<option value=\'${el.idad}\'>${el.alias}</option>`;
                 })
             })
             socket.off('savedTags').on('savedTags', (listTags) => {
                 listTags.forEach((el) => {
-                    contentOptions.innerHTML += `<option value=\'${el.name}\'>${el.alias}</option>`;
+                    contentOptions.innerHTML += `<option value=\'${el.idta}\'>${el.alias}</option>`;
                 })
             })
 

@@ -6,7 +6,7 @@ const DATABASE = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "PutosRusosSQL13186",
-    DATABNAME: "iota_tx_reader2",
+    DATABNAME: "TFM_DB",
 };
 
 const FRONTPAGE = {
@@ -116,8 +116,8 @@ const OPTIONSCONTAINERSEARCH = {
         '</select>'+
 
         '<select name=\'searchOptions\' id=\'searchOption\' multiple>'+
-        '<option value=\'address=\'>Address</option>'+
-        '<option value=\'tag=\'>Tag</option>'+
+        '<option value=\'idad=\'>Address</option>'+
+        '<option value=\'idta=\'>Tag</option>'+
         '<option selected="selected" value=\'\'>null</option>'+
         '</select>'+
 
