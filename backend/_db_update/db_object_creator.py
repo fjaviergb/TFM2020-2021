@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import json
 import asyncio
 import aiohttp
@@ -16,7 +17,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="PutosRusosSQL13186",
-    database="iota_tx_reader2",
+    database="TFM_DB",
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)
@@ -42,16 +43,16 @@ async def fetch(client,elem):
 async def _transaction(_list,df,db,mycursor):
     df['trytes']=_list
     df[['timestamp','address','tag']]=list(map(lambda x: [int_from_trits(TryteString(x[2322:2331]).as_trits()),x[2187:2268],x[2592:2619]], _list))
-    df.to_csv('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\iota_tx_reader2\\dataframe.csv',header=False,mode='a',index=False,columns= ['name','timestamp','address','tag','trytes'])
+    df.to_csv('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\TFM_DB\\dataframe.csv',header=False,mode='a',index=False,columns= ['name','timestamp','address','tag','trytes'])
 
 
 async def _client(db,mycursor,records_mapped):
-    df = pd.DataFrame(columns=['name','timestamp','address','tag','trytes'])
+    df = pd.DataFrame(columns=['name','timestamp', 'idad', 'address','idta','tag','trytes'])
     df['name'] = records_mapped
     async with aiohttp.ClientSession() as client:
             html = await fetch(client,records_mapped)
             try:
-                print('Receiving... %s' % len(json.loads(html)['trytes']))
+                print('Receiving per tick... %s' % len(json.loads(html)['trytes']))
                 await asyncio.create_task(_transaction(json.loads(html)['trytes'],df,db,mycursor))
             except KeyError:
                 print("Empty; incomplete; etc")
@@ -64,11 +65,14 @@ async def main(db,mycursor):
         mycursor.execute(sql_join)
 
         records = mycursor.fetchall()
-        print(len(records))
-        iter_num = math.ceil(len(records) / 10000)
+        print('Object creator %s objects' % len(records))
+        if len(records) > 10000:
+            iter_num = math.ceil(len(records) / 10000)
+        else: 
+            iter_num = 1
         tasks=[]
         for iter in np.array_split(records,iter_num):
-            print('Sending... %s' % len(iter))
+            print('Objects per tick... %s' % len(iter))
             records_filtered = filter(lambda x: len(x[0])==81, iter)
             records_mapped = list(map(lambda x: x[0], records_filtered))
             tasks.append(asyncio.create_task(_client(db,mycursor,records_mapped)))
@@ -82,6 +86,6 @@ async def main(db,mycursor):
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(db,mycursor))    
-os.remove('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\iota_tx_reader2\\dataframe.csv')
+os.remove('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\TFM_DB\\dataframe.csv')
 
 

@@ -1,0 +1,1 @@
+C:/python/v3.8.6_MySQL/Scripts/activate.bat && python C:/Master/TFM/code/TFM2020-2021/backend/_db_update/db_object_remove.py
