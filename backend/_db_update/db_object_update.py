@@ -23,20 +23,20 @@ mycursor = db.cursor(buffered=True)
 def main(db,mycursor):
     # ADDRESSES
         sql_check = "SELECT address \
-        FROM iota_tx_reader2.transactions \
+        FROM TFM_DB.transactions \
         WHERE transactions.idad IS NULL \
             GROUP BY address"
         mycursor.execute(sql_check)
         _records = mycursor.fetchall()
 
         sql_search = "SELECT idad, name \
-                FROM iota_tx_reader2.addresses"
+                FROM TFM_DB.addresses"
         mycursor.execute(sql_search)
         records = mycursor.fetchall()
         for elem in records:
-            print(elem)
             if ((elem[1],) in _records):
-                sql_update = "UPDATE iota_tx_reader2.transactions \
+                print('Updating %s tx'.format(elem[1]))
+                sql_update = "UPDATE TFM_DB.transactions \
                             SET transactions.idad = %d \
                             WHERE transactions.address = '%s' \
                             AND transactions.idad IS NULL \
@@ -46,21 +46,20 @@ def main(db,mycursor):
 
     # TAGS
         sql_check = "SELECT tag \
-            FROM iota_tx_reader2.transactions \
+            FROM TFM_DB.transactions \
             WHERE transactions.idta IS NULL \
                 GROUP BY tag"
         mycursor.execute(sql_check)
         _records = mycursor.fetchall()
 
         sql_search = "SELECT idta, name \
-                FROM iota_tx_reader2.tags"
+                FROM TFM_DB.tags"
         mycursor.execute(sql_search)
         records = mycursor.fetchall()
         for elem in records:
-            print(elem)
-
             if ((elem[1],) in _records):
-                sql_update = "UPDATE iota_tx_reader2.transactions \
+                print('Updating %s tx' % (elem[1]))
+                sql_update = "UPDATE TFM_DB.transactions \
                             SET transactions.idta = %d \
                             WHERE transactions.tag = '%s' \
                             AND transactions.idta IS NULL \

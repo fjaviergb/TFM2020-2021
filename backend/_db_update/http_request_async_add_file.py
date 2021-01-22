@@ -33,13 +33,13 @@ async def _client(db,mycursor,_key,row):
     async with aiohttp.ClientSession() as client:
         html = await fetch(client,_key,row)
         try:
-            print(_key,row[0],len(json.loads(html)['hashes']))
-            with open("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\iota_tx_reader2\\temp%s%s.csv" % (_key,row[0]), 'w+', newline='') as csvfile:
+            print("Requesting addresses {}, length {}".format(_key,row[0],len(json.loads(html)['hashes'])))
+            with open("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\tfm_db\\temp%s%s.csv" % (_key,row[0]), 'w+', newline='') as csvfile:
                 spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
                 spamwriter.writerow(json.loads(html)['hashes'])
             csvfile.close()
             await attachDB(db,mycursor,_key,row,html)
-            os.remove("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\iota_tx_reader2\\temp%s%s.csv" % (_key,row[0]))
+            os.remove("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\tfm_db\\temp%s%s.csv" % (_key,row[0]))
         except KeyError:
             print("Exception empty; incomplete; etc")
 
