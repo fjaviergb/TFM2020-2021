@@ -1,7 +1,7 @@
 from iota import Iota, TryteString, ProposedTransaction, Address, Tag
 import random
 
-api = Iota('https://nodes.thetangle.org:443')
+api = Iota('https://iota.etsii.upm.es')
 
 # SEED CREATED BY PSEUDO-RAND IN PYTHON - NOT SECURE
 seed = 'WVVBOHNRYPONH9GW9BXVAKGGYBULIUPCDVTFSUAFFJP99NTJTGGQRWQCXSWELVDQIRFINIQDMULGEXSWN';
@@ -25,7 +25,7 @@ address = ['WRIIHMSNYWKGRNRWLLPTANKPYIYXIOWKFYSWOPCZMQIEAFQVWJKVMOSOBEMVOOBGUJIS
 # [2] = 'QKLOVCRJHKHITJRIMVARCMPXBBT' = 'ERROR'
 tag = ['BXOUBCAEOYFDQARTUELBFEEGPAO','COBWNGDNZTEAEPVHGBBBFAGUWOI','QKLOVCRJHKHITJRIMVARCMPXBBT']
 
-for i in range(2000):
+for i in range(1000):
     message = TryteString.from_unicode('13186 / N / %s' % (i))
 
     tx = ProposedTransaction(
