@@ -3,15 +3,15 @@ import json
 import asyncio
 import aiohttp
 import mysql.connector
-from datetime import datetime
-from iota import Transaction,TryteString
-import csv
+from iota import TryteString
 import pandas as pd
 from iota.trits import int_from_trits
 import os
 import numpy as np
 import math
-
+from pandas.io import sql
+from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL
 
 db = mysql.connector.connect(
     host="localhost",
@@ -21,6 +21,11 @@ db = mysql.connector.connect(
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)
+
+engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
+                       .format(user="root",
+                               pw="PutosRusosSQL13186",
+                               db="TFM_DB"))
 
 _headers = {
     'content-type': 'application/json',
@@ -43,11 +48,10 @@ async def fetch(client,elem):
 async def _transaction(_list,df,db,mycursor):
     df['trytes']=_list
     df[['timestamp','address','tag']]=list(map(lambda x: [int_from_trits(TryteString(x[2322:2331]).as_trits()),x[2187:2268],x[2592:2619]], _list))
-    df.to_csv('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\TFM_DB\\dataframe.csv',header=False,mode='a',index=False,columns= ['name','timestamp','address','tag','trytes'])
-
+    sql.to_sql(df,con=engine,name='transactions',if_exists='append',index = False,chunksize=100)
 
 async def _client(db,mycursor,records_mapped):
-    df = pd.DataFrame(columns=['name','timestamp', 'idad', 'address','idta','tag','trytes'])
+    df = pd.DataFrame(columns=['name','timestamp','address','tag','trytes'])
     df['name'] = records_mapped
     async with aiohttp.ClientSession() as client:
             html = await fetch(client,records_mapped)
@@ -80,12 +84,7 @@ async def main(db,mycursor):
 
         await asyncio.gather(*tasks)
 
-        sql_file="LOAD DATA INFILE 'dataframe.csv' IGNORE INTO TABLE transactions FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n'"
-        mycursor.execute(sql_file)
-        db.commit()
-
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(db,mycursor))    
-os.remove('C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\TFM_DB\\dataframe.csv')
 
 

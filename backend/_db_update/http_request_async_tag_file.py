@@ -1,11 +1,16 @@
-from urllib import request
 import json
 import asyncio
 import aiohttp
 import mysql.connector
-from datetime import datetime
-import csv
-import os
+import pandas as pd
+from pandas.io import sql
+from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL
+
+engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
+                       .format(user="root",
+                               pw="PutosRusosSQL13186",
+                               db="TFM_DB"))
 
 _headers = {
     'content-type': 'application/json',
@@ -24,22 +29,19 @@ async def fetch(client,_key,row):
         #assert resp.status == 200
         return await resp.text()
 
-async def attachDB(db,mycursor,_key,row,html):
-    sql_file="LOAD DATA INFILE 'temp%s%s.csv' IGNORE INTO TABLE temp_hashes LINES TERMINATED BY ','"
-    mycursor.execute(sql_file % (_key,row[0]))
-    db.commit()
+async def attachDB():
+    connection = engine.connect()
+    connection.execute("INSERT IGNORE INTO temp_hashes SELECT * FROM temp_table")
+    connection.close()
 
 async def _client(db,mycursor,_key,row):
     async with aiohttp.ClientSession() as client:
         html = await fetch(client,_key,row)
         try:
             print("Requesting tags {}, length {}".format(_key,row[0],len(json.loads(html)['hashes'])))
-            with open("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\tfm_db\\temp%s%s.csv" % (_key,row[0]), 'w+', newline='') as csvfile:
-                spamwriter = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-                spamwriter.writerow(json.loads(html)['hashes'])
-            csvfile.close()
-            await attachDB(db,mycursor,_key,row,html)
-            os.remove("C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Data\\tfm_db\\temp%s%s.csv" % (_key,row[0]))
+            df = pd.DataFrame(columns=['name'])
+            df['name'] = json.loads(html)['hashes']
+            df.to_sql('temp_table', engine, if_exists ='append',index=False)
         except KeyError:
             print("Exception empty; incomplete; etc")
 
@@ -48,9 +50,12 @@ async def main(db,mycursor,_key):
     mycursor.execute(sql_query)
     records = mycursor.fetchall()
     tasks=[]
+
+
     for row in records:
         tasks.append(asyncio.create_task(_client(db,mycursor,_key,row)))
     await asyncio.gather(*tasks)
+    await attachDB()
 
 db = mysql.connector.connect(
     host="localhost",
@@ -61,5 +66,7 @@ db = mysql.connector.connect(
 )
 mycursor = db.cursor(buffered=True)
 
+df_temp = pd.DataFrame(columns=['name'])
+df_temp.to_sql('temp_table', engine, if_exists ='replace',index=False)
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(db,mycursor,'tags'))

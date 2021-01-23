@@ -1,16 +1,4 @@
-import json
-import asyncio
-import aiohttp
 import mysql.connector
-from datetime import datetime
-from iota import Transaction,TryteString
-import csv
-import pandas as pd
-from iota.trits import int_from_trits
-import os
-import numpy as np
-import math
-
 
 db = mysql.connector.connect(
     host="localhost",
