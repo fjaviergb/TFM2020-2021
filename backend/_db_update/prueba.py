@@ -19,6 +19,6 @@ df['address'] = ['QUE']
 df['tag'] = ['TAL']
 df['trytes'] = ['ESTAS']
 
-sql.to_sql(df,con=engine,name='transactions',if_exists='append',index = False)
+#sql.to_sql(df,con=engine,name='transactions',if_exists='append',index = False)
 
 

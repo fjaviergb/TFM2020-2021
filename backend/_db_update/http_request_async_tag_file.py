@@ -6,6 +6,7 @@ import pandas as pd
 from pandas.io import sql
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
+# NECESITA pip install PyMySQL y el conector
 
 engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                        .format(user="root",

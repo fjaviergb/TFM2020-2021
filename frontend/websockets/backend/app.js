@@ -36,7 +36,7 @@ const app = express();
 app.set('port', process.env.PORT || 5500);
 
 // static files - manda un módulo al navegador que no va a modificarse (el código html)
-app.use(express.static('C:\\Master\\TFM\\code\\TFM2020-2021\\frontend\\websockets\\frontend'));
+app.use(express.static('..\\frontend'));
 
 //Escucha al puerto especificado en app.set
 const _server = app.listen(app.get('port'), () => {
