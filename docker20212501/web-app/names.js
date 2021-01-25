@@ -3,10 +3,10 @@ const DATABASE = {
     // DATA-BASE
     // #########
     CONNECTIONLIMIT: 10,
-    HOST: "localhost",
-    PORT: 3306,
+    HOST: "database",
     USER: "root",
-    PASSWORD: "PutosRusosSQL13186",
+    PORT: 3306,
+    PASSWORD: "13186",
     DATABNAME: "TFM_DB",
 };
 
