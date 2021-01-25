@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import json
 import asyncio
 import aiohttp
@@ -12,27 +11,29 @@ import math
 from pandas.io import sql
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
+import pymysql
 
-db = mysql.connector.connect(
-    host="localhost",
+db = pymysql.connect(
+    host="database",
     user="root",
-    passwd="PutosRusosSQL13186",
+    port=3306,
+    passwd="13186",
     database="TFM_DB",
-    allow_local_infile=True
 )
-mycursor = db.cursor(buffered=True)
+mycursor = db.cursor()
 
-engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
+engine = create_engine("mysql+pymysql://{user}:{pw}@database:{p}/{db}"
                        .format(user="root",
-                               pw="PutosRusosSQL13186",
+                               pw="13186",
+                               p="3306",
                                db="TFM_DB"))
 
 _headers = {
     'content-type': 'application/json',
     'X-IOTA-API-Version': '1'
 }
-
-_local = 'http://192.168.1.33:14265'
+#'https://iota.etsii.upm.es'
+_local = 'http://92.22.55.226:14265'
 _url = 'https://nodes.thetangle.org:443'
 
 

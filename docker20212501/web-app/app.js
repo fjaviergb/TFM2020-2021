@@ -10,8 +10,8 @@ const NAME = require('./names.js');
 var pool = mysql.createPool({
     connectionLimit: NAME.DATABASE.CONNECTIONLIMIT,
     host: NAME.DATABASE.HOST,
-    port: NAME.DATABASE.PORT,
     user: NAME.DATABASE.USER,
+    port: NAME.DATABASE.PORT,
     password: NAME.DATABASE.PASSWORD,
     database: NAME.DATABASE.DATABNAME,
 });
@@ -37,7 +37,10 @@ const app = express();
 app.set('port', process.env.PORT || 5500);
 
 // static files - manda un módulo al navegador que no va a modificarse (el código html)
-app.use(express.static('..\\frontend'));
+app.use(express.static('public'));
+// app.get('/', function(req, res) {
+//     res.sendFile('index.html');
+// });
 
 //Escucha al puerto especificado en app.set
 const _server = app.listen(app.get('port'), () => {

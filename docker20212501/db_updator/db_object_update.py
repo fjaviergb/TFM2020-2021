@@ -1,13 +1,14 @@
 import mysql.connector
+import pymysql
 
-db = mysql.connector.connect(
-    host="localhost",
+db = pymysql.connect(
+    host="database",
     user="root",
-    passwd="PutosRusosSQL13186",
+    port=3306,
+    passwd="13186",
     database="TFM_DB",
-    allow_local_infile=True
 )
-mycursor = db.cursor(buffered=True)
+mycursor = db.cursor()
 
 def main(db,mycursor):
     # ADDRESSES
