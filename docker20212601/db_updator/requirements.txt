@@ -1,0 +1,11 @@
+pandas
+numpy
+PyOTA
+mysql-connector
+mysqlclient
+mysql-connector-python
+sqlalchemy
+PyMySQL
+aiohttp
+asyncio
+python-crontab
