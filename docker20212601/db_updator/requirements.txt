@@ -8,4 +8,3 @@ sqlalchemy
 PyMySQL
 aiohttp
 asyncio
-python-crontab

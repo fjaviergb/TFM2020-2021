@@ -4,13 +4,20 @@ services:
   build: ./mysql
   ports:
    - 5432:3306
+  container_name: database
+  image: docker-database
  app:
   build: ./web-app
   ports:
    - 5500:5500
   depends_on:
    - database
+  container_name: app
+  image: docker-app
  updator:
   build: ./db_updator
   depends_on:
    - database
+  container_name: updator
+  image: docker-update
+  command: tail -F anything
