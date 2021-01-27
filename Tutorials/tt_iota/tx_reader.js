@@ -11,16 +11,17 @@ const trytesToAscii = (trytes) => {
     }
     return ascii;
 };
-const _local = 'http://192.168.1.33:14265'
+//const _local = 'http://192.168.1.33:14265'
 const _url = 'https://nodes.thetangle.org:443'
+const _local = 'https://iota.etsii.upm.es'
 
 const iota = Iota.composeAPI({
     provider: _local
     });
 
 const _tag = 'MINEIOTADOTCOM9999999999999'
-const _address = 'FYYR9AJO9JFSOZMMAUMUITSEQPAEG9DGQEZSLEIP9JIZBRKQQ9TLGGKIOIREPCTLOJ9PS9HEJIRYXFEEZYHPYDAMSD';
-iota.findTransactions({tags:[_tag]})
+const _address = 'XQJQJT9OYSPGPQTHQJFFYAPIZDUAHIQLVKSLZKCYLHKDQRLZMLCZMUT9EBKGJTLYDNWKAMDRMGWJZ9999';
+iota.findTransactions({addresses:[_address]})
 .then(hashes => {
     // message = Tconverter.asTransactionTrytes(bundle[0]).substr(0,2187);
     console.log(hashes);
