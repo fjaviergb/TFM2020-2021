@@ -5,25 +5,46 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 // Components
 import FrontPageForm from './Components/FrontPageForm.js'
 
+const getToken = () => {
+  const tokenString = localStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken
+}
+
 class App extends Component {
+
   state = {
-    status: "login"
+    status: "login",
+    token: getToken(),
   };
 
-  onClick = (e) => {
-      this.setState({status: e.target.name})
+  setToken = (userToken) => {
+    localStorage.setItem('token', JSON.stringify(userToken));
+    this.setState({token: getToken()})
+
   }
 
+  swap = (e) => {
+      this.setState({status: e.target.name})
+  };
+
   render () {
+    if (!this.state.token) {
+      return <div>
+        <FrontPageForm swap={this.swap}
+                      status={this.state.status}
+                      setToken={this.setToken}/>
+      </div>
+    }
+
     return <div>
       <Router>
         <Route path='/' render = {() => {
           return <div>
-            <button onClick={this.onClick} name={"register"}>Register</button>
-            <button onClick={this.onClick} name={"login"}>Login</button>
-            <FrontPageForm status={this.state.status}/>
+              LOGEADOS
             </div>
         }}></Route>
+
       </Router>
     </div>
   };

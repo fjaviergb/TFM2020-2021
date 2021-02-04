@@ -4,8 +4,8 @@ import Service from "../services/service.js";
 class RegisterForm extends Component {
 
     state = {
-        user: '',
-        passwd: '',
+        name: '',
+        password: '',
         contact: '',
     }
 
@@ -21,22 +21,28 @@ class RegisterForm extends Component {
 
     request = () => {
         Service.register(this.state)
-        .then(res => {console.log('Recibido')})
-        .catch(err => {console.log('Error')});
+        .then(res => {
+            console.log(res.data);
+            this.props.setToken(res.data.token);
+        })
+        .catch(err => {console.log(err.data)});
     };
 
 
     render () {
-        return <form onSubmit={this.onSubmit}>
+        return  <div>
+                <button onClick={this.props.swap} name={"register"}>Register</button>
+                <button onClick={this.props.swap} name={"login"}>Login</button>
+                <form onSubmit={this.onSubmit}>
                 <input type='text'
                     placeholder="Enter your account name"
-                    name='user'
+                    name='name'
                     onChange={this.onChange}
                     value={this.state.user}/>
                 <br/>
                 <input type='text'
                     placeholder="Enter your password"
-                    name='passwd'
+                    name='password'
                     onChange={this.onChange}
                     value={this.state.passwd}/>
                 <br/>                    
@@ -47,7 +53,7 @@ class RegisterForm extends Component {
                     value={this.state.contact}/>
                 <br/>
                 <button type='submit' onClick={this.request}>Register</button>
-        </form>
+            </form></div>
     };
 };
 

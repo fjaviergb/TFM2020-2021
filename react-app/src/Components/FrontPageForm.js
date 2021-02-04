@@ -5,8 +5,14 @@ import LoginForm from './LoginForm.js'
 
 class FrontPageForm extends Component {
     render() { 
-        if (this.props.status === "register") {return <RegisterForm/>}
-        else {return <LoginForm/>}
+            if (this.props.status === "register") {
+                return <RegisterForm swap={this.props.swap}
+                                     setToken={this.props.setToken}/>
+            }
+            else {
+                return <LoginForm swap={this.props.swap}
+                                  setToken={this.props.setToken}/>
+            }
     };
 };
 

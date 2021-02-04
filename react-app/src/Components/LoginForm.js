@@ -20,12 +20,18 @@ class LoginForm extends Component {
 
     request = () => {
         Service.login(this.state)
-        .then(res => {console.log(res.data)})
+        .then(res => {
+            console.log(res.data);
+            this.props.setToken(res.data.token);
+        })
         .catch(err => {console.log(err.data)});
     };
 
     render () {
-        return <form onSubmit={this.onSubmit}>
+        return  <div>
+                <button onClick={this.props.swap} name={"register"}>Register</button>
+                <button onClick={this.props.swap} name={"login"}>Login</button>
+                <form onSubmit={this.onSubmit}>
                 <input type='text'
                     placeholder="Enter your email"
                     name='contact'
@@ -39,7 +45,7 @@ class LoginForm extends Component {
                     value={this.state.passwd}/>
                 <br/>                    
                 <button type='submit' onClick={this.request}>Login</button>
-        </form>
+            </form></div>
     };
 };
 
