@@ -29,8 +29,8 @@ class LoginForm extends Component {
 
     render () {
         return  <div>
-                <button onClick={this.props.swap} name={"register"}>Register</button>
-                <button onClick={this.props.swap} name={"login"}>Login</button>
+                <button onClick={this.props.swapLog} name={"register"}>Register</button>
+                <button onClick={this.props.swapLog} name={"login"}>Login</button>
                 <form onSubmit={this.onSubmit}>
                 <input type='text'
                     placeholder="Enter your email"
