@@ -19,6 +19,23 @@ const getMainStatus = () => {
   return mainStatus
 }
 
+const getAddresses = () => {
+  const addressesString = localStorage.getItem('addresses');
+  const addresses = JSON.parse(addressesString);
+  return addresses
+}
+
+const getTags = () => {
+  const tagsString = localStorage.getItem('tags');
+  const tags = JSON.parse(tagsString);
+  return tags
+}
+
+const getPublicKeys = () => {
+  const publicKeysString = localStorage.getItem('publicKeys');
+  const publicKeys = JSON.parse(publicKeysString);
+  return publicKeys
+}
 
 class App extends Component {
 
@@ -26,6 +43,9 @@ class App extends Component {
     logStatus: "login",
     token: getToken(),
     mainStatus: getMainStatus(),
+    addresses: getAddresses(),
+    tags: getTags(),
+    publicKeys: getPublicKeys()
   };
 
   setToken = (userToken) => {
@@ -36,25 +56,50 @@ class App extends Component {
   removeToken = (userToken) => {
     localStorage.removeItem('token');
     localStorage.removeItem('mainStatus');
+    localStorage.removeItem('addresses');
+    localStorage.removeItem('tags');
+    localStorage.removeItem('publicKeys');
     this.setState({token: ''})
   };
 
   swapLog = (e) => {
       this.setState({logStatus: e.target.name})
   };
+
   swapMain = (e) => {
     localStorage.setItem('mainStatus', JSON.stringify(e.target.name));
     this.setState({mainStatus: e.target.name})
     this.setState({mainStatus: getMainStatus()})
   };
 
+  addAddress = (e) => {
+    this.setState({addresses: []})
+    e.forEach(elem => {this.state.addresses.push(elem)})
+    localStorage.setItem('addresses', JSON.stringify(this.state.addresses));
+  };
+
+  addTags = (e) => {
+    this.setState({tags: []})
+    e.forEach(elem => {this.state.tags.push(elem)})
+    localStorage.setItem('tags', JSON.stringify(this.state.tags));
+  };
+
+  addPublicKeys = (e) => {
+    this.setState({
+      publicKeys: e
+    })
+    localStorage.setItem('publicKeys', this.state.publicKeys);
+  };
 
   render () {
     if (!this.state.token) {
       return <div>
         <FrontPageForm swapLog={this.swapLog}
                       logStatus={this.state.logStatus}
-                      setToken={this.setToken}/>
+                      setToken={this.setToken}
+                      addAddresses={this.addAddress}
+                      addTags={this.addTags}
+                      addPublicKeys={this.addPublicKeys}/>
       </div>
     }
 
@@ -64,7 +109,9 @@ class App extends Component {
           return <div>
               <BackPageForm removeToken={this.removeToken}
                             swapMain={this.swapMain}
-                            mainStatus={this.state.mainStatus}/>
+                            mainStatus={this.state.mainStatus}
+                            addresses={this.state.addresses}
+                            tags={this.state.tags}/>
             </div>
         }}></Route>
 

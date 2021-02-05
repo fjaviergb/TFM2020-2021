@@ -7,6 +7,15 @@ class Service {
     register(data){
         return http.post("/register",data);
     }
+    getAddresses(data){
+        return http.post("/getaddresses",data)
+    }
+    getTags(data){
+        return http.post("/gettags",data)
+    }
+    getPublicKeys(data){
+        return http.post("/getpublickeys",data)
+    }
 }
 
 export default new Service();

@@ -23,7 +23,11 @@ class RegisterForm extends Component {
         Service.register(this.state)
         .then(res => {
             console.log(res.data);
-            this.props.setToken(res.data.token);
+            this.props.setToken({
+                token: res.data.token,
+                idcl:res.data.idcl,
+                name:res.data.name
+            });  
         })
         .catch(err => {console.log(err.data)});
     };

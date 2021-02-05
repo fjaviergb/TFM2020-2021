@@ -9,7 +9,9 @@ class BackPageForm extends Component{
             return <div>
                 <button onClick={this.props.removeToken}>Log Out</button>
                 <PreferenceForm swapMain={this.props.swapMain}
-                              setToken={this.props.setToken}/>
+                              setToken={this.props.setToken}
+                              addresses={this.props.addresses}
+                              tags={this.props.tags}/>
             </div>
         }
         else if (this.props.mainStatus === "profile") {
@@ -19,7 +21,7 @@ class BackPageForm extends Component{
                              setToken={this.props.setToken}/>
             </div>
         }
-        else if (this.props.mainStatus === "main") {
+        else {
             return <div>
                 <button onClick={this.props.removeToken}>Log Out</button>
                 <MainForm swapMain={this.props.swapMain}
