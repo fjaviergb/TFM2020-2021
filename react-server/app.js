@@ -36,12 +36,38 @@ app.post(MODEL.REGISTER.ROUTE, (req, res) => {
   pool.query(MODEL.REGISTER.SQL, MODEL.REGISTER.SQL_DATA(req.body), (err, result) => {
       if (err) {
         console.log(err)
-          res.json({ message: `Unknown error ${err.sqlMessage}` });
+        res.json({ message: `Unknown error ${err.sqlMessage}` });
       } else if (result) {
-          res.json({ idcl: result.insertId, name: req.body.name, token: crypto.randomBytes(20).toString('hex')});
+        res.json({ idcl: result.insertId, name: req.body.name, token: crypto.randomBytes(20).toString('hex')});
       } else {res.json({ message: "Unknown error; try again" });}
   });
 });
+
+app.post(MODEL.GETADDRESSES.ROUTE, (req,res) => {
+  pool.query(MODEL.GETADDRESSES.SQL(req.body.idcl), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.GETTAGS.ROUTE, (req,res) => {
+  pool.query(MODEL.GETTAGS.SQL(req.body.idcl), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+//////////
+// FALTAN KEYS
+//////////
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
