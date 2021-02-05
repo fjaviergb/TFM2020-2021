@@ -10,11 +10,11 @@ class PreferenceForm extends Component{
         tagName: ''
     }
 
-    onSubmitAddress = e => {
+    onSubmit = e => {
         e.preventDefault();
     };
 
-    onChangeAddress = e => {
+    onChanges = e => {
         this.setState({[e.target.name]: e.target.value})
     }
 
@@ -30,10 +30,10 @@ class PreferenceForm extends Component{
             <br/>
             <div>
                 <h3>ADDRESSES</h3>
-                <form onSubmit={this.onSubmitAddress}>
+                <form onSubmit={this.onSubmit}>
                     <input type='text'
                         placeholder='New address'
-                        onChange={this.onChangeAddress}
+                        onChange={this.onChanges}
                         name="newAddress">
                     </input>
                     <button type='submit'>X</button>
@@ -47,10 +47,10 @@ class PreferenceForm extends Component{
  
                 <br/>
                 <h3>TAGS</h3>
-                <form onSubmit={this.onSubmitAddress}>
+                <form onSubmit={this.onSubmit}>
                     <input type='text'
                         placeholder='New tag'
-                        onChange={this.onChangeAddress}
+                        onChange={this.onChanges}
                         name="newTag">
                     </input>
                     <button type='submit'>X</button>

@@ -6,18 +6,22 @@ class TagList extends Component {
         show: false
     };
 
-    onClick = e => {
-        this.setState({show: !this.state.show})
+    openModal = e => {
+        this.setState({show: true})
     }
+    closeModal = e => {
+        this.setState({show: false})
+    }
+
     render() {
         if (this.state.show) {
             return <div>
-                <div onClick={this.onClick}>{this.props.tag.name}</div><br/>
-                <Modal/>
+                <div onClick={this.closeModal}>{this.props.tag.name}</div>
+                <Modal object={this.props.tag} closeModal={this.closeModal}/>
             </div>
         } else {
             return <div>
-                <div onClick={this.onClick}>{this.props.tag.name}</div><br/>
+                <div onClick={this.openModal}>{this.props.tag.name}</div>
             </div>
         };
     };
