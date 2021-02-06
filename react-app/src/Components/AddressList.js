@@ -20,7 +20,8 @@ class AddressList extends Component {
                 <Modal object={this.props.address}
                        closeModal={this.closeModal}
                        changeAddresses={this.props.changeAddresses}
-                       token={this.props.token}/>
+                       token={this.props.token}
+                       deleteAddress={this.props.deleteAddress}/>
             </div>
         } else {
             return <div>

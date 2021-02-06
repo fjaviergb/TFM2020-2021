@@ -25,6 +25,14 @@ class Modal extends Component {
         this.setState({alias:e.target.value})
     };
 
+    onDelete = (e) => {
+        Service.deletePublicKey({idname: this.props.object.idname})
+        .then(res => {
+            this.props.deletePublicKey(this.props.object.idname)
+        })
+        .catch(err => console.log(err));
+    };
+
     render() {
         return <div>
             <div className="modalContainer" onClick={this.props.closeModal}></div>
@@ -37,6 +45,9 @@ class Modal extends Component {
                 <div className="actions">
                     <button className="toggle-button" onClick={this.props.closeModal}>
                         close
+                    </button>
+                    <button className="toggle-button" onClick={this.onDelete}>
+                        delete
                     </button>
                 </div>
             </div>

@@ -110,35 +110,92 @@ app.post(MODEL.CHANGEPKEY.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.NEWADDRESS.ROUTE, (req, res) => {
-  pool.query(MODEL.NEWADDRESS.SQL, MODEL.NEWADDRESS.SQL_DATA(req.body), (err, result) => {
-      if (err) {
-        console.log(err)
-        res.json({ message: `Unknown error ${err.sqlMessage}` });
-      } else if (result) {
-        res.json({ idad: result.insertId});
-      } else {res.json({ message: "Unknown error; try again" });}
-  });
+  pool.query(MODEL.NEWADDRESS.SQL_CHECK(req.body), (err,_result) => {
+    if (_result.length === 0) {
+      pool.query(MODEL.NEWADDRESS.SQL, MODEL.NEWADDRESS.SQL_DATA(req.body), (err, result) => {
+          if (err) {
+            console.log(err)
+            res.json({ message: `Unknown error ${err.sqlMessage}` });
+          } else if (result) {
+            console.log(result)
+            res.json({ idad: result.insertId});
+          } else if (err.errno===1062) { console.log(err.data)
+            
+          } else {res.json({ message: "Unknown error; try again" });}
+      });
+    } else {res.json({ idad: result[0]});}
+  })
 });
 
 app.post(MODEL.NEWTAG.ROUTE, (req, res) => {
-  pool.query(MODEL.NEWTAG.SQL, MODEL.NEWTAG.SQL_DATA(req.body), (err, result) => {
-      if (err) {
-        console.log(err)
-        res.json({ message: `Unknown error ${err.sqlMessage}` });
-      } else if (result) {
-        res.json({ idta: result.insertId});
-      } else {res.json({ message: "Unknown error; try again" });}
-  });
+  pool.query(MODEL.NEWTAG.SQL_CHECK(req.body), (err,_result) => {
+    if (_result.length === 0) {
+      pool.query(MODEL.NEWTAG.SQL, MODEL.NEWTAG.SQL_DATA(req.body), (err, result) => {
+          if (err) {
+            console.log(err)
+            res.json({ message: `Unknown error ${err.sqlMessage}` });
+          } else if (result) {
+            console.log(result)
+            res.json({ idta: result.insertId});
+          } else if (err.errno===1062) { console.log(err.data)
+            
+          } else {res.json({ message: "Unknown error; try again" });}
+      });
+    } else {res.json({ idta: result[0].idta});}
+  })
 });
 
 app.post(MODEL.NEWPKEY.ROUTE, (req, res) => {
-  pool.query(MODEL.NEWPKEY.SQL, MODEL.NEWPKEY.SQL_DATA(req.body), (err, result) => {
-      if (err) {
-        console.log(err)
-        res.json({ message: `Unknown error ${err.sqlMessage}` });
-      } else if (result) {
-        res.json({ idke: result.insertId});
-      } else {res.json({ message: "Unknown error; try again" });}
+  pool.query(MODEL.NEWPKEY.SQL_CHECK(req.body), (err,_result) => {
+    if (_result.length === 0) {
+      pool.query(MODEL.NEWPKEY.SQL, MODEL.NEWPKEY.SQL_DATA(req.body), (err, result) => {
+          if (err) {
+            console.log(err)
+            res.json({ message: `Unknown error ${err.sqlMessage}` });
+          } else if (result) {
+            console.log(result)
+            res.json({ idke: result.insertId});
+          } else if (err.errno===1062) { console.log(err.data)
+            
+          } else {res.json({ message: "Unknown error; try again" });}
+      });
+    } else {
+      res.json({ idke: _result[0].idke});}
+  })
+});
+
+app.post(MODEL.DELTAG.ROUTE, (req,res) => {
+  pool.query(MODEL.DELTAG.SQL(req.body.idname), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+
+app.post(MODEL.DELADDRESS.ROUTE, (req,res) => {
+  pool.query(MODEL.DELADDRESS.SQL(req.body.idname), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+
+app.post(MODEL.DELPKEY.ROUTE, (req,res) => {
+  pool.query(MODEL.DELPKEY.SQL(req.body.idname), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
   });
 });
 

@@ -92,7 +92,8 @@ module.exports={
                 'name': req.name,
                 'created': new Date()
             }
-        }
+        },
+        SQL_CHECK(req) {return `SELECT * FROM tags WHERE name = '${req.name}'`}
     },
 
     NEWADDRESS: {
@@ -103,7 +104,8 @@ module.exports={
                 'name': req.name,
                 'created': new Date()
             }
-        }
+        },
+        SQL_CHECK(req) {return `SELECT * FROM addresses WHERE name = '${req.name}'`}
     },
 
     NEWPKEY: {
@@ -114,6 +116,23 @@ module.exports={
                 'name': req.name,
                 'created': new Date()
             }
-        }
+        },
+        SQL_CHECK(req) {return `SELECT * FROM pkeys WHERE name = '${req.name}'`}
     },
+
+    DELTAG: {
+        ROUTE: '/deltag',
+        SQL(idname) {return `DELETE FROM tag_names WHERE idname = ${idname}`} 
+    },
+
+    DELADDRESS: {
+        ROUTE: '/deladdress',
+        SQL(idname) {return `DELETE FROM add_names WHERE idname = ${idname}`} 
+    },
+
+    DELPKEY: {
+        ROUTE: '/delpkey',
+        SQL(idname) {return `DELETE FROM pkey_names WHERE idname = ${idname}`} 
+    },
+
 };

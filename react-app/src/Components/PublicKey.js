@@ -20,7 +20,8 @@ class PublicKey extends Component {
                 <Modal object={this.props.publicKey}
                        closeModal={this.closeModal}
                        changePublicKeys={this.props.changePublicKeys}
-                       token={this.props.token}/>
+                       token={this.props.token}
+                       deletePublicKey={this.props.deletePublicKey}/>
             </div>
         } else {
             return <div>

@@ -135,6 +135,24 @@ class App extends Component {
     localStorage.setItem('publicKeys', JSON.stringify(this.state.publicKeys));
   };
 
+  deleteAddress = (cond) => {
+    const newAddresses = this.state.addresses.filter(elem => elem.idname !== cond);
+    this.setState({addresses: newAddresses});
+    localStorage.setItem('addresses', JSON.stringify(this.state.addresses));
+  };
+
+  deleteTag = (cond) => {
+    const newTags = this.state.tags.filter(elem => elem.idname !== cond);
+    this.setState({tags: newTags});
+    localStorage.setItem('tags', JSON.stringify(this.state.tags));
+  };
+
+  deletePublicKey = (cond) => {
+    const newPublicKeys = this.state.publicKeys.filter(elem => elem.idname !== cond);
+    this.setState({publicKeys: newPublicKeys});
+    localStorage.setItem('publicKeys', JSON.stringify(this.state.publicKeys));
+  };
+
   render () {
     if (!this.state.token) {
       return <div>
@@ -163,7 +181,10 @@ class App extends Component {
                             publicKeys={this.state.publicKeys}
                             newAddress={this.newAddress}
                             newTag={this.newTag}
-                            newPublicKey={this.newPublicKey}/>
+                            newPublicKey={this.newPublicKey}
+                            deleteAddress={this.deleteAddress}
+                            deleteTag={this.deleteTag}
+                            deletePublicKey={this.deletePublicKey}/>
             </div>
         }}></Route>
 

@@ -96,7 +96,8 @@ class PreferenceForm extends Component{
                         return <AddressList key={el.idad}
                                      address={el}
                                      changeAddresses={this.props.changeAddresses}
-                                     token={this.props.token}/>
+                                     token={this.props.token}
+                                     deleteAddress={this.props.deleteAddress}/>
                     })}
                 </div>
  
@@ -115,7 +116,8 @@ class PreferenceForm extends Component{
                         return <TagList key={el.idta}
                                  tag={el}
                                  changeTags={this.props.changeTags}
-                                 token={this.props.token}/>
+                                 token={this.props.token}
+                                 deleteTag={this.props.deleteTag}/>
                     })}
                 </div>
 
@@ -134,7 +136,8 @@ class PreferenceForm extends Component{
                         return <PublicKey key={el.idke}
                                  publicKey={el}
                                  changePublicKeys={this.props.changePublicKeys}
-                                 token={this.props.token}/>
+                                 token={this.props.token}
+                                 deletePublicKey={this.props.deletePublicKey}/>
                     })}
                 </div>
             </div>                        

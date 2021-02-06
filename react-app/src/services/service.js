@@ -34,6 +34,16 @@ class Service {
     newPublicKey(data){
         return http.post("/newpkey", data)
     }
+    deleteAddress(data){
+        return http.post("/deladdress", data)
+    }
+    deleteTag(data){
+        return http.post("/deltag", data)
+    }
+    deletePublicKey(data){
+        return http.post("/delpkey", data)
+    }
+
 }
 
 export default new Service();

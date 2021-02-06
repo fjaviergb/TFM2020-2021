@@ -19,7 +19,10 @@ class BackPageForm extends Component{
                               publicKeys={this.props.publicKeys}
                               newAddress={this.props.newAddress}
                               newTag={this.props.newTag}
-                              newPublicKey={this.props.newPublicKey}/>
+                              newPublicKey={this.props.newPublicKey}
+                              deleteAddress={this.props.deleteAddress}
+                              deleteTag={this.props.deleteTag}
+                              deletePublicKey={this.props.deletePublicKey}/>
             </div>
         }
         else if (this.props.mainStatus === "profile") {
