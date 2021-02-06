@@ -85,10 +85,9 @@ class App extends Component {
   };
 
   addPublicKeys = (e) => {
-    this.setState({
-      publicKeys: e
-    })
-    localStorage.setItem('publicKeys', this.state.publicKeys);
+    this.setState({publicKeys: []})
+    e.forEach(elem => {this.state.publicKeys.push(elem)})
+    localStorage.setItem('publicKeys', JSON.stringify(this.state.publicKeys));
   };
 
   changeTags = (e) => {
@@ -109,6 +108,31 @@ class App extends Component {
 
     this.setState({addresses: addresses})
     localStorage.setItem('addresses', JSON.stringify(this.state.addresses));
+  };
+
+  changePublicKey = (e) => {
+    const publicKeys = this.state.publicKeys.map(elem => {;
+      if (elem.idke === e.idke) {elem.alias = e.alias}
+      return elem;
+    });
+
+    this.setState({publicKeys: publicKeys})
+    localStorage.setItem('publicKeys', JSON.stringify(this.state.publicKeys));
+  };
+
+  newAddress = (e) => {
+    this.setState({addresses: [...this.state.addresses,e]});
+    localStorage.setItem('addresses', JSON.stringify(this.state.addresses));
+  };
+
+  newTag = (e) => {
+    this.setState({tags: [...this.state.tags,e]});
+    localStorage.setItem('tags', JSON.stringify(this.state.tags));
+  };
+
+  newPublicKey = (e) => {
+    this.setState({publicKeys: [...this.state.publicKeys,e]});
+    localStorage.setItem('publicKeys', JSON.stringify(this.state.publicKeys));
   };
 
   render () {
@@ -134,7 +158,12 @@ class App extends Component {
                             tags={this.state.tags}
                             changeAddresses={this.changeAddresses}
                             changeTags={this.changeTags}
-                            token={this.state.token}/>
+                            token={this.state.token}
+                            changePublicKeys={this.changePublicKey}
+                            publicKeys={this.state.publicKeys}
+                            newAddress={this.newAddress}
+                            newTag={this.newTag}
+                            newPublicKey={this.newPublicKey}/>
             </div>
         }}></Route>
 

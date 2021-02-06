@@ -28,6 +28,15 @@ class RegisterForm extends Component {
                 idcl:res.data.idcl,
                 name:res.data.name
             });  
+            Service.getAddresses({idcl: res.data.idcl})
+            .then(res => {this.props.addAddresses(res.data)})
+            .catch(err => {console.log(err.data)})
+            Service.getTags({idcl: res.data.idcl})
+            .then(res => {this.props.addTags(res.data)})
+            .catch(err => {console.log(err.data)})
+            Service.getPublicKeys({idcl:res.data.idcl})
+            .then(res => {this.props.addPublicKeys(res.data)})
+            .catch(err => {console.log(err.data)})    
         })
         .catch(err => {console.log(err.data)});
     };

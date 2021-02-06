@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Modal from './ModalTag.js';
+import Modal from './ModalPublicKey.js';
 
-class TagList extends Component {
+class PublicKey extends Component {
     state = {
         show: false
     };
@@ -16,18 +16,18 @@ class TagList extends Component {
     render() {
         if (this.state.show) {
             return <div>
-                <div onClick={this.closeModal}>{this.props.tag.name}</div>
-                <Modal object={this.props.tag}
+                <div onClick={this.closeModal}>{this.props.publicKey.name}</div>
+                <Modal object={this.props.publicKey}
                        closeModal={this.closeModal}
-                       changeTags={this.props.changeTags}
+                       changePublicKeys={this.props.changePublicKeys}
                        token={this.props.token}/>
             </div>
         } else {
             return <div>
-                <div onClick={this.openModal}>{this.props.tag.name}</div>
+                <div onClick={this.openModal}>{this.props.publicKey.name}</div>
             </div>
         };
-    };
+    }
 };
 
-export default TagList;
+export default PublicKey;

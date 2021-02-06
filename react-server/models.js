@@ -39,8 +39,10 @@ module.exports={
 
     GETPUBLICKEYS: {
         ROUTE: '/getpublickeys',
-        SQL(idcl) {return `SELECT idk,key FROM pkeys
-        WHERE idcl = ${idcl}`}
+        SQL(idcl) {return `SELECT pkey_names.idke,name,alias,idname
+        FROM pkeys, pkey_names
+        WHERE idcl = ${idcl}
+        AND pkey_names.idke=pkeys.idke`}
     },
 
     CHANGETAG: {
@@ -67,6 +69,51 @@ module.exports={
                 'idcl': req.idcl
             }
         }
-    }
+    },
 
+    CHANGEPKEY: {
+        ROUTE: '/changepkey',
+        SQL: `REPLACE INTO pkey_names SET ?`,
+        SQL_DATA(req) {
+            return {
+                'idname':req.idname,
+                'alias':req.alias,
+                'idke': req.idke,
+                'idcl': req.idcl
+            }
+        }
+    },
+
+    NEWTAG: {
+        ROUTE: '/newtag',
+        SQL: 'INSERT INTO tags SET ?',
+        SQL_DATA(req) {
+            return {
+                'name': req.name,
+                'created': new Date()
+            }
+        }
+    },
+
+    NEWADDRESS: {
+        ROUTE: '/newaddress',
+        SQL: 'INSERT INTO addresses SET ?',
+        SQL_DATA(req) {
+            return {
+                'name': req.name,
+                'created': new Date()
+            }
+        }
+    },
+
+    NEWPKEY: {
+        ROUTE: '/newpkey',
+        SQL: 'INSERT INTO pkeys SET ?',
+        SQL_DATA(req) {
+            return {
+                'name': req.name,
+                'created': new Date()
+            }
+        }
+    },
 };

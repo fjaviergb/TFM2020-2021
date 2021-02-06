@@ -33,9 +33,9 @@ class LoginForm extends Component {
             Service.getTags({idcl: res.data.idcl})
             .then(res => {this.props.addTags(res.data)})
             .catch(err => {console.log(err.data)})
-            // Service.getPublicKeys(res.data.idcl)
-            // .then(res => {})
-            // .catch(err => {})    
+            Service.getPublicKeys({idcl:res.data.idcl})
+            .then(res => {this.props.addPublicKeys(res.data)})
+            .catch(err => {console.log(err.data)})    
         })
         .catch(err => {console.log(err.data)});
     };

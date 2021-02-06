@@ -22,6 +22,18 @@ class Service {
     changeAddress(data){
         return http.post("/changeaddress", data)
     }
+    changePublicKey(data){
+        return http.post("/changepkey", data)
+    }
+    newAddress(data){
+        return http.post("/newaddress", data)
+    }
+    newTag(data){
+        return http.post("/newtag", data)
+    }
+    newPublicKey(data){
+        return http.post("/newpkey", data)
+    }
 }
 
 export default new Service();

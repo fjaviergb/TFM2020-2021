@@ -18,7 +18,6 @@ class AddressList extends Component {
             return <div>
                 <div onClick={this.closeModal}>{this.props.address.name}</div>
                 <Modal object={this.props.address}
-                       type={false}
                        closeModal={this.closeModal}
                        changeAddresses={this.props.changeAddresses}
                        token={this.props.token}/>
