@@ -41,7 +41,9 @@ class PreferenceForm extends Component{
                 <div><h3>Lista de addresses</h3>
                     {this.props.addresses.map(el => {
                         return <AddressList key={el.idad}
-                                     address={el}/>
+                                     address={el}
+                                     changeAddresses={this.props.changeAddresses}
+                                     token={this.props.token}/>
                     })}
                 </div>
  
@@ -58,7 +60,9 @@ class PreferenceForm extends Component{
                 <div><h3>Lista de tags</h3>
                     {this.props.tags.map(el => {
                         return <TagList key={el.idta}
-                                 tag={el}/>
+                                 tag={el}
+                                 changeTags={this.props.changeTags}
+                                 token={this.props.token}/>
                     })}
                 </div>
 

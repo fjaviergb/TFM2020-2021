@@ -91,6 +91,26 @@ class App extends Component {
     localStorage.setItem('publicKeys', this.state.publicKeys);
   };
 
+  changeTags = (e) => {
+    const tags = this.state.tags.map(elem => {;
+      if (elem.idta === e.idta) {elem.alias = e.alias}
+      return elem;
+    });
+
+    this.setState({tags: tags})
+    localStorage.setItem('tags', JSON.stringify(this.state.tags));
+  };
+
+  changeAddresses = (e) => {
+    const addresses = this.state.addresses.map(elem => {;
+      if (elem.idad === e.idad) {elem.alias = e.alias}
+      return elem;
+    });
+
+    this.setState({addresses: addresses})
+    localStorage.setItem('addresses', JSON.stringify(this.state.addresses));
+  };
+
   render () {
     if (!this.state.token) {
       return <div>
@@ -111,7 +131,10 @@ class App extends Component {
                             swapMain={this.swapMain}
                             mainStatus={this.state.mainStatus}
                             addresses={this.state.addresses}
-                            tags={this.state.tags}/>
+                            tags={this.state.tags}
+                            changeAddresses={this.changeAddresses}
+                            changeTags={this.changeTags}
+                            token={this.state.token}/>
             </div>
         }}></Route>
 

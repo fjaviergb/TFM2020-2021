@@ -43,4 +43,30 @@ module.exports={
         WHERE idcl = ${idcl}`}
     },
 
+    CHANGETAG: {
+        ROUTE: '/changetag',
+        SQL: `REPLACE INTO tag_names SET ?`,
+        SQL_DATA(req) {
+            return {
+                'idname':req.idta.toString() + req.idcl.toString(),
+                'alias':req.alias,
+                'idta': req.idta,
+                'idcl': req.idcl
+            }
+        }
+    },
+
+    CHANGEADDRESS: {
+        ROUTE: '/changeaddress',
+        SQL: `REPLACE INTO add_names SET ?`,
+        SQL_DATA(req) {
+            return {
+                'idname':req.idad.toString() + req.idcl.toString(),
+                'alias':req.alias,
+                'idad': req.idad,
+                'idcl': req.idcl
+            }
+        }
+    }
+
 };

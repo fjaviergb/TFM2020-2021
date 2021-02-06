@@ -52,10 +52,11 @@ body {
     offset-path: none;
   }
 }
-.modal h2 {
+.modal .header {
   border-bottom: 1px solid #ccc;
   padding: 1rem;
   margin: 0;
+  word-break: break-all;
 }
 .modal .content {
   padding: 1rem;

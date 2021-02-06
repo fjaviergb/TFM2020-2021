@@ -11,7 +11,10 @@ class BackPageForm extends Component{
                 <PreferenceForm swapMain={this.props.swapMain}
                               setToken={this.props.setToken}
                               addresses={this.props.addresses}
-                              tags={this.props.tags}/>
+                              tags={this.props.tags}
+                              token={this.props.token}
+                              changeAddresses={this.props.changeAddresses}
+                              changeTags={this.props.changeTags}/>
             </div>
         }
         else if (this.props.mainStatus === "profile") {

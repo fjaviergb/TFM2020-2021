@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import Modal from './Modal.js'
+import Modal from './ModalAddress.js';
+
 class AddressList extends Component {
     state = {
         show: false
@@ -16,7 +17,11 @@ class AddressList extends Component {
         if (this.state.show) {
             return <div>
                 <div onClick={this.closeModal}>{this.props.address.name}</div>
-                <Modal object={this.props.address} closeModal={this.closeModal}/>
+                <Modal object={this.props.address}
+                       type={false}
+                       closeModal={this.closeModal}
+                       changeAddresses={this.props.changeAddresses}
+                       token={this.props.token}/>
             </div>
         } else {
             return <div>

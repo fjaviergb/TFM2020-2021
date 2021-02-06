@@ -69,6 +69,28 @@ app.post(MODEL.GETTAGS.ROUTE, (req,res) => {
 // FALTAN KEYS
 //////////
 
+app.post(MODEL.CHANGETAG.ROUTE, (req, res) => {
+  pool.query(MODEL.CHANGETAG.SQL, MODEL.CHANGETAG.SQL_DATA(req.body), (err, result) => {
+      if (err) {
+        console.log(err)
+        res.json({ message: `Unknown error ${err.sqlMessage}` });
+      } else if (result) {
+        res.json({ idcl: req.body.idcl, alias: req.body.alias, idta:req.body.idta});
+      } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.CHANGEADDRESS.ROUTE, (req, res) => {
+  pool.query(MODEL.CHANGEADDRESS.SQL, MODEL.CHANGEADDRESS.SQL_DATA(req.body), (err, result) => {
+      if (err) {
+        console.log(err)
+        res.json({ message: `Unknown error ${err.sqlMessage}` });
+      } else if (result) {
+        res.json({ idcl: req.body.idcl, alias: req.body.alias, idad:req.body.idad});
+      } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

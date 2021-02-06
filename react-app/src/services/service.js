@@ -16,6 +16,12 @@ class Service {
     getPublicKeys(data){
         return http.post("/getpublickeys",data)
     }
+    changeTag(data){
+        return http.post("/changetag", data)
+    }
+    changeAddress(data){
+        return http.post("/changeaddress", data)
+    }
 }
 
 export default new Service();

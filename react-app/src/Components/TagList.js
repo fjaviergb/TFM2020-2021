@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Modal from './Modal.js';
+import Modal from './ModalTag.js';
 
 class TagList extends Component {
     state = {
@@ -17,7 +17,11 @@ class TagList extends Component {
         if (this.state.show) {
             return <div>
                 <div onClick={this.closeModal}>{this.props.tag.name}</div>
-                <Modal object={this.props.tag} closeModal={this.closeModal}/>
+                <Modal object={this.props.tag}
+                       type={true}
+                       closeModal={this.closeModal}
+                       changeTags={this.props.changeTags}
+                       token={this.props.token}/>
             </div>
         } else {
             return <div>
