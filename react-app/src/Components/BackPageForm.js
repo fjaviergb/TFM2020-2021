@@ -36,7 +36,11 @@ class BackPageForm extends Component{
             return <div>
                 <button onClick={this.props.removeToken}>Log Out</button>
                 <MainForm swapMain={this.props.swapMain}
-                          setToken={this.props.setToken}/>
+                          setToken={this.props.setToken}
+                          publicKeys={this.props.publicKeys}
+                          addresses={this.props.addresses}
+                          tags={this.props.tags}
+                          token={this.props.token}/>
             </div>
         }
     };
