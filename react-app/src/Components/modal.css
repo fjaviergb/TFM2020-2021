@@ -77,6 +77,15 @@ body {
   line-height: 1;
 }
 
+.entry {
+  text-decoration-line: underline; 
+  text-decoration-style: dotted;
+  border: 0rem;
+  background-color: #eee;
+  color: black;
+  width: 80%;
+}
+
 #centered-toggle-button {
   position: absolute;
 }

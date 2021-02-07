@@ -34,9 +34,15 @@ class MainForm extends Component{
             <form onSubmit={this.onSubmit}>
                 <MainFormAddresses addresses={this.props.addresses}
                                     adding={this.adding}/>
-                <MainFormTags/>
+                <MainFormTags tags={this.props.tags}
+                                    adding={this.adding}/>
                 <br/>
-                <input type="text" onChange={this.onChange} value={this.state.query} name="query"></input>
+                <input type="text"
+                 className="entry"
+                 placeholder="Write your query here"
+                 onChange={this.onChange}
+                 value={this.state.query}
+                 name="query"></input>
                 <br/>
                 <br/>
                 <button type="submit" onClick={this.onSearch}>search</button>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class Addresses extends Component {
+class Tags extends Component {
     state = {
         value: '',
     }
@@ -16,8 +16,8 @@ class Addresses extends Component {
             <div className="modalContainer" onClick={this.props.closeModal}></div>
             <div className="modal" id="modal">
                 <div className="content">
-                        <select name="select" size={this.props.addresses.length} onClick={this.onChange} onChange={this.onChange}>
-                            {this.props.addresses.map(el => {
+                        <select name="select" size={this.props.tags.length} onClick={this.onChange} onChange={this.onChange}>
+                            {this.props.tags.map(el => {
                                 return <option key={el.alias}
                                 value={el.alias}>{el.alias}</option>
                             })}
@@ -34,4 +34,4 @@ class Addresses extends Component {
     }
 };
 
-export default Addresses;
+export default Tags;
