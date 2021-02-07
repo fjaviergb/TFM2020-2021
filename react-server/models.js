@@ -176,13 +176,15 @@ module.exports={
         ROUTE: '/checkaddkey',
         SQL(req){return `SELECT idke from pkeys_adds
                 WHERE idad=${req.idad}
-                AND idcl=${req.idcl}`}
+                AND idcl=${req.idcl}
+                AND idke=${req.idke}`}
     },
 
     CHECKTAGKEY: {
         ROUTE: '/checktagkey',
         SQL(req){return `SELECT idke from pkeys_tags
                 WHERE idta=${req.idta}
-                AND idcl=${req.idcl}`}
+                AND idcl=${req.idcl}
+                AND idke=${req.idke}`}
     },
 };

@@ -1,61 +1,53 @@
 import React, {Component} from 'react';
 import Service from '../services/service.js';
 
-const checkTagKey = (idcl,idta) => {
-    var status = false;
-    Service.checkTagKey({
-        idcl:idcl,
-        idta:idta
-    })
-    .then(res => {
-        if (res.data.len > 0) {
-            status = true;
-        } else {
-            status = false;
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        status = false;
-    })
-    return status;
-};
-
-
 class ModalKeyBox extends Component {
     state = {
-        logged: false,
-        status: checkTagKey(this.props.token.idcl,this.props.object.idta)
+        toggle: false,
     };
 
     onChange = (e) => {
-        if (this.state.logged) {
+        if (this.state.toggle) {
             Service.pkeyOffTag({
                 idke:this.props.publicKey.idke,
                 idta:this.props.object.idta,
                 idcl:this.props.token.idcl
-            }).then(res => {this.setState({logged: !this.state.logged})})
+            }).then(res => {this.setState({toggle: !this.state.toggle})})
             .catch(err => console.log(err))
         } else {
             Service.pkeyOnTag({
                 idke:this.props.publicKey.idke,
                 idta:this.props.object.idta,
                 idcl:this.props.token.idcl
-            }).then(res => {this.setState({logged: !this.state.logged})})
+            }).then(res => {this.setState({toggle: !this.state.toggle})})
             .catch(err => console.log(err))
         }
     };
 
+    componentDidMount(){
+        Service.checkTagKey({
+            idcl:this.props.token.idcl,
+            idta:this.props.object.idta,
+            idke:this.props.publicKey.idke
+        })
+        .then(res => {
+            if (res.data.len !== 0) {
+                this.setState({toggle: true})
+            } else {
+                this.setState({toggle: false})
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({toggle: false})
+        })
+
+    };
+
     render() {
-        if (this.state.status === false) {
-            return <div>{this.props.publicKey.alias}
-                <input type="checkbox" onChange={this.onChange}></input>
-                </div>
-        } else {
-            return <div>{this.props.publicKey.alias}
-                <input type="checkbox" onChange={this.onChange} checked></input>
-                </div>       
-        }
+        return <div>{this.props.publicKey.alias}
+            <input type="checkbox" onChange={this.onChange} checked={this.state.toggle}></input>
+            </div>
     };
 };
 
