@@ -135,4 +135,54 @@ module.exports={
         SQL(idname) {return `DELETE FROM pkey_names WHERE idname = ${idname}`} 
     },
 
+    PKEYONTAG: {
+        ROUTE: '/pkeyontag',
+        SQL: 'INSERT INTO pkeys_tags SET ?',
+        SQL_DATA(req) {
+            return {
+                'idke': req.idke,
+                'idta': req.idta,
+                'idcl': req.idcl
+            }
+        },
+    },
+    PKEYOFFTAG: {
+        ROUTE: '/pkeyofftag',
+        SQL(req) {return `DELETE FROM pkeys_tags
+                     WHERE idke = ${req.idke}
+                     AND idta=${req.idta}
+                     AND idcl=${req.idcl}`} 
+    },
+    PKEYONADD: {
+        ROUTE: '/pkeyonadd',
+        SQL: 'INSERT INTO pkeys_adds SET ?',
+        SQL_DATA(req) {
+            return {
+                'idke': req.idke,
+                'idad': req.idad,
+                'idcl': req.idcl
+            }
+        },
+    },
+    PKEYOFFADD: {
+        ROUTE: '/pkeyoffadd',
+        SQL(req) {return `DELETE FROM pkeys_adds
+                    WHERE idke = ${req.idke}
+                    AND idad=${req.idad}
+                    AND idcl=${req.idcl}`} 
+    },
+
+    CHECKADDKEY: {
+        ROUTE: '/checkaddkey',
+        SQL(req){return `SELECT idke from pkeys_adds
+                WHERE idad=${req.idad}
+                AND idcl=${req.idcl}`}
+    },
+
+    CHECKTAGKEY: {
+        ROUTE: '/checktagkey',
+        SQL(req){return `SELECT idke from pkeys_tags
+                WHERE idta=${req.idta}
+                AND idcl=${req.idcl}`}
+    },
 };

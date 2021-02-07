@@ -5,6 +5,7 @@ const mysql = require('mysql');
 const dbConfig = require('./db-config.js')
 const MODEL = require('./models.js');
 var crypto = require("crypto");
+const { PKEYONADD } = require("./models.js");
 
 const app = express();
 const pool = mysql.createPool(dbConfig);
@@ -198,6 +199,70 @@ app.post(MODEL.DELPKEY.ROUTE, (req,res) => {
     } else {res.json({ message: "Unknown error; try again" });}
   });
 });
+
+app.post(MODEL.PKEYONADD.ROUTE, (req,res) => {
+  pool.query(MODEL.PKEYONADD.SQL,MODEL.PKEYONADD.SQL_DATA(req.body), (err,result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  })
+});
+
+app.post(MODEL.PKEYONTAG.ROUTE, (req,res) => {
+  pool.query(MODEL.PKEYONTAG.SQL,MODEL.PKEYONTAG.SQL_DATA(req.body), (err,result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  })
+});
+
+app.post(MODEL.PKEYOFFADD.ROUTE, (req,res) => {
+  pool.query(MODEL.PKEYOFFADD.SQL(req.body), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.PKEYOFFTAG.ROUTE, (req,res) => {
+  pool.query(MODEL.PKEYOFFTAG.SQL(req.body), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send({len: result.length});
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.CHECKADDKEY.ROUTE, (req,res) => {
+  pool.query(MODEL.CHECKADDKEY.SQL(req.body), (err,result) => {
+    if(err) {
+      console.log(err);
+    } else if (result) {
+      res.send({len: result.length});
+    }
+  });
+})
+
+app.post(MODEL.CHECKTAGKEY.ROUTE, (req,res) => {
+  pool.query(MODEL.CHECKTAGKEY.SQL(req.body), (err,result) => {
+    if(err) {
+      console.log(err);
+    } else if (result) {
+      res.send({len: result.length});
+    }
+  });
+})
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

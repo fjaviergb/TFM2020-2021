@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import './modal.css';
 import Service from '../services/service.js'
+import ModalKeyBox from './ModalKeyBoxTag.js';
 
 class Modal extends Component {
     state = {
@@ -41,6 +42,14 @@ class Modal extends Component {
                     <button>X</button>
                 </form>
                 <div className="content">{this.props.object.name}</div>
+                <div className="content">
+                    {this.props.publicKeys.map(elem => {
+                        return <ModalKeyBox key={elem.alias}
+                                            publicKey={elem}
+                                            object={this.props.object}
+                                            token={this.props.token}/>
+                    })}
+                </div>
                 <div className="actions">
                     <button className="toggle-button" onClick={this.props.closeModal}>
                         close

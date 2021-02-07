@@ -21,7 +21,8 @@ class AddressList extends Component {
                        closeModal={this.closeModal}
                        changeAddresses={this.props.changeAddresses}
                        token={this.props.token}
-                       deleteAddress={this.props.deleteAddress}/>
+                       deleteAddress={this.props.deleteAddress}
+                       publicKeys={this.props.publicKeys}/>
             </div>
         } else {
             return <div>

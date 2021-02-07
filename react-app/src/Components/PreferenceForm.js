@@ -97,7 +97,8 @@ class PreferenceForm extends Component{
                                      address={el}
                                      changeAddresses={this.props.changeAddresses}
                                      token={this.props.token}
-                                     deleteAddress={this.props.deleteAddress}/>
+                                     deleteAddress={this.props.deleteAddress}
+                                     publicKeys={this.props.publicKeys}/>
                     })}
                 </div>
  
@@ -117,7 +118,8 @@ class PreferenceForm extends Component{
                                  tag={el}
                                  changeTags={this.props.changeTags}
                                  token={this.props.token}
-                                 deleteTag={this.props.deleteTag}/>
+                                 deleteTag={this.props.deleteTag}
+                                 publicKeys={this.props.publicKeys}/>
                     })}
                 </div>
 

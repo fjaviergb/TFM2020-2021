@@ -42,8 +42,25 @@ class Service {
     }
     deletePublicKey(data){
         return http.post("/delpkey", data)
+    };
+    pkeyOnTag(data){
+        return http.post("/pkeyontag", data)
+    };
+    pkeyOffTag(data){
+        return http.post("/pkeyofftag", data)
+    };
+    pkeyOnAdd(data){
+        return http.post("/pkeyonadd", data)
+    };
+    pkeyOffAdd(data){
+        return http.post("/pkeyoffadd", data)
+    };
+    checkTagKey(data){
+        return http.post("/checktagkey", data)
     }
-
+    checkAddKey(data){
+        return http.post("/checkaddkey", data)
+    }
 }
 
 export default new Service();

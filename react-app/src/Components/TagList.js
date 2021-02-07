@@ -21,7 +21,8 @@ class TagList extends Component {
                        closeModal={this.closeModal}
                        changeTags={this.props.changeTags}
                        token={this.props.token}
-                       deleteTag={this.props.deleteTag}/>
+                       deleteTag={this.props.deleteTag}
+                       publicKeys={this.props.publicKeys}/>
             </div>
         } else {
             return <div>
