@@ -14,11 +14,11 @@ class Addresses extends Component {
             <div className="modalContainer" onClick={this.props.closeModal}></div>
                 <div className="modal" id="modal">
                     <div className="content">
-                        {this.props.result.name}
+                        {this.props.result.message}
                     </div>
                     <div className="actions">
-                        <select name="select" size="2" onChange={this.swap}>
-                            <option defaultValue>Estruturado</option>
+                        <select name="select" size="2" onChange={this.swap} value="first">
+                            <option defaultValue="first">Estruturado</option>
                             <option>Trytes</option>
                         </select>
 
@@ -37,7 +37,7 @@ class Addresses extends Component {
                     </div>
                     <div className="actions">
                         <select name="select" size="2" onChange={this.swap}>
-                            <option selected>Estruturado</option>
+                            <option>Estruturado</option>
                             <option>Trytes</option>
                         </select>
 

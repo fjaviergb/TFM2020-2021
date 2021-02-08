@@ -269,11 +269,20 @@ app.post(MODEL.QUERYALL.ROUTE, (req,res) => {
     if(err) {
       console.log(err);
     } else if (result) {
-      res.send({result});
+      res.send({result: result});
     }
   });
 })
 
+app.post(MODEL.QUERYPKEYS.ROUTE, (req,res) => {
+  pool.query(MODEL.QUERYPKEYS.SQL(req.body), (err,result) => {
+    if(err) {
+      console.log(err);
+    } else if (result) {
+      res.send({result: result});
+    }
+  });
+})
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

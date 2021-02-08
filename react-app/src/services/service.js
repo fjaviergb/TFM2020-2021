@@ -64,7 +64,9 @@ class Service {
     queryAll(data){
         return http.post("/queryall", data)
     }
-
+    queryPkeys(data){
+        return http.post("/querypkeys", data)
+    }
 }
 
 export default new Service();

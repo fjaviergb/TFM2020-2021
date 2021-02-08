@@ -192,4 +192,16 @@ module.exports={
         ROUTE: '/queryall',
         SQL(req) {return `SELECT * FROM transactions WHERE ${req.query}`}
     },
+
+    QUERYPKEYS: {
+        ROUTE: '/querypkeys',
+        SQL(req) {return `SELECT idke
+                            FROM pkeys_adds
+                            WHERE pkeys_adds.idad=${req.idad} AND pkeys_adds.idcl=${req.idcl}
+                            UNION
+                            SELECT idke
+                            FROM pkeys_tags
+                            WHERE pkeys_tags.idta=${req.idta} AND pkeys_tags.idcl=${req.idcl}`
+                }
+    }
 };
