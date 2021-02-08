@@ -264,6 +264,17 @@ app.post(MODEL.CHECKTAGKEY.ROUTE, (req,res) => {
   });
 })
 
+app.post(MODEL.QUERYALL.ROUTE, (req,res) => {
+  pool.query(MODEL.QUERYALL.SQL(req.body), (err,result) => {
+    if(err) {
+      console.log(err);
+    } else if (result) {
+      res.send({result});
+    }
+  });
+})
+
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

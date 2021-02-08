@@ -5,11 +5,17 @@ class Tags extends Component {
         value: '',
     }
     onChange = (e) => {
-        this.setState({value: e.target.value})
+        this.setState({
+            value: JSON.parse(e.target.value).alias,
+            idta: JSON.parse(e.target.value).idta
+        })
     };
 
     texting = (e) => {
-        this.props.adding(this.state.value)
+        this.props.adding({
+            forText: this.state.value,
+            forQuery: `idta=${this.state.idta}`
+        })
     }
     render() {
         return <div>
@@ -19,7 +25,10 @@ class Tags extends Component {
                         <select name="select" size={this.props.tags.length} onClick={this.onChange} onChange={this.onChange}>
                             {this.props.tags.map(el => {
                                 return <option key={el.alias}
-                                value={el.alias}>{el.alias}</option>
+                                value={JSON.stringify({
+                                    alias:el.alias,
+                                    idta:el.idta
+                                })}>{el.alias}</option>
                             })}
                         </select><br/>
                         <button onClick={this.texting}>add</button>

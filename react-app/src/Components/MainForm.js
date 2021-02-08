@@ -2,24 +2,36 @@ import React, {Component} from 'react';
 import MainFormAddresses from './MainFormAddresses.js';
 import MainFormTags from './MainFormTags.js';
 import './modal.css';
+import Service from '../services/service.js';
+import Results from './MainForm/Results.js'
 
 class MainForm extends Component{
     state = {
-        query: '',
-        results: []
+        forText: ``,
+        results: [],
     };
     onChange = (e) => {
-        this.setState({query: e.target.value})
+        this.setState({
+            forText: e.target.value,
+        })
 
     };
     adding = (e) => {
-        this.setState({query: this.state.query + e})   
-    }
-    onSubmit = (e) => {
-        e.preventDefault()
+        this.setState({
+            forText: this.state.forText + `${e.forQuery}`,
+        })   
     };
-    onSearch = (e) => {
-        // SEARCH IN DB
+    queryAll = (e) => {
+        console.log(this.state.forText)
+        e.preventDefault()
+        Service.queryAll({
+            query: this.state.forText,
+            idcl: this.props.token.idcl
+        })
+        .then(res => {
+            this.setState({results: res.data.result})
+        })
+        .catch(err => console.log(err))
     };
 
     render() {
@@ -31,27 +43,26 @@ class MainForm extends Component{
             <button onClick={this.props.swapMain} name={"preference"}>Preferences</button>     
             <br/><br/>
             <div><h2>QUERY:</h2></div>  
-            <form onSubmit={this.onSubmit}>
                 <MainFormAddresses addresses={this.props.addresses}
                                     adding={this.adding}/>
                 <MainFormTags tags={this.props.tags}
                                     adding={this.adding}/>
                 <br/>
-                <input type="text"
-                 className="entry"
-                 placeholder="Write your query here"
-                 onChange={this.onChange}
-                 value={this.state.query}
-                 name="query"></input>
+                <textarea 
+                    className="entry"
+                    placeholder="Write your query here"
+                    onChange={this.onChange}
+                    value={this.state.forText}
+                    name="query">
+                </textarea>
                 <br/>
                 <br/>
-                <button type="submit" onClick={this.onSearch}>search</button>
-            </form>
+                <button onClick={this.queryAll}>search</button>
 
             <div><h2>Resultados:</h2>
-                {/* {this.state.results.map(el => {
-                    // MODAL DE CADA ELEMENTO
-                })} */}
+                {this.state.results.map((el) => {
+                    return <Results key={el.name} result={el}/>
+                })}
             </div>
         </div>
     };

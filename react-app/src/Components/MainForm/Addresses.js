@@ -5,11 +5,17 @@ class Addresses extends Component {
         value: '',
     }
     onChange = (e) => {
-        this.setState({value: e.target.value})
+        this.setState({
+            value: JSON.parse(e.target.value).alias,
+            idad: JSON.parse(e.target.value).idad
+        })
     };
 
     texting = (e) => {
-        this.props.adding(this.state.value)
+        this.props.adding({
+            forText: this.state.value,
+            forQuery: `idad=${this.state.idad}`
+        })
     }
     render() {
         return <div>
@@ -19,7 +25,10 @@ class Addresses extends Component {
                         <select name="select" size={this.props.addresses.length} onClick={this.onChange} onChange={this.onChange}>
                             {this.props.addresses.map(el => {
                                 return <option key={el.alias}
-                                value={el.alias}>{el.alias}</option>
+                                value={JSON.stringify({
+                                    alias:el.alias,
+                                    idad:el.idad
+                                })}>{el.alias}</option>
                             })}
                         </select><br/>
                         <button onClick={this.texting}>add</button>

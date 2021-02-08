@@ -27,9 +27,12 @@ body {
   transform: scale(1);
   opacity: 1;
   visibility: visible;
-  position: fixed;
+  position: absolute;
   top: 30%;
   left: 25%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 150px;
 }
 .modal.off {
   opacity: 0;
@@ -83,7 +86,11 @@ body {
   border: 0rem;
   background-color: #eee;
   color: black;
-  width: 80%;
+
+}
+textarea {
+  width: 500px;
+  height:100px; 
 }
 
 #centered-toggle-button {

@@ -61,6 +61,10 @@ class Service {
     checkAddKey(data){
         return http.post("/checkaddkey", data)
     }
+    queryAll(data){
+        return http.post("/queryall", data)
+    }
+
 }
 
 export default new Service();

@@ -174,7 +174,7 @@ module.exports={
 
     CHECKADDKEY: {
         ROUTE: '/checkaddkey',
-        SQL(req){return `SELECT idke from pkeys_adds
+        SQL(req){return `SELECT idke FROM pkeys_adds
                 WHERE idad=${req.idad}
                 AND idcl=${req.idcl}
                 AND idke=${req.idke}`}
@@ -182,9 +182,14 @@ module.exports={
 
     CHECKTAGKEY: {
         ROUTE: '/checktagkey',
-        SQL(req){return `SELECT idke from pkeys_tags
+        SQL(req) {return `SELECT idke FROM pkeys_tags
                 WHERE idta=${req.idta}
                 AND idcl=${req.idcl}
                 AND idke=${req.idke}`}
+    },
+
+    QUERYALL: {
+        ROUTE: '/queryall',
+        SQL(req) {return `SELECT * FROM transactions WHERE ${req.query}`}
     },
 };
