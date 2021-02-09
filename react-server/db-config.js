@@ -4,5 +4,5 @@ module.exports = {
     port: '3306',
     user: 'root',
     password: 'PutosRusosSQL13186',
-    database: 'TFM_DB',
+    database: 'TFM_DB2',
   };

@@ -50,7 +50,7 @@ module.exports={
         SQL: `REPLACE INTO tag_names SET ?`,
         SQL_DATA(req) {
             return {
-                'idname':req.idta.toString() + req.idcl.toString(),
+                'idname':req.idname,
                 'alias':req.alias,
                 'idta': req.idta,
                 'idcl': req.idcl
@@ -63,7 +63,7 @@ module.exports={
         SQL: `REPLACE INTO add_names SET ?`,
         SQL_DATA(req) {
             return {
-                'idname':req.idad.toString() + req.idcl.toString(),
+                'idname':req.idname,
                 'alias':req.alias,
                 'idad': req.idad,
                 'idcl': req.idcl
@@ -203,5 +203,33 @@ module.exports={
                             FROM pkeys_tags
                             WHERE pkeys_tags.idta=${req.idta} AND pkeys_tags.idcl=${req.idcl}`
                 }
-    }
+    },
+
+    REMOVEPKEYRELATIONSTAGS: {
+        ROUTE: '/removepkeyrelationstags',
+        SQL(req) {return `DELETE FROM pkeys_tags
+                    WHERE idke = ${req.idke}
+                    AND idcl=${req.idcl}`}
+    },
+
+    REMOVEPKEYRELATIONSADDS: {
+        ROUTE: '/removepkeyrelationsadds',
+        SQL(req) {return `DELETE FROM pkeys_adds
+                    WHERE idke = ${req.idke}
+                    AND idcl=${req.idcl}`}
+    },
+
+    REMOVEADDRESSRELATIONS: {
+        ROUTE: '/removeaddressrelations',
+        SQL(req) {return `DELETE FROM pkeys_adds
+                    WHERE idad = ${req.idad}
+                    AND idcl=${req.idcl}`}
+    },
+
+    REMOVETAGRELATIONS: {
+        ROUTE: '/removetagrelations',
+        SQL(req) {return `DELETE FROM pkeys_tags
+                    WHERE idta = ${req.idta}
+                    AND idcl=${req.idcl}`}
+    },
 };

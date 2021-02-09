@@ -35,7 +35,9 @@ class MainForm extends Component{
                 .then(_res => {
                     _res.data.result.forEach(pkey => {
                         let key = this.props.publicKeys.filter(elem => elem.idke === pkey.idke)
-                        el.message = [TRYTES.TRYTESTOASCII(el.trytes.slice(0,2187)), key[0].name]
+                        if (key.length > 0) {
+                            el.message = [TRYTES.TRYTESTOASCII(el.trytes.slice(0,2187)), key[0].name]
+                        }
                     })
                 })
                 .catch(err => console.log(err))

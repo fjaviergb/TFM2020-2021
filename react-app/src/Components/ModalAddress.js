@@ -12,6 +12,7 @@ class Modal extends Component {
     onSubmit = (e) => {
         e.preventDefault()
         Service.changeAddress({
+            idname: this.props.object.idname,
             alias: this.state.alias,
             idcl:this.props.token.idcl,
             idad: this.props.object.idad,
@@ -27,6 +28,9 @@ class Modal extends Component {
     };
 
     onDelete = (e) => {
+        Service.removeAddressRelations({idad: this.props.object.idad, idcl:this.props.token.idcl})
+        .then(res => {'Address removed successfully'})
+        .catch(err => console.log(err))
         Service.deleteAddress({idname: this.props.object.idname})
         .then(res => {
             this.props.deleteAddress(this.props.object.idname)

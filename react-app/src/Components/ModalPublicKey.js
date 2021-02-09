@@ -26,6 +26,12 @@ class Modal extends Component {
     };
 
     onDelete = (e) => {
+        Service.removePkeyRelationsTags({idke: this.props.object.idke, idcl: this.props.token.idcl})
+        .then(res => {console.log('Successfully deleted from tags')})
+        .catch(err => console.log(err))
+        Service.removePkeyRelationsAdds({idke: this.props.object.idke, idcl: this.props.token.idcl})
+        .then(res => {console.log('Successfully deleted from addresses')})
+        .catch(err => console.log(err))
         Service.deletePublicKey({idname: this.props.object.idname})
         .then(res => {
             this.props.deletePublicKey(this.props.object.idname)

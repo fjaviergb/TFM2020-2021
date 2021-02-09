@@ -12,6 +12,7 @@ class Modal extends Component {
     onSubmit = (e) => {
         e.preventDefault()
         Service.changeTag({
+            idname: this.props.object.idname,
             alias: this.state.alias,
             idcl:this.props.token.idcl,
             idta: this.props.object.idta,
@@ -26,6 +27,9 @@ class Modal extends Component {
     };
 
     onDelete = (e) => {
+        Service.removeTagRelations({idta: this.props.object.idta, idcl:this.props.token.idcl})
+        .then(res => {'Tag removed successfully'})
+        .catch(err => console.log(err))
         Service.deleteTag({idname: this.props.object.idname})
         .then(res => {
             this.props.deleteTag(this.props.object.idname)

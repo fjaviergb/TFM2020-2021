@@ -60,6 +60,7 @@ class App extends Component {
     localStorage.removeItem('tags');
     localStorage.removeItem('publicKeys');
     this.setState({token: ''})
+    this.setState({mainStatus: 'main'})
   };
 
   swapLog = (e) => {

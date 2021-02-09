@@ -67,6 +67,18 @@ class Service {
     queryPkeys(data){
         return http.post("/querypkeys", data)
     }
+    removePkeyRelationsTags(data){
+        return http.post('/removepkeyrelationstags', data)
+    }
+    removePkeyRelationsAdds(data){
+        return http.post('/removepkeyrelationsadds', data)
+    }
+    removeTagRelations(data){
+        return http.post('/removetagrelations', data)
+    }
+    removeAddressRelations(data){
+        return http.post('/removeaddressrelations', data)
+    }
 }
 
 export default new Service();

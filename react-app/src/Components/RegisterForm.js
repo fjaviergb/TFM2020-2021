@@ -23,22 +23,24 @@ class RegisterForm extends Component {
         Service.register(this.state)
         .then(res => {
             console.log(res.data);
-            this.props.setToken({
-                token: res.data.token,
-                idcl:res.data.idcl,
-                name:res.data.name
-            });  
-            Service.getAddresses({idcl: res.data.idcl})
-            .then(res => {this.props.addAddresses(res.data)})
-            .catch(err => {console.log(err.data)})
-            Service.getTags({idcl: res.data.idcl})
-            .then(res => {this.props.addTags(res.data)})
-            .catch(err => {console.log(err.data)})
-            Service.getPublicKeys({idcl:res.data.idcl})
-            .then(res => {this.props.addPublicKeys(res.data)})
-            .catch(err => {console.log(err.data)})    
+            if (res.data.type) {
+                this.props.setToken({
+                    token: res.data.token,
+                    idcl:res.data.idcl,
+                    name:res.data.name
+                });  
+                Service.getAddresses({idcl: res.data.idcl})
+                .then(res => {this.props.addAddresses(res.data)})
+                .catch(err => {console.log(err.data)})
+                Service.getTags({idcl: res.data.idcl})
+                .then(res => {this.props.addTags(res.data)})
+                .catch(err => {console.log(err.data)})
+                Service.getPublicKeys({idcl:res.data.idcl})
+                .then(res => {this.props.addPublicKeys(res.data)})
+                .catch(err => {console.log(err.data)})    
+            }
         })
-        .catch(err => {console.log(err.data)});
+        .catch(err => {console.log(err.data.message)});
     };
 
 

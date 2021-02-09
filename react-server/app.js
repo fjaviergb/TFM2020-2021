@@ -28,8 +28,8 @@ app.post(MODEL.LOGIN.ROUTE, (req, res) => {
         if (err) {
             res.json({ message: "Unknown error" });
         } else if (result.length > 0) {
-            res.json({ idcl: result[0].idcl, name: result[0].name, token: crypto.randomBytes(20).toString('hex')});
-        } else {res.json({ message: "User/password incorrect" });}
+            res.json({ type: true, idcl: result[0].idcl, name: result[0].name, token: crypto.randomBytes(20).toString('hex')});
+        } else {res.json({ type: false, message: "User/password incorrect" });}
     });
 });
 
@@ -37,10 +37,10 @@ app.post(MODEL.REGISTER.ROUTE, (req, res) => {
   pool.query(MODEL.REGISTER.SQL, MODEL.REGISTER.SQL_DATA(req.body), (err, result) => {
       if (err) {
         console.log(err)
-        res.json({ message: `Unknown error ${err.sqlMessage}` });
+        res.json({ type: false, message: `Unknown error ${err.sqlMessage}` });
       } else if (result) {
-        res.json({ idcl: result.insertId, name: req.body.name, token: crypto.randomBytes(20).toString('hex')});
-      } else {res.json({ message: "Unknown error; try again" });}
+        res.json({ type: true, idcl: result.insertId, name: req.body.name, token: crypto.randomBytes(20).toString('hex')});
+      } else {res.json({ type: false, message: "Unknown error; try again" });}
   });
 });
 
@@ -283,6 +283,50 @@ app.post(MODEL.QUERYPKEYS.ROUTE, (req,res) => {
     }
   });
 })
+
+app.post(MODEL.REMOVEPKEYRELATIONSTAGS.ROUTE, (req,res) => {
+  pool.query(MODEL.REMOVEPKEYRELATIONSTAGS.SQL(req.body), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.REMOVEPKEYRELATIONSADDS.ROUTE, (req,res) => {
+  pool.query(MODEL.REMOVEPKEYRELATIONSADDS.SQL(req.body), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.REMOVEADDRESSRELATIONS.ROUTE, (req,res) => {
+  pool.query(MODEL.REMOVEADDRESSRELATIONS.SQL(req.body), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
+
+app.post(MODEL.REMOVETAGRELATIONS.ROUTE, (req,res) => {
+  pool.query(MODEL.REMOVETAGRELATIONS.SQL(req.body), (err, result) => {
+    if(err) {
+      console.log(err);
+      res.json({ message: `Unknown error ${err.sqlMessage}` });
+    } else if (result) {
+      res.send(result);
+    } else {res.json({ message: "Unknown error; try again" });}
+  });
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
