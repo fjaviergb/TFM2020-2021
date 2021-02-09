@@ -11,15 +11,15 @@ from sqlalchemy.engine.url import URL
 engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                        .format(user="root",
                                pw="PutosRusosSQL13186",
-                               db="TFM_DB"))
+                               db="TFM_DB2"))
 
 _headers = {
     'content-type': 'application/json',
     'X-IOTA-API-Version': '1'
 }
 
-_local = 'http://192.168.1.33:14265'
-_url = 'https://nodes.thetangle.org:443'
+_local = 'https://nodes.thetangle.org:443'
+_url = 'http://92.22.55.226:14265'
 
 async def fetch(client,_key,row):
     _data = json.dumps({
@@ -62,7 +62,7 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="PutosRusosSQL13186",
-    database="TFM_DB",
+    database="TFM_DB2",
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)

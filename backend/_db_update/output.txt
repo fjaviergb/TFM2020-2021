@@ -346,3 +346,50 @@ Addresses & Tags removed succesfully
 Addresses & Tags removed succesfully
 Addresses & Tags removed succesfully
 Addresses & Tags removed succesfully
+Addresses & Tags removed succesfully
+Addresses & Tags removed succesfully
+Requesting tags tags, length 1
+Requesting addresses addresses, length 1
+Requesting addresses addresses, length 3
+Object creator 5 objects
+Objects per tick... 5
+Receiving per tick... 5
+Updating %s tx
+Updating COBWNGDNZTEAEPVHGBBBFAGUWOI tx
+Addresses & Tags removed succesfully
+Requesting tags tags, length 1
+Requesting addresses addresses, length 1
+Requesting addresses addresses, length 3
+Object creator 5 objects
+Objects per tick... 5
+Receiving per tick... 5
+Updating %s tx
+Addresses & Tags removed succesfully
+Requesting tags tags, length 1
+Requesting tags tags, length 3
+Requesting tags tags, length 4
+Requesting addresses addresses, length 1
+Requesting addresses addresses, length 4
+Requesting addresses addresses, length 3
+Object creator 20 objects
+Objects per tick... 20
+Receiving per tick... 20
+Updating %s tx
+Updating %s tx
+Updating BXOUBCAEOYFDQARTUELBFEEGPAO tx
+Updating COBWNGDNZTEAEPVHGBBBFAGUWOI tx
+Updating QKLOVCRJHKHITJRIMVARCMPXBBT tx
+Addresses & Tags removed succesfully
+Requesting tags tags, length 3
+Requesting tags tags, length 1
+Requesting tags tags, length 4
+Requesting addresses addresses, length 6
+Requesting addresses addresses, length 5
+Object creator 10 objects
+Objects per tick... 10
+Receiving per tick... 10
+Updating %s tx
+Updating %s tx
+Updating BXOUBCAEOYFDQARTUELBFEEGPAO tx
+Updating COBWNGDNZTEAEPVHGBBBFAGUWOI tx
+Updating QKLOVCRJHKHITJRIMVARCMPXBBT tx
