@@ -1,9 +1,92 @@
-body {
-  background: #eee;
-  display: flex;
-  /* justify-content: center;
-  align-items: center; */
+/* ALL */
+
+:root {
+  --backColor: white;
+  --headerColor: rgb(13, 86, 196);
 }
+
+body {
+  background: var(--backColor);
+  display: flex;
+}
+
+/* FRONTPAGE */
+
+.front {
+  position: fixed;
+  top: 25%;
+  left: 40%;
+  width:20%;
+  display:flex;
+  flex-direction: column;
+  box-shadow: -2rem 2rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.front .header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.front .header .btnNotSelected {
+  background-color: grey;
+  border: 3px solid grey;
+  padding: 5% 0% 5% 0%;
+}
+
+.front .header .btnSelected {
+  background-color:lightgray;
+  border: 3px solid grey;
+  padding: 5% 0% 5% 0%;
+  border-bottom: none;
+}
+
+.front form {
+  display: flex;
+  flex-direction: column;
+  background-color: lightgray;
+  border: 3px solid grey;
+  border-top:none;
+}
+
+.front form input {
+  background-color: lightgray;
+  padding: 2% 0% 2% 0%;
+  border: none;
+  border-bottom: 2px dotted black;
+}
+
+.front form .feet button {
+  background-color: lightgreen;
+  border: none;
+  padding: 2% 0% 2% 0%;
+  margin-top: 2%;
+  width: 100%;
+}
+
+.front .body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* BACKPAGE */
+
+.back {
+    position: fixed;
+    top: 3%;
+    left: 3%;
+    width:94%;
+}
+
+.back .logout {
+  position: fixed;
+  top: 5%;
+  left:85%;
+  background-color: rgb(233, 173, 173);
+  border: 3px solid var(--headerColor);
+
+}
+
+/* MODAL */
 
 .modalContainer {
     position: fixed;

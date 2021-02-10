@@ -44,31 +44,40 @@ class RegisterForm extends Component {
     };
 
 
+
     render () {
-        return  <div>
-                <button onClick={this.props.swapLog} name={"register"}>Register</button>
-                <button onClick={this.props.swapLog} name={"login"}>Login</button>
+        return  <div className="front">
+                <div className="header">
+                    <button onClick={this.props.swapLog}
+                            name={"register"}
+                            className="btnSelected">Register</button>
+                    <button onClick={this.props.swapLog}
+                            name={"login"}
+                            className="btnNotSelected">Login</button>
+                </div>
                 <form onSubmit={this.onSubmit}>
-                <input type='text'
-                    placeholder="Enter your account name"
-                    name='name'
-                    onChange={this.onChange}
-                    value={this.state.user}/>
-                <br/>
-                <input type='text'
-                    placeholder="Enter your password"
-                    name='password'
-                    onChange={this.onChange}
-                    value={this.state.passwd}/>
-                <br/>                    
-                <input type='text'
-                    placeholder="Enter your email"
-                    name='contact'
-                    onChange={this.onChange}
-                    value={this.state.contact}/>
-                <br/>
-                <button type='submit' onClick={this.request}>Register</button>
-            </form></div>
+                    <div className="body">
+                        <input type='text'
+                            placeholder="Enter your account name"
+                            name='name'
+                            onChange={this.onChange}
+                            value={this.state.user}/>
+                        <input type='text'
+                            placeholder="Enter your password"
+                            name='password'
+                            onChange={this.onChange}
+                            value={this.state.passwd}/>              
+                        <input type='text'
+                            placeholder="Enter your email"
+                            name='contact'
+                            onChange={this.onChange}
+                            value={this.state.contact}/>
+                    </div>
+                    <div className="feet">
+                        <button type='submit' onClick={this.request}>Submit</button>
+                    </div>
+                </form>
+            </div>
     };
 };
 

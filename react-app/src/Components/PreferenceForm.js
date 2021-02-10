@@ -75,8 +75,6 @@ class PreferenceForm extends Component{
 
         return <div>
             <br/>
-            <button onClick={this.props.swapMain} name={"profile"}>Profile</button>
-            <br/>
             <button onClick={this.props.swapMain} name={"main"}>Main</button>
             <br/>
             <button onClick={this.props.swapMain} name={"preference"}>Preferences</button> 

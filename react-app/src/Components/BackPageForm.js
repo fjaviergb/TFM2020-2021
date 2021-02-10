@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import PreferenceForm from './PreferenceForm.js';
-import ProfileForm from './ProfileForm.js';
 import MainForm from './MainForm.js';
 
 class BackPageForm extends Component{
     render() {
         if (this.props.mainStatus === "preference") {
-            return <div>
-                <button onClick={this.props.removeToken}>Log Out</button>
+            return <div className="back">
+                <button onClick={this.props.removeToken}
+                        className="logout">Log Out</button>
                 <PreferenceForm swapMain={this.props.swapMain}
                               setToken={this.props.setToken}
                               addresses={this.props.addresses}
@@ -25,16 +25,10 @@ class BackPageForm extends Component{
                               deletePublicKey={this.props.deletePublicKey}/>
             </div>
         }
-        else if (this.props.mainStatus === "profile") {
-            return <div>
-                <button onClick={this.props.removeToken}>Log Out</button>
-                <ProfileForm swapMain={this.props.swapMain}
-                             setToken={this.props.setToken}/>
-            </div>
-        }
         else {
-            return <div>
-                <button onClick={this.props.removeToken}>Log Out</button>
+            return <div className="back">
+                <button onClick={this.props.removeToken}
+                        className="logout">Log Out</button>
                 <MainForm swapMain={this.props.swapMain}
                           setToken={this.props.setToken}
                           publicKeys={this.props.publicKeys}

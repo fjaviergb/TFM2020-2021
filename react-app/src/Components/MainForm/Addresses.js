@@ -22,7 +22,8 @@ class Addresses extends Component {
             <div className="modalContainer" onClick={this.props.closeModal}></div>
             <div className="modal" id="modal">
                 <div className="content">
-                        <select name="select" size={this.props.addresses.length} onClick={this.onChange} onChange={this.onChange}>
+                        <select name="select" size={this.props.addresses.length}
+                                            onChange={this.onChange}>
                             {this.props.addresses.map(el => {
                                 return <option key={el.alias}
                                 value={JSON.stringify({

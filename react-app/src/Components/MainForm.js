@@ -38,19 +38,25 @@ class MainForm extends Component{
                 var trytes = TRYTES.TRYTESTOASCII(el.trytes.slice(0,2187))
                 Service.queryPkeys({idta: el.idta, idad: el.idad, idcl:this.props.token.idcl})
                 .then(_res => {
-                    _res.data.result.forEach(pkey => {
-                        let key = this.props.publicKeys.filter(elem => elem.idke === pkey.idke)
-                        if (key.length > 0) {
-                            let key_public = new NodeRSA(key[0].name)
-                            try {
-                                var decryptedData = key_public.decryptPublic(trytes, 'utf8')
-                            } catch (err) {decryptedData = ''}
-                            console.log(decryptedData)
-                            if(decryptedData) {el.message = decryptedData;}
+                    if (_res.data.result.length > 0) {
+                        _res.data.result.forEach(pkey => {
+                            let key = this.props.publicKeys.filter(elem => elem.idke === pkey.idke)
+                            if (key.length > 0) {
+                                let key_public = new NodeRSA(key[0].name)
+                                try {
+                                    var decryptedData = key_public.decryptPublic(trytes, 'utf8')
+                                } catch (err) {decryptedData = ''}
+                                if(decryptedData) {el.message = decryptedData;}
+                            }
+                        })
+                        if (el.message) {
+                            this.setState({results: [...this.state.results,el]})
                         }
-                    })
-                    if (el.message) {
-                        this.setState({results: [...this.state.results,el]})
+                    } else {
+                        el.message = trytes;
+                        if (el.message) {
+                            this.setState({results: [...this.state.results,el]})
+                        }
                     }
                 })
                 .catch(err => console.log(err))
@@ -61,8 +67,6 @@ class MainForm extends Component{
 
     render() {
         return <div><br/>
-            <button onClick={this.props.swapMain} name={"profile"}>Profile</button>
-            <br/>
             <button onClick={this.props.swapMain} name={"main"}>Main</button>
             <br/>
             <button onClick={this.props.swapMain} name={"preference"}>Preferences</button>     

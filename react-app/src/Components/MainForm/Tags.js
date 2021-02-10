@@ -22,7 +22,8 @@ class Tags extends Component {
             <div className="modalContainer" onClick={this.props.closeModal}></div>
             <div className="modal" id="modal">
                 <div className="content">
-                        <select name="select" size={this.props.tags.length} onClick={this.onChange} onChange={this.onChange}>
+                        <select name="select" size={this.props.tags.length}
+                                            onChange={this.onChange}>
                             {this.props.tags.map(el => {
                                 return <option key={el.alias}
                                 value={JSON.stringify({

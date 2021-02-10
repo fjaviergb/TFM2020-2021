@@ -46,23 +46,27 @@ class LoginForm extends Component {
     };
 
     render () {
-        return  <div>
-                <button onClick={this.props.swapLog} name={"register"}>Register</button>
-                <button onClick={this.props.swapLog} name={"login"}>Login</button>
+        return  <div className="front">
+                <div className="header">
+                    <button onClick={this.props.swapLog} name={"register"} className="btnNotSelected">Register</button>
+                    <button onClick={this.props.swapLog} name={"login"} className="btnSelected">Login</button>
+                </div>
                 <form onSubmit={this.onSubmit}>
-                <input type='text'
-                    placeholder="Enter your email"
-                    name='contact'
-                    onChange={this.onChange}
-                    value={this.state.contact}/>
-                <br/>            
-                <input type='text'
-                    placeholder="Enter your password"
-                    name='passwd'
-                    onChange={this.onChange}
-                    value={this.state.passwd}/>
-                <br/>                    
-                <button type='submit' onClick={this.request}>Login</button>
+                    <div className="body">
+                        <input type='text'
+                            placeholder="Enter your email"
+                            name='contact'
+                            onChange={this.onChange}
+                            value={this.state.contact}/>           
+                        <input type='text'
+                            placeholder="Enter your password"
+                            name='passwd'
+                            onChange={this.onChange}
+                            value={this.state.passwd}/>
+                    </div>
+                    <div className="feet">                    
+                        <button type='submit' onClick={this.request}>Submit</button>
+                    </div>
             </form></div>
     };
 };
