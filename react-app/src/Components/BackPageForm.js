@@ -26,7 +26,7 @@ class BackPageForm extends Component{
             </div>
         }
         else {
-            return <div className="back">
+            return <div className="back">              
                 <button onClick={this.props.removeToken}
                         className="logout">Log Out</button>
                 <MainForm swapMain={this.props.swapMain}

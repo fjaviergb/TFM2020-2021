@@ -66,17 +66,23 @@ class MainForm extends Component{
     };
 
     render() {
-        return <div><br/>
-            <button onClick={this.props.swapMain} name={"main"}>Main</button>
-            <br/>
-            <button onClick={this.props.swapMain} name={"preference"}>Preferences</button>     
-            <br/><br/>
-            <div><h2>QUERY:</h2></div>  
-                <MainFormAddresses addresses={this.props.addresses}
-                                    adding={this.adding}/>
-                <MainFormTags tags={this.props.tags}
-                                    adding={this.adding}/>
-                <br/>
+        return <div className="main">
+            <div className="header">
+                <button onClick={this.props.swapMain}
+                        name={"main"}
+                        className="btnSelected">Main</button>
+                <button onClick={this.props.swapMain}
+                        name={"preference"}
+                        className="btnNotSelected">Preferences</button>     
+            </div>
+            
+            <div className="body"><h2>QUERY</h2> 
+                <div className="adding">
+                    <MainFormAddresses addresses={this.props.addresses}
+                                        adding={this.adding}/>
+                    <MainFormTags tags={this.props.tags}
+                                        adding={this.adding}/>
+                </div>
                 <textarea 
                     className="entry"
                     placeholder="Write your query here"
@@ -87,8 +93,8 @@ class MainForm extends Component{
                 <br/>
                 <br/>
                 <button onClick={this.queryAll}>search</button>
-
-            <div><h2>Resultados:</h2>
+            </div> 
+            <div className="feet"><h2>Resultados:</h2>
                 {this.state.results.map((el) => {
                     return <Results key={el.name} result={el}/>
                 })}

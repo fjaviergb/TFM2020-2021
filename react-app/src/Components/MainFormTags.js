@@ -13,7 +13,7 @@ class MainFormTags extends Component {
     }
     render() {
         if (this.state.show) {
-            return <div>
+            return <div className="newel">
                 <button onClick={this.closeModal}>tags</button>
                 <Tags tags={this.props.tags}
                             closeModal={this.closeModal}
@@ -21,7 +21,7 @@ class MainFormTags extends Component {
                             adding={this.props.adding}/>
             </div>
         } else {
-            return <div>
+            return <div className="newel">
                 <button onClick={this.openModal}>tags</button>
             </div>
         };

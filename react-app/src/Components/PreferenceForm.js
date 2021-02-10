@@ -73,13 +73,16 @@ class PreferenceForm extends Component{
 
     render() {
 
-        return <div>
-            <br/>
-            <button onClick={this.props.swapMain} name={"main"}>Main</button>
-            <br/>
-            <button onClick={this.props.swapMain} name={"preference"}>Preferences</button> 
-            <br/>
-            <div>
+        return <div className="preference">
+            <div className="header">
+                <button onClick={this.props.swapMain}
+                        name={"main"}
+                        className="btnNotSelected">Main</button>
+                <button onClick={this.props.swapMain}
+                        name={"preference"}
+                        className="btnSelected">Preferences</button> 
+            </div>
+            <div className="body">
                 <h3>ADDRESSES</h3>
                 <form onSubmit={this.onSubmit} name="newAddress">
                     <input type='text'

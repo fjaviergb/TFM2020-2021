@@ -13,7 +13,7 @@ class MainFormAddresses extends Component {
     }
     render() {
         if (this.state.show) {
-            return <div>
+            return <div className="newel">
                 <button onClick={this.closeModal}>addresses</button>
                 <Addresses addresses={this.props.addresses}
                             closeModal={this.closeModal}
@@ -21,7 +21,7 @@ class MainFormAddresses extends Component {
                             adding={this.props.adding}/>
             </div>
         } else {
-            return <div>
+            return <div className="newel">
                 <button onClick={this.openModal}>addresses</button>
             </div>
         };
