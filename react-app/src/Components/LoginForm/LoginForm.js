@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Service from "../services/service.js";
+import Service from "../../services/service.js";
 
 class LoginForm extends Component {
 
@@ -46,13 +46,15 @@ class LoginForm extends Component {
     };
 
     render () {
-        return  <div className="front">
+        return  <div id="login">
                 <div className="header">
-                    <button onClick={this.props.swapLog} name={"register"} className="btnNotSelected">Register</button>
-                    <button onClick={this.props.swapLog} name={"login"} className="btnSelected">Login</button>
+                    <button onClick={this.props.swapLog}
+                            name={"register"}>Register</button>
+                    <button onClick={this.props.swapLog}
+                            name={"login"}>Login</button>
                 </div>
-                <form onSubmit={this.onSubmit}>
-                    <div className="body">
+                <div className="body">
+                    <form onSubmit={this.onSubmit}>
                         <input type='text'
                             placeholder="Enter your email"
                             name='contact'
@@ -63,11 +65,11 @@ class LoginForm extends Component {
                             name='passwd'
                             onChange={this.onChange}
                             value={this.state.passwd}/>
-                    </div>
-                    <div className="feet">                    
+                  
                         <button type='submit' onClick={this.request}>Submit</button>
-                    </div>
-            </form></div>
+                    </form>
+                </div>
+            </div>
     };
 };
 

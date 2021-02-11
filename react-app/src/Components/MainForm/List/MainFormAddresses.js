@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Tags from './MainForm/Tags.js';
+import Addresses from '../Modal/Addresses.js';
 
-class MainFormTags extends Component {
+class MainFormAddresses extends Component {
     state = {
         show: false
     };
@@ -13,20 +13,20 @@ class MainFormTags extends Component {
     }
     render() {
         if (this.state.show) {
-            return <div className="newel">
-                <button onClick={this.closeModal}>tags</button>
-                <Tags tags={this.props.tags}
+            return <div>
+                <button onClick={this.closeModal}>addresses</button>
+                <Addresses addresses={this.props.addresses}
                             closeModal={this.closeModal}
                             openModal={this.openModal}
                             adding={this.props.adding}/>
             </div>
         } else {
-            return <div className="newel">
-                <button onClick={this.openModal}>tags</button>
+            return <div>
+                <button onClick={this.openModal}>addresses</button>
             </div>
         };
 
     }
 };
 
-export default MainFormTags;
+export default MainFormAddresses;

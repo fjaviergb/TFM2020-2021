@@ -70,7 +70,6 @@ class App extends Component {
   swapMain = (e) => {
     localStorage.setItem('mainStatus', JSON.stringify(e.target.name));
     this.setState({mainStatus: e.target.name})
-    this.setState({mainStatus: getMainStatus()})
   };
 
   addAddress = (e) => {
@@ -156,7 +155,7 @@ class App extends Component {
 
   render () {
     if (!this.state.token) {
-      return <div>
+      return <div id="front">
         <FrontPageForm swapLog={this.swapLog}
                       logStatus={this.state.logStatus}
                       setToken={this.setToken}
@@ -169,7 +168,7 @@ class App extends Component {
     return <div>
       <Router>
         <Route path='/' render = {() => {
-          return <div>
+          return <div id="back">
               <BackPageForm removeToken={this.removeToken}
                             swapMain={this.swapMain}
                             mainStatus={this.state.mainStatus}
@@ -188,7 +187,6 @@ class App extends Component {
                             deletePublicKey={this.deletePublicKey}/>
             </div>
         }}></Route>
-
       </Router>
     </div>
   };

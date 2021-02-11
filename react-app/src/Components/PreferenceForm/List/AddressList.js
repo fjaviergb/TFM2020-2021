@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Modal from './ModalTag.js';
+import Modal from '../Modal/ModalAddress.js';
 
-class TagList extends Component {
+class AddressList extends Component {
     state = {
         show: false
     };
@@ -16,20 +16,20 @@ class TagList extends Component {
     render() {
         if (this.state.show) {
             return <div>
-                <div onClick={this.closeModal}>{this.props.tag.name}</div>
-                <Modal object={this.props.tag}
+                <div onClick={this.closeModal}>{this.props.address.name}</div>
+                <Modal object={this.props.address}
                        closeModal={this.closeModal}
-                       changeTags={this.props.changeTags}
+                       changeAddresses={this.props.changeAddresses}
                        token={this.props.token}
-                       deleteTag={this.props.deleteTag}
+                       deleteAddress={this.props.deleteAddress}
                        publicKeys={this.props.publicKeys}/>
             </div>
         } else {
             return <div>
-                <div onClick={this.openModal}>{this.props.tag.name}</div>
+                <div onClick={this.openModal}>{this.props.address.name}</div>
             </div>
         };
     };
 };
 
-export default TagList;
+export default AddressList;

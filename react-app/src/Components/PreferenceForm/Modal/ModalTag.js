@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import './modal.css';
-import Service from '../services/service.js'
+import '../../../modal.css';
+import Service from '../../../services/service.js'
 import ModalKeyBox from './ModalKeyBoxTag.js';
 
 class Modal extends Component {

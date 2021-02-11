@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import RegisterForm from './RegisterForm.js'
-import LoginForm from './LoginForm.js'
+import RegisterForm from './RegisterForm/RegisterForm.js'
+import LoginForm from './LoginForm/LoginForm.js'
 //import PropTypes from 'prop-types';
 
 class FrontPageForm extends Component {

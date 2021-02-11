@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Modal from './ModalPublicKey.js';
+import Modal from '../Modal/ModalPublicKey.js';
 
 class PublicKey extends Component {
     state = {

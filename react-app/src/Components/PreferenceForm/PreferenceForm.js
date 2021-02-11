@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import TagList from './TagList.js';
-import AddressList from './AddressList.js';
-import PublicKey from './PublicKey.js';
-import Service from '../services/service.js';
+import TagList from './List/TagList.js';
+import AddressList from './List/AddressList.js';
+import PublicKey from './List/PublicKey.js';
+import Service from '../../services/service.js';
 
 class PreferenceForm extends Component{
     state = {
@@ -72,17 +72,18 @@ class PreferenceForm extends Component{
     }
 
     render() {
-
-        return <div className="preference">
-            <div className="header">
+        return <div id="preference">
+            <div>
+                <button onClick={this.props.removeToken}
+                        >Log Out</button>
                 <button onClick={this.props.swapMain}
                         name={"main"}
-                        className="btnNotSelected">MAIN</button>
+                       >MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
-                        className="btnSelected">PREFERENCES</button> 
+                        >PREFERENCES</button> 
             </div>
-            <div className="body">
+            <div>
                 <h3>ADDRESSES</h3>
                 <form onSubmit={this.onSubmit} name="newAddress">
                     <input type='text'
@@ -103,7 +104,6 @@ class PreferenceForm extends Component{
                     })}
                 </div>
  
-                <br/>
                 <h3>TAGS</h3>
                 <form onSubmit={this.onSubmit} name="newTag">
                     <input type='text'
@@ -124,7 +124,6 @@ class PreferenceForm extends Component{
                     })}
                 </div>
 
-                <br/>
                 <h3>PUBLIC KEYS</h3>
                 <form onSubmit={this.onSubmit} name="newPublicKey">
                     <input type='text'

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Result from './Result.js'
+import Result from '../Modal/Result.js'
 class Results extends Component {
     state = {
         show: false

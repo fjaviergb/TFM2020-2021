@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import MainFormAddresses from './MainFormAddresses.js';
-import MainFormTags from './MainFormTags.js';
-import './modal.css';
-import Service from '../services/service.js';
-import Results from './MainForm/Results.js'
-import TRYTES from '../services/trytes.js';
+import MainFormAddresses from './List/MainFormAddresses.js';
+import MainFormTags from './List/MainFormTags.js';
+import Service from '../../services/service.js';
+import Results from './List/Results.js'
+import TRYTES from '../../services/trytes.js';
 import NodeRSA  from 'node-rsa';
 
 class MainForm extends Component{
@@ -66,24 +65,26 @@ class MainForm extends Component{
     };
 
     render() {
-        return <div className="main">
-            <div className="header">
+        return <div id="main">
+            <div>
+                <button onClick={this.props.removeToken}
+                        >Log Out</button>
                 <button onClick={this.props.swapMain}
                         name={"main"}
-                        className="btnSelected">MAIN</button>
+                        >MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
-                        className="btnNotSelected">PREFERENCES</button>     
+                        >PREFERENCES</button>     
             </div>
             
-            <div className="body"><h2>QUERY</h2> 
-                <div className="adding">
+            <div><h2>QUERY</h2> 
+                <div>
                     <MainFormAddresses addresses={this.props.addresses}
                                         adding={this.adding}/>
                     <MainFormTags tags={this.props.tags}
                                         adding={this.adding}/>
                 </div>
-                <div className="query">
+                <div>
                     <textarea 
                         placeholder="Write your query here"
                         onChange={this.onChange}
@@ -93,7 +94,7 @@ class MainForm extends Component{
                     <button onClick={this.queryAll}>search</button>
                 </div>
             </div> 
-            <div className="feet"><h2>RESULTS</h2>
+            <div><h2>RESULTS</h2>
                 {this.state.results.map((el) => {
                     return <Results key={el.name} result={el}/>
                 })}
