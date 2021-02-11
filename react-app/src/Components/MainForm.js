@@ -70,10 +70,10 @@ class MainForm extends Component{
             <div className="header">
                 <button onClick={this.props.swapMain}
                         name={"main"}
-                        className="btnSelected">Main</button>
+                        className="btnSelected">MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
-                        className="btnNotSelected">Preferences</button>     
+                        className="btnNotSelected">PREFERENCES</button>     
             </div>
             
             <div className="body"><h2>QUERY</h2> 
@@ -83,18 +83,17 @@ class MainForm extends Component{
                     <MainFormTags tags={this.props.tags}
                                         adding={this.adding}/>
                 </div>
-                <textarea 
-                    className="entry"
-                    placeholder="Write your query here"
-                    onChange={this.onChange}
-                    value={this.state.forText}
-                    name="query">
-                </textarea>
-                <br/>
-                <br/>
-                <button onClick={this.queryAll}>search</button>
+                <div className="query">
+                    <textarea 
+                        placeholder="Write your query here"
+                        onChange={this.onChange}
+                        value={this.state.forText}
+                        name="query">
+                    </textarea>
+                    <button onClick={this.queryAll}>search</button>
+                </div>
             </div> 
-            <div className="feet"><h2>Resultados:</h2>
+            <div className="feet"><h2>RESULTS</h2>
                 {this.state.results.map((el) => {
                     return <Results key={el.name} result={el}/>
                 })}

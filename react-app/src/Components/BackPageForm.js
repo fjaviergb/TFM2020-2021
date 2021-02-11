@@ -23,7 +23,7 @@ class BackPageForm extends Component{
                               deleteAddress={this.props.deleteAddress}
                               deleteTag={this.props.deleteTag}
                               deletePublicKey={this.props.deletePublicKey}/>
-            </div>
+            </div>  
         }
         else {
             return <div className="back">              

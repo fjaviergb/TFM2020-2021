@@ -77,10 +77,10 @@ class PreferenceForm extends Component{
             <div className="header">
                 <button onClick={this.props.swapMain}
                         name={"main"}
-                        className="btnNotSelected">Main</button>
+                        className="btnNotSelected">MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
-                        className="btnSelected">Preferences</button> 
+                        className="btnSelected">PREFERENCES</button> 
             </div>
             <div className="body">
                 <h3>ADDRESSES</h3>
