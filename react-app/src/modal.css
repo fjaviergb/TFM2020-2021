@@ -6,12 +6,13 @@
     left:0%;
     width:100%;
     height:100%;
-    background: transparent;
+    background: white;
     pointer-events:all;
+    opacity: 0.5;
 }
 
 .modal {
-  width: 50%;
+  width: 80vw;
   z-index: 2;
   background: white;
   border: 1px solid #ccc;
@@ -21,9 +22,9 @@
   transform: scale(1);
   opacity: 1;
   visibility: visible;
-  position:absolute;
-  top: 30%;
-  left: 25%;
+  position: fixed;
+  top: 15vh;
+  left: 35vw;
   display: flex;
   flex-direction: column;
   margin-top: 150px;
@@ -49,7 +50,7 @@
     offset-path: none;
   }
 }
-.modal .header {
+.modal .head {
   border-bottom: 1px solid #ccc;
   padding: 1rem;
   margin: 0;

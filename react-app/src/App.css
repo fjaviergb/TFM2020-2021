@@ -57,12 +57,171 @@ body {
     background-color: var(--accept);
 }
 
+/* REGISTERFORM */
+
 #register {
     background-color:blueviolet;
 }
 
+#register .header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#register .header button {
+    background-color: lightgray;
+}
+
+
+#register .body form {
+    display: grid;
+    grid-template: 1fr 1fr 1fr 1fr / 1fr;
+}
+
+#register .body button {
+    background-color: var(--accept);
+}
+
 /* PREFERENCEFORM */
 
-/* #preference {
-word-break: break-all;
-} */
+ #preference {
+    width: 90vw;
+    margin-top: 15vh;
+} 
+
+#preference .header {
+    position: fixed;
+    overflow: hidden;
+    background-color: #333;
+    top:0vh;
+    width: 90vw;
+}
+
+#preference .header button {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    padding: 1% 2% 1% 2%;
+    background-color: #333;
+}
+
+#preference .header #logout {
+    float: right;
+}
+
+#preference #totop {
+    position: fixed;
+    overflow: hidden;
+    background-color: red;
+    color: black;
+    top:90vh;
+    left: 90vw; 
+}
+
+#preference .body .param {
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#preference .body .param h2 {
+    border-bottom: 2px solid #333;
+    margin-bottom: 3vh;
+}
+
+#preference .body .param .new{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3vh;
+    margin-left: 3vh;
+}
+
+#preference .body .param .new form{
+    display: grid;
+    width: 90vw;
+    grid-template: 1fr / 9fr 1fr;
+}
+
+#preference .body .param .new form input {
+    border: none;
+    border-bottom: 1px dotted #333;
+}
+
+#preference .body .param .new form button {
+    background-color: var(--accept);
+    border: none;
+}
+
+#preference .body .list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3vh;
+    margin-left: 3vh;
+}
+
+#preference .body .list h3 {
+    text-decoration: underline;
+    margin-bottom: 2vh;
+}
+
+#preference .body .list .elem .front{
+    border: 2px solid #333;
+    border-radius: 5px;
+    margin-bottom: 2vh;
+    background-color: lightgray;
+}
+
+#preference .body .list .elem .front .fronttitle{
+    margin: 2vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#preference .body .list .elem .front .frontcont{
+    margin-left: 8vh;
+    margin-bottom: 2vh;
+    margin-right: 4vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#main {
+    width: 90vw;
+    margin-top: 15vh;
+} 
+
+#main .header {
+    position: fixed;
+    overflow: hidden;
+    background-color: #333;
+    top:0vh;
+    width: 90vw;
+}
+
+#main .header button {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    padding: 1% 2% 1% 2%;
+    background-color: #333;
+}
+
+#main .header #logout {
+    float: right;
+}
+
+#main #totop {
+    position: fixed;
+    overflow: hidden;
+    background-color: red;
+    color: black;
+    top:90vh;
+    left: 90vw; 
+}

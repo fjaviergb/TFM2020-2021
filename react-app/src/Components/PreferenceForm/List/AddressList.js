@@ -15,8 +15,13 @@ class AddressList extends Component {
 
     render() {
         if (this.state.show) {
-            return <div>
-                <div onClick={this.closeModal}>{this.props.address.name}</div>
+            return <div className="elem">
+                <div onClick={this.closeModal}
+                     className="front">
+                         <div className="fronttitle"><b>ALIAS:</b> {this.props.address.alias}</div>
+                         <div className="frontcont"><b>Name:</b> {this.props.address.name}</div>
+                         <div className="frontcont"><b>ID:</b> {this.props.address.idad}</div>
+                </div>
                 <Modal object={this.props.address}
                        closeModal={this.closeModal}
                        changeAddresses={this.props.changeAddresses}
@@ -25,8 +30,13 @@ class AddressList extends Component {
                        publicKeys={this.props.publicKeys}/>
             </div>
         } else {
-            return <div>
-                <div onClick={this.openModal}>{this.props.address.name}</div>
+            return <div className="elem">
+                <div onClick={this.openModal}
+                     className="front">
+                         <div className="fronttitle"><b>ALIAS:</b> {this.props.address.alias}</div>
+                         <div className="frontcont"><b>Name:</b> {this.props.address.name}</div>
+                         <div className="frontcont"><b>ID:</b> {this.props.address.idad}</div>
+                </div>
             </div>
         };
     };

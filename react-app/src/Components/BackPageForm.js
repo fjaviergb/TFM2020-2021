@@ -22,7 +22,7 @@ class BackPageForm extends Component{
                               deletePublicKey={this.props.deletePublicKey}
                               removeToken={this.props.removeToken}/>
         }
-        else if (this.props.mainStatus === "main") {
+        else {
             return <MainForm swapMain={this.props.swapMain}
                           setToken={this.props.setToken}
                           publicKeys={this.props.publicKeys}

@@ -43,7 +43,7 @@ class Modal extends Component {
         return <div>
             <div className="modalContainer" onClick={this.props.closeModal}></div>
             <div className="modal" id="modal">
-                <form className="header" onSubmit={this.onSubmit}>
+                <form className="head" onSubmit={this.onSubmit}>
                     <input type="text" onChange={this.onChange} placeholder={this.props.object.alias}></input>
                     <button>X</button>
                 </form>

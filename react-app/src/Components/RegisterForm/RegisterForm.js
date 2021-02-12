@@ -47,7 +47,7 @@ class RegisterForm extends Component {
 
     render () {
         return  <div id="register">
-                <div>
+                <div className="header">
                     <button onClick={this.props.swapLog}
                             name={"register"}
                             >Register</button>
@@ -55,8 +55,8 @@ class RegisterForm extends Component {
                             name={"login"}
                             >Login</button>
                 </div>
-                <form onSubmit={this.onSubmit}>
-                    <div>
+                <div className="body">
+                    <form onSubmit={this.onSubmit}>
                         <input type='text'
                             placeholder="Enter your account name"
                             name='name'
@@ -72,11 +72,9 @@ class RegisterForm extends Component {
                             name='contact'
                             onChange={this.onChange}
                             value={this.state.contact}/>
-                    </div>
-                    <div>
                         <button type='submit' onClick={this.request}>Submit</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
     };
 };

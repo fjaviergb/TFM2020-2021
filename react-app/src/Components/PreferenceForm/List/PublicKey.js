@@ -15,8 +15,13 @@ class PublicKey extends Component {
 
     render() {
         if (this.state.show) {
-            return <div>
-                <div onClick={this.closeModal}>{this.props.publicKey.name}</div>
+            return <div className="elem">
+                <div onClick={this.closeModal}
+                     className="front">
+                         <div className="fronttitle"><b>ALIAS:</b> {this.props.publicKey.alias}</div>
+                         <div className="frontcont"><b>Name:</b> {this.props.publicKey.name}</div>
+                         <div className="frontcont"><b>ID:</b> {this.props.publicKey.idke}</div>
+                </div>
                 <Modal object={this.props.publicKey}
                        closeModal={this.closeModal}
                        changePublicKeys={this.props.changePublicKeys}
@@ -24,8 +29,13 @@ class PublicKey extends Component {
                        deletePublicKey={this.props.deletePublicKey}/>
             </div>
         } else {
-            return <div>
-                <div onClick={this.openModal}>{this.props.publicKey.name}</div>
+            return <div className="elem">
+                <div onClick={this.openModal}
+                     className="front">
+                         <div className="fronttitle"><b>ALIAS:</b> {this.props.publicKey.alias}</div>
+                         <div className="frontcont"><b>Name:</b> {this.props.publicKey.name}</div>
+                         <div className="frontcont"><b>ID:</b> {this.props.publicKey.idke}</div>
+                </div>
             </div>
         };
     }

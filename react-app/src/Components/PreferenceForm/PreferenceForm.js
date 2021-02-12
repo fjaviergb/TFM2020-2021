@@ -11,6 +11,10 @@ class PreferenceForm extends Component{
         newPublicKey: '',
     }
 
+    toTheTop = () => {
+        window.scrollTo(0, 0)
+      }
+
     onSubmit = e => {
         e.preventDefault();
         if (e.target.name === 'newAddress') {
@@ -73,76 +77,93 @@ class PreferenceForm extends Component{
 
     render() {
         return <div id="preference">
-            <div>
-                <button onClick={this.props.removeToken}
-                        >Log Out</button>
+            <div className="header">
                 <button onClick={this.props.swapMain}
                         name={"main"}
                        >MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
                         >PREFERENCES</button> 
+                <button onClick={this.props.removeToken}
+                        id="logout">LogOut</button>                        
             </div>
-            <div>
-                <h3>ADDRESSES</h3>
-                <form onSubmit={this.onSubmit} name="newAddress">
-                    <input type='text'
-                        placeholder='New address'
-                        onChange={this.onChanges}
-                        name="newAddress">
-                    </input>
-                    <button type='submit'>X</button>
-                </form>
-                <div><h3>Lista de addresses</h3>
-                    {this.props.addresses.map(el => {
-                        return <AddressList key={el.idad}
-                                     address={el}
-                                     changeAddresses={this.props.changeAddresses}
-                                     token={this.props.token}
-                                     deleteAddress={this.props.deleteAddress}
-                                     publicKeys={this.props.publicKeys}/>
-                    })}
-                </div>
- 
-                <h3>TAGS</h3>
-                <form onSubmit={this.onSubmit} name="newTag">
-                    <input type='text'
-                        placeholder='New tag'
-                        onChange={this.onChanges}
-                        name="newTag">
-                    </input>
-                    <button type='submit'>X</button>
-                </form>
-                <div><h3>Lista de tags</h3>
-                    {this.props.tags.map(el => {
-                        return <TagList key={el.idta}
-                                 tag={el}
-                                 changeTags={this.props.changeTags}
-                                 token={this.props.token}
-                                 deleteTag={this.props.deleteTag}
-                                 publicKeys={this.props.publicKeys}/>
-                    })}
+            <div className="body">
+                <div className="param">
+                    <h2>ADDRESSES</h2>
+                    <div className="new">
+                        <form onSubmit={this.onSubmit} name="newAddress">
+                            <input type='text'
+                                placeholder='New address'
+                                onChange={this.onChanges}
+                                name="newAddress">
+                            </input>
+                            <button type='submit'>Add</button>
+                        </form>
+                    </div>
+                    <div className="list">
+                        <h3>Currently</h3>
+                        {this.props.addresses.map(el => {
+                            return <AddressList key={el.idad}
+                                        address={el}
+                                        changeAddresses={this.props.changeAddresses}
+                                        token={this.props.token}
+                                        deleteAddress={this.props.deleteAddress}
+                                        publicKeys={this.props.publicKeys}/>
+                        })}
+                    </div>
                 </div>
 
-                <h3>PUBLIC KEYS</h3>
-                <form onSubmit={this.onSubmit} name="newPublicKey">
-                    <input type='text'
-                        placeholder='New public key'
-                        onChange={this.onChanges}
-                        name="newPublicKey">
-                    </input>
-                    <button type='submit'>X</button>
-                </form>
-                <div><h3>Lista de public keys</h3>
-                    {this.props.publicKeys.map(el => {
-                        return <PublicKey key={el.idke}
-                                 publicKey={el}
-                                 changePublicKeys={this.props.changePublicKeys}
-                                 token={this.props.token}
-                                 deletePublicKey={this.props.deletePublicKey}/>
-                    })}
+                <div className="param">
+                    <h2>TAGS</h2>
+                    <div className="new">
+                        <form onSubmit={this.onSubmit} name="newTag">
+                            <input type='text'
+                                placeholder='New tag'
+                                onChange={this.onChanges}
+                                name="newTag">
+                            </input>
+                            <button type='submit'>Add</button>
+                        </form>
+                    </div>
+                    <div className="list">
+                        <h3>Currently</h3>
+                        {this.props.tags.map(el => {
+                            return <TagList key={el.idta}
+                                    tag={el}
+                                    changeTags={this.props.changeTags}
+                                    token={this.props.token}
+                                    deleteTag={this.props.deleteTag}
+                                    publicKeys={this.props.publicKeys}/>
+                        })}
+                    </div>
                 </div>
-            </div>                        
+
+                <div className="param">
+                    <h2>PUBLIC KEYS</h2>
+                    <div className="new">
+                        <form onSubmit={this.onSubmit} name="newPublicKey">
+                            <input type='text'
+                                placeholder='New public key'
+                                onChange={this.onChanges}
+                                name="newPublicKey">
+                            </input>
+                            <button type='submit'>Add</button>
+                        </form>
+                    </div>
+                    <div className="list">
+                        <h3>Currently</h3>
+                        {this.props.publicKeys.map(el => {
+                            return <PublicKey key={el.idke}
+                                    publicKey={el}
+                                    changePublicKeys={this.props.changePublicKeys}
+                                    token={this.props.token}
+                                    deletePublicKey={this.props.deletePublicKey}/>
+                        })}
+                    </div>
+                </div>
+            </div>       
+            <button onClick={this.toTheTop}
+                    id="totop">Top</button>                 
         </div>
     };
 };

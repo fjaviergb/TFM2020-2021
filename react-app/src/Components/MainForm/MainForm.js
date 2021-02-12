@@ -23,6 +23,9 @@ class MainForm extends Component{
             forText: this.state.forText + `${e.forQuery}`,
         })   
     };
+    toTheTop = () => {
+        window.scrollTo(0, 0)
+      }
     queryAll = (e) => {
         this.setState({results: []})
         this.setState({resultsTemp: []})
@@ -66,18 +69,18 @@ class MainForm extends Component{
 
     render() {
         return <div id="main">
-            <div>
-                <button onClick={this.props.removeToken}
-                        >Log Out</button>
+            <div className="header">
                 <button onClick={this.props.swapMain}
                         name={"main"}
                         >MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
-                        >PREFERENCES</button>     
+                        >PREFERENCES</button>
+                <button onClick={this.props.removeToken}
+                        id="logout">Log Out</button>                        
             </div>
             
-            <div><h2>QUERY</h2> 
+            <div className="body"><h2>QUERY</h2> 
                 <div>
                     <MainFormAddresses addresses={this.props.addresses}
                                         adding={this.adding}/>
@@ -99,6 +102,8 @@ class MainForm extends Component{
                     return <Results key={el.name} result={el}/>
                 })}
             </div>
+            <button onClick={this.toTheTop}
+                    id="totop">Top</button> 
         </div>
     };
 };
