@@ -14,14 +14,24 @@ class Results extends Component {
 
     render() {
         if (this.state.show) {
-            return <div>
-                <div onClick={this.closeModal}>{this.props.result.name}</div>
-                    <Result result={this.props.result}
-                            closeModal={this.closeModal}/>
+            return <div className="elem">
+                <div onClick={this.closeModal}
+                     className="front">
+                         <div className="fronttitle"><b>Hash:</b> {this.props.result.name}</div>
+                         <div className="frontcont"><b>Message:</b> {this.props.result.message}</div>
+                         <div className="frontcont"><b>Timestamp:</b> {this.props.result.timestamp}</div>
+                </div>
+                <Result result={this.props.result}
+                        closeModal={this.closeModal}/>
             </div>
         } else {
-            return <div>
-                <div onClick={this.openModal}>{this.props.result.name}</div>
+            return <div className="elem">
+                <div onClick={this.openModal}
+                     className="front">
+                        <div className="fronttitle"><b>Hash:</b> {this.props.result.name}</div>
+                        <div className="frontcont"><b>Message:</b> {this.props.result.message}</div>
+                        <div className="frontcont"><b>Timestamp:</b> {this.props.result.timestamp}</div>
+                </div>
             </div>
         };
     };

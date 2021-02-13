@@ -77,33 +77,40 @@ class MainForm extends Component{
                         name={"preference"}
                         >PREFERENCES</button>
                 <button onClick={this.props.removeToken}
-                        id="logout">Log Out</button>                        
+                        id="logout">LogOut</button>                        
             </div>
             
-            <div className="body"><h2>QUERY</h2> 
-                <div>
-                    <MainFormAddresses addresses={this.props.addresses}
-                                        adding={this.adding}/>
-                    <MainFormTags tags={this.props.tags}
-                                        adding={this.adding}/>
+            <div className="body">
+                <div className="param">
+                    <h2>QUERY</h2> 
+                    <div className="form">
+                        <textarea 
+                            placeholder="Write your query here"
+                            onChange={this.onChange}
+                            value={this.state.forText}
+                            name="query">
+                        </textarea>
+                        <div className="add">
+                            <div className="elems">
+                                <MainFormAddresses addresses={this.props.addresses}
+                                                    adding={this.adding}/>
+                                <MainFormTags tags={this.props.tags}
+                                                    adding={this.adding}/>
+                            </div>
+                            <button onClick={this.queryAll}
+                                    id="search">search</button>
+                        </div>
+                    </div>
+                </div> 
+                <div className="list">
+                    <h2>RESULTS</h2>
+                    {this.state.results.map((el) => {
+                        return <Results key={el.name} result={el}/>
+                    })}
                 </div>
-                <div>
-                    <textarea 
-                        placeholder="Write your query here"
-                        onChange={this.onChange}
-                        value={this.state.forText}
-                        name="query">
-                    </textarea>
-                    <button onClick={this.queryAll}>search</button>
-                </div>
-            </div> 
-            <div><h2>RESULTS</h2>
-                {this.state.results.map((el) => {
-                    return <Results key={el.name} result={el}/>
-                })}
+                <button onClick={this.toTheTop}
+                            id="totop">Top</button> 
             </div>
-            <button onClick={this.toTheTop}
-                    id="totop">Top</button> 
         </div>
     };
 };

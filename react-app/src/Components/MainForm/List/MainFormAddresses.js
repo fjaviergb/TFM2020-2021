@@ -13,17 +13,21 @@ class MainFormAddresses extends Component {
     }
     render() {
         if (this.state.show) {
-            return <div>
-                <button onClick={this.closeModal}>addresses</button>
-                <Addresses addresses={this.props.addresses}
-                            closeModal={this.closeModal}
-                            openModal={this.openModal}
-                            adding={this.props.adding}/>
-            </div>
+            return <div className="elem">
+                    <div className="front">
+                        <button onClick={this.closeModal}>+ addresses</button>
+                    </div>
+                    <Addresses addresses={this.props.addresses}
+                                closeModal={this.closeModal}
+                                openModal={this.openModal}
+                                adding={this.props.adding}/>
+                </div>
         } else {
-            return <div>
-                <button onClick={this.openModal}>addresses</button>
-            </div>
+            return <div className="elem">
+                    <div className="front">
+                        <button onClick={this.openModal}>+ addresses</button>
+                    </div>
+                </div>
         };
 
     }

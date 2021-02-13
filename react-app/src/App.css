@@ -190,6 +190,8 @@ body {
     text-overflow: ellipsis;
 }
 
+/* MAIN */
+
 #main {
     width: 90vw;
     margin-top: 15vh;
@@ -225,3 +227,94 @@ body {
     top:90vh;
     left: 90vw; 
 }
+
+#main .body .param {
+    margin-bottom: 8vh;
+}
+
+#main .body .param h2 {
+    border-bottom: 2px solid #333;
+    margin-bottom: 3vh;
+}
+
+#main .body .param .form .add {
+    display: grid;
+    grid-template: 1fr 2fr / 1fr;
+    border: none;
+}
+
+#main .body .param .form .add .elems {
+    display: flex;
+    flex-direction: column;
+}
+
+#main .body .param .form .add .elems .elem .front{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#main .body .param .form .add .elems .elem .front button {
+    background-color: lightcoral;
+    border: 1px solid black;
+}
+
+#main .body .param .form {   
+    display: grid;
+    grid-template: 1fr / 9fr 1fr;
+    margin-left: 3vh;
+}
+
+#main .body .param .form button {   
+    background-color: var(--accept);
+    border: none;
+}
+
+#main .body .param .form textarea {   
+    border: none;
+    border-bottom: 1px dotted #333;
+    text-decoration: underline dotted;
+    resize: none;
+}
+
+#main .body .list h2 {
+    border-bottom: 2px solid #333;
+    margin-bottom: 5vh;
+}
+
+#main .body .list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3vh;
+}
+
+#main .body .list h3 {
+    text-decoration: underline;
+    margin-bottom: 2vh;
+}
+
+#main .body .list .elem .front{
+    border: 2px solid #333;
+    border-radius: 5px;
+    margin-bottom: 2vh;
+    background-color: lightgray;
+}
+
+#main .body .list .elem .front .fronttitle{
+    margin: 2vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#main .body .list .elem .front .frontcont{
+    margin-left: 8vh;
+    margin-bottom: 2vh;
+    margin-right: 4vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+
