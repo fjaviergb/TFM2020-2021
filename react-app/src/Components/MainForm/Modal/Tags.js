@@ -21,9 +21,13 @@ class Tags extends Component {
         return <div>
             <div className="modalContainer" onClick={this.props.closeModal}></div>
             <div className="modal" id="modal">
-                <div className="content">
-                        <select name="select" size={this.props.tags.length}
-                                            onChange={this.onChange}>
+                <button id="closemodal" onClick={this.props.closeModal}>
+                        X
+                    </button>
+                <div className="content" id="results">
+                        <select name="select"
+                                size={this.props.tags.length}
+                                onChange={this.onChange}>
                             {this.props.tags.map(el => {
                                 return <option key={el.alias}
                                 value={JSON.stringify({
@@ -31,13 +35,10 @@ class Tags extends Component {
                                     idta:el.idta
                                 })}>{el.alias}</option>
                             })}
-                        </select><br/>
-                        <button onClick={this.texting}>add</button>
+                        </select>
                 </div>
                 <div className="actions">
-                    <button className="toggle-button" onClick={this.props.closeModal}>
-                        close
-                    </button>
+                    <button id="accept" onClick={this.texting}>add</button>
                 </div>
             </div>
         </div>

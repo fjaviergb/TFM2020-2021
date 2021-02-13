@@ -45,8 +45,11 @@ class ModalKeyBox extends Component {
     };
 
     render() {
-        return <div>{this.props.publicKey.alias}
-            <input type="checkbox" onChange={this.onChange} checked={this.state.toggle}></input>
+        return <div className="keyoptions">{this.props.publicKey.alias} 
+            <input type="checkbox"
+                    onChange={this.onChange}
+                    checked={this.state.toggle}
+                    className="check"></input>
             </div>
     };
 };

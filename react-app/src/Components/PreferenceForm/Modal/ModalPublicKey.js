@@ -43,17 +43,25 @@ class Modal extends Component {
         return <div>
             <div className="modalContainer" onClick={this.props.closeModal}></div>
             <div className="modal" id="modal">
-                <form className="head" onSubmit={this.onSubmit}>
-                    <input type="text" onChange={this.onChange} placeholder={this.props.object.alias}></input>
-                    <button>X</button>
-                </form>
-                <div className="content">{this.props.object.name}</div>
-                <div className="actions">
-                    <button className="toggle-button" onClick={this.props.closeModal}>
-                        close
+                <button id="closemodal" onClick={this.props.closeModal}>
+                        X
                     </button>
+                <div className="head">
+                        <div className="fronttitle"><b>ALIAS:</b> {this.props.object.alias}</div>
+                         <div className="frontcont"><b>Public key:</b> {this.props.object.name}</div>
+                         <div className="frontcont"><b>ID:</b> {this.props.object.idke}</div>
+                </div>
+
+                <div className="content">
+                    <span>Named as  </span>
+                    <form onSubmit={this.onSubmit}>
+                        <input type="text" onChange={this.onChange} placeholder={this.props.object.alias}></input>
+                        <button>✓</button>
+                    </form>
+                </div>
+                <div className="actions">
                     <button className="toggle-button" onClick={this.onDelete}>
-                        delete
+                        Delete
                     </button>
                 </div>
             </div>

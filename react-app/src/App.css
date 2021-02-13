@@ -45,7 +45,10 @@ body {
 }
 
 #login .header button {
-    background-color: lightgray;
+    background-color: #333;
+    color:white;
+    border: 1px solid white;
+    cursor: pointer;
 }
 
 #login .body form {
@@ -55,6 +58,8 @@ body {
 
 #login .body button {
     background-color: var(--accept);
+    border: 2px solid var(--accept);
+    cursor: pointer;
 }
 
 /* REGISTERFORM */
@@ -69,7 +74,10 @@ body {
 }
 
 #register .header button {
-    background-color: lightgray;
+    background-color: #333;
+    color:white;
+    border: 1px solid white;
+    cursor: pointer;    
 }
 
 
@@ -80,6 +88,8 @@ body {
 
 #register .body button {
     background-color: var(--accept);
+    border: 2px solid var(--accept);
+    cursor: pointer;
 }
 
 /* PREFERENCEFORM */
@@ -105,10 +115,21 @@ body {
     text-decoration: none;
     padding: 1% 2% 1% 2%;
     background-color: #333;
+    cursor: pointer;
+    border: 2px solid #333;
+}
+
+#preference .header .selected {
+    border: 2px solid white;
+    border-left: 2px solid #333;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
 }
 
 #preference .header #logout {
     float: right;
+    cursor: pointer;
 }
 
 #preference #totop {
@@ -118,6 +139,7 @@ body {
     color: black;
     top:90vh;
     left: 90vw; 
+    cursor: pointer;
 }
 
 #preference .body .param {
@@ -172,6 +194,7 @@ body {
     border-radius: 5px;
     margin-bottom: 2vh;
     background-color: lightgray;
+    cursor: pointer;
 }
 
 #preference .body .list .elem .front .fronttitle{
@@ -205,6 +228,13 @@ body {
     width: 90vw;
 }
 
+#main .header .selected {
+    border: 2px solid white;
+    background-color: white;
+    border-left: 2px solid #333;
+    color: #333;
+    cursor: pointer;
+}
 #main .header button {
     float: left;
     display: block;
@@ -213,10 +243,13 @@ body {
     text-decoration: none;
     padding: 1% 2% 1% 2%;
     background-color: #333;
+    border: 2px solid #333;
+    cursor: pointer;
 }
 
 #main .header #logout {
     float: right;
+    cursor: pointer;
 }
 
 #main #totop {
@@ -226,6 +259,7 @@ body {
     color: black;
     top:90vh;
     left: 90vw; 
+    cursor: pointer;
 }
 
 #main .body .param {
@@ -255,8 +289,13 @@ body {
 }
 
 #main .body .param .form .add .elems .elem .front button {
-    background-color: lightcoral;
+    background-color: lightyellow;
     border: 1px solid black;
+    cursor: pointer;
+}
+
+#preference .body .param .new .submitnew {
+    cursor: pointer;
 }
 
 #main .body .param .form {   
@@ -265,9 +304,10 @@ body {
     margin-left: 3vh;
 }
 
-#main .body .param .form button {   
+#main .body .param .form #search {   
     background-color: var(--accept);
     border: none;
+    cursor: pointer;
 }
 
 #main .body .param .form textarea {   
@@ -298,6 +338,7 @@ body {
     border-radius: 5px;
     margin-bottom: 2vh;
     background-color: lightgray;
+    cursor: pointer;
 }
 
 #main .body .list .elem .front .fronttitle{

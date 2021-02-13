@@ -12,13 +12,18 @@ class Addresses extends Component {
     }
 
     swap = (e) => {
-        this.setState({show: !this.state.show})
+        if (e.target.name === "true") {
+            this.setState({show: true})
+        } else {this.setState({show: false})}
     }
     render() {
         if(this.state.show){
             return <div>
             <div className="modalContainer" onClick={this.props.closeModal}></div>
                 <div className="modal" id="modal">
+                    <button id="closemodal" onClick={this.props.closeModal}>
+                            X
+                        </button>
                     <div className="content">
                         <h3>{this.props.result.name}</h3>
                         <div>Message: <br/>{this.props.result.message}</div><br/>
@@ -27,15 +32,11 @@ class Addresses extends Component {
                         <div>Date: <br/><GetDate timestamp={this.props.result.timestamp}/></div><br/>
   
                     </div>
-                    <div className="actions">
-                        <select name="select" size="2" onChange={this.swap} value="first">
-                            <option defaultValue="first">Estruturado</option>
-                            <option>Trytes</option>
-                        </select>
-
-                        <button className="toggle-button" onClick={this.props.closeModal}>
-                            close
-                        </button>
+                    <div className="actions-results">
+                        <div id="actions-results-con">
+                            <button name="true" onClick={this.swap}>Structured</button>
+                            <button name="false" onClick={this.swap}>Trytes</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,18 +44,17 @@ class Addresses extends Component {
             return <div>
             <div className="modalContainer" onClick={this.props.closeModal}></div>
                 <div className="modal" id="modal">
-                    <div className="content">
+                    <button id="closemodal" onClick={this.props.closeModal}>
+                            X
+                        </button>
+                    <div className="contenttrytes">
                         {this.props.result.trytes}
                     </div>
-                    <div className="actions">
-                        <select name="select" size="2" onChange={this.swap}>
-                            <option>Estruturado</option>
-                            <option>Trytes</option>
-                        </select>
-
-                        <button className="toggle-button" onClick={this.props.closeModal}>
-                            close
-                        </button>
+                    <div className="actions-results">
+                        <div id="actions-results-con">
+                            <button name="true" onClick={this.swap}>Structured</button>
+                            <button name="false" onClick={this.swap}>Trytes</button>
+                        </div>
                     </div>
                 </div>
             </div>

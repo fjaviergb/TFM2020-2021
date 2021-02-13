@@ -72,7 +72,7 @@ class MainForm extends Component{
             <div className="header">
                 <button onClick={this.props.swapMain}
                         name={"main"}
-                        >MAIN</button>
+                        className="selected">MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
                         >PREFERENCES</button>

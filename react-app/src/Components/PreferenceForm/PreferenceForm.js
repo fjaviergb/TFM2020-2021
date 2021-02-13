@@ -83,7 +83,7 @@ class PreferenceForm extends Component{
                        >MAIN</button>
                 <button onClick={this.props.swapMain}
                         name={"preference"}
-                        >PREFERENCES</button> 
+                        className="selected">PREFERENCES</button> 
                 <button onClick={this.props.removeToken}
                         id="logout">LogOut</button>                        
             </div>
@@ -97,7 +97,7 @@ class PreferenceForm extends Component{
                                 onChange={this.onChanges}
                                 name="newAddress">
                             </input>
-                            <button type='submit'>Add</button>
+                            <button type='submit' className="submitnew">Add</button>
                         </form>
                     </div>
                     <div className="list">
@@ -122,7 +122,7 @@ class PreferenceForm extends Component{
                                 onChange={this.onChanges}
                                 name="newTag">
                             </input>
-                            <button type='submit'>Add</button>
+                            <button type='submit' className="submitnew">Add</button>
                         </form>
                     </div>
                     <div className="list">
@@ -147,7 +147,7 @@ class PreferenceForm extends Component{
                                 onChange={this.onChanges}
                                 name="newPublicKey">
                             </input>
-                            <button type='submit'>Add</button>
+                            <button type='submit' className="submitnew">Add</button>
                         </form>
                     </div>
                     <div className="list">
