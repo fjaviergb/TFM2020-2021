@@ -3,8 +3,8 @@ module.exports={
         ROUTE: '/login',
         SQL(req) {
             return `SELECT * FROM users
-             WHERE contact = "${req.contact}"
-             AND password = "${req.passwd}"`
+             WHERE contact = "${req.body.contact}"
+             AND password = "${req.pswd}"`
         }
     },
 
@@ -13,10 +13,10 @@ module.exports={
         SQL: `INSERT INTO users SET ?`,
         SQL_DATA(req) {
             return {
-                'name':req.name,
-                'password':req.password,
+                'name':req.body.name,
+                'password':req.pswd,
                 'created':new Date(),
-                'contact':req.contact
+                'contact':req.body.contact
             }
         }
     },

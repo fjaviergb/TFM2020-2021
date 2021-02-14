@@ -29,7 +29,7 @@ class Addresses extends Component {
                                 size={this.props.addresses.length}
                                 onChange={this.onChange}>
                             {this.props.addresses.map(el => {
-                                return <option key={el.alias}
+                                return <option key={el.alias+el.idad}
                                 value={JSON.stringify({
                                     alias:el.alias,
                                     idad:el.idad

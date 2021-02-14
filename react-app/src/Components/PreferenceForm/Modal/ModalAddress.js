@@ -19,7 +19,7 @@ class Modal extends Component {
         })
         .then(res => {this.props.changeAddresses({idad: res.data.idad,
                                             alias: res.data.alias})})
-        .catch(err => {console.log(err.data)})
+        .catch(err => {console.log(err.response.data.message)})
 
     };
 
@@ -30,12 +30,12 @@ class Modal extends Component {
     onDelete = (e) => {
         Service.removeAddressRelations({idad: this.props.object.idad, idcl:this.props.token.idcl})
         .then(res => {'Address removed successfully'})
-        .catch(err => console.log(err))
+        .catch(err => console.log(err.response.data.message))
         Service.deleteAddress({idname: this.props.object.idname})
         .then(res => {
             this.props.deleteAddress(this.props.object.idname)
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err.response.data.message));
     };
 
     render() {
@@ -64,7 +64,7 @@ class Modal extends Component {
                 <div className="contentkeys">
                     <div>Select its public keys of interest: </div>
                     {this.props.publicKeys.map(elem => {
-                        return <ModalKeyBox key={elem.alias}
+                        return <ModalKeyBox key={elem.alias+elem.idke}
                                             publicKey={elem}
                                             object={this.props.object}
                                             token={this.props.token}/>

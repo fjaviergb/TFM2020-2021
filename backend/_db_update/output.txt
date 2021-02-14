@@ -393,3 +393,26 @@ Updating %s tx
 Updating BXOUBCAEOYFDQARTUELBFEEGPAO tx
 Updating COBWNGDNZTEAEPVHGBBBFAGUWOI tx
 Updating QKLOVCRJHKHITJRIMVARCMPXBBT tx
+Addresses & Tags removed succesfully
+Requesting tags tags, length 1
+Requesting tags tags, length 2
+Requesting tags tags, length 3
+Requesting addresses addresses, length 2
+Requesting addresses addresses, length 1
+Object creator 0 objects
+Objects per tick... 0
+Receiving per tick... 0
+Sun Feb 14 12:37:11 2021
+Addresses & Tags removed succesfully
+Sun Feb 14 12:37:12 2021
+Requesting tags, length 3
+Requesting tags, length 2
+Requesting tags, length 1
+Sun Feb 14 12:37:14 2021
+Requesting addresses, length 4
+Requesting addresses, length 3
+Sun Feb 14 12:37:16 2021
+Object creator 0 objects
+Objects per tick... 0
+Receiving per tick... 0
+Sun Feb 14 12:37:46 2021

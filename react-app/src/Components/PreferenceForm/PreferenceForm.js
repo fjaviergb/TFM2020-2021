@@ -31,9 +31,9 @@ class PreferenceForm extends Component{
                                                             alias: _res.data.alias,
                                                             idname:_res.data.idname,
                                                             name:this.state.newAddress})})
-                .catch(err => {console.log(err.data)})
+                .catch(err => {console.log(err.response.data.message)})
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err.response.data.message))
         } else if (e.target.name === 'newTag') {
             Service.newTag({
                 name:this.state.newTag,
@@ -48,9 +48,9 @@ class PreferenceForm extends Component{
                                                       alias: _res.data.alias,
                                                       idname:_res.data.idname,
                                                       name:this.state.newTag})})
-                .catch(err => {console.log(err.data)})                
+                .catch(err => {console.log(err.response.data.message)})                
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err.response.data.message))
         } else {
             Service.newPublicKey({
                 name:this.state.newPublicKey,
@@ -65,9 +65,9 @@ class PreferenceForm extends Component{
                                                       alias: _res.data.alias,
                                                       name: this.state.newPublicKey,
                                                       idname: _res.data.idname})})
-                .catch(err => {console.log(err)})
+                .catch(err => {console.log(err.response.data.message)})
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err.response.data.message))
         };
     };
 

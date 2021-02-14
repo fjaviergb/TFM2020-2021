@@ -3,11 +3,10 @@ import json
 import asyncio
 import aiohttp
 import mysql.connector
-from datetime import datetime
 import pandas as pd
 from pandas.io import sql
 from sqlalchemy import create_engine
-from sqlalchemy.engine.url import URL
+import time
 
 engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                        .format(user="root",
@@ -40,7 +39,7 @@ async def _client(db,mycursor,_key,row):
     async with aiohttp.ClientSession() as client:
         html = await fetch(client,_key,row)
         try:
-            print("Requesting addresses {}, length {}".format(_key,row[0],len(json.loads(html)['hashes'])))
+            print("Requesting {}, length {}".format(_key,row[0],len(json.loads(html)['hashes'])))
             df = pd.DataFrame(columns=['name'])
             df['name'] = json.loads(html)['hashes']
             df.to_sql('temp_table', engine, if_exists ='append',index=False)
@@ -67,6 +66,7 @@ db = mysql.connector.connect(
 )
 mycursor = db.cursor(buffered=True)
 
+print(time.ctime(time.time()))
 df_temp = pd.DataFrame(columns=['name'])
 df_temp.to_sql('temp_table', engine, if_exists ='replace',index=False)
 loop = asyncio.get_event_loop()

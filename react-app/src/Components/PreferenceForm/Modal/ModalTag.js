@@ -19,7 +19,7 @@ class Modal extends Component {
         })
         .then(res => {this.props.changeTags({idta: res.data.idta,
                                             alias: res.data.alias})})
-        .catch(err => {console.log(err.data)})
+        .catch(err => {console.log(err.response.data.message)})
     };
 
     onChange = (e) => {
@@ -29,12 +29,12 @@ class Modal extends Component {
     onDelete = (e) => {
         Service.removeTagRelations({idta: this.props.object.idta, idcl:this.props.token.idcl})
         .then(res => {'Tag removed successfully'})
-        .catch(err => console.log(err))
+        .catch(err => console.log(err.response.data.message))
         Service.deleteTag({idname: this.props.object.idname})
         .then(res => {
             this.props.deleteTag(this.props.object.idname)
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err.response.data.message));
     };
 
     render() {
@@ -61,7 +61,7 @@ class Modal extends Component {
                 <div className="contentkeys">
                     <div>Select its public keys of interest: </div>
                     {this.props.publicKeys.map(elem => {
-                        return <ModalKeyBox key={elem.alias}
+                        return <ModalKeyBox key={elem.alias+elem.idke}
                                             publicKey={elem}
                                             object={this.props.object}
                                             token={this.props.token}/>

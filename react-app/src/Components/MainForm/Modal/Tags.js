@@ -29,7 +29,7 @@ class Tags extends Component {
                                 size={this.props.tags.length}
                                 onChange={this.onChange}>
                             {this.props.tags.map(el => {
-                                return <option key={el.alias}
+                                return <option key={el.alias+el.idta}
                                 value={JSON.stringify({
                                     alias:el.alias,
                                     idta:el.idta

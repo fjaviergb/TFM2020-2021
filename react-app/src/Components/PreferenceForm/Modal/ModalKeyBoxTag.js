@@ -13,14 +13,14 @@ class ModalKeyBox extends Component {
                 idta:this.props.object.idta,
                 idcl:this.props.token.idcl
             }).then(res => {this.setState({toggle: !this.state.toggle})})
-            .catch(err => console.log(err))
+            .catch(err => console.log(err.response.data.message))
         } else {
             Service.pkeyOnTag({
                 idke:this.props.publicKey.idke,
                 idta:this.props.object.idta,
                 idcl:this.props.token.idcl
             }).then(res => {this.setState({toggle: !this.state.toggle})})
-            .catch(err => console.log(err))
+            .catch(err => console.log(err.response.data.message))
         }
     };
 
@@ -38,7 +38,7 @@ class ModalKeyBox extends Component {
             }
         })
         .catch(err => {
-            console.log(err);
+            console.log(err.response.data.message);
             this.setState({toggle: false})
         })
 

@@ -26,15 +26,15 @@ class LoginForm extends Component {
                 Service.getAddresses({idcl: res.data.idcl})
                 .then(res => {
                     this.props.addAddresses(res.data)})
-                .catch(err => {console.log(err.data)})
+                .catch(err => {console.log(err.response.data.message)})
                 Service.getTags({idcl: res.data.idcl})
                 .then(res => {
                     this.props.addTags(res.data)})
-                .catch(err => {console.log(err.data)})
+                .catch(err => {console.log(err.response.data.message)})
                 Service.getPublicKeys({idcl:res.data.idcl})
                 .then(res => {
                     this.props.addPublicKeys(res.data)})
-                .catch(err => {console.log(err.data)})  
+                .catch(err => {console.log(err.response.data.message)})  
                 this.props.setToken({
                     token: res.data.token,
                     idcl:res.data.idcl,
@@ -42,7 +42,7 @@ class LoginForm extends Component {
                 });
             }  
         })
-        .catch(err => {console.log(err.data)});
+        .catch(err => {console.log(err.response.data.message)});
     };
 
     render () {

@@ -12,6 +12,7 @@ import math
 from pandas.io import sql
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
+import time
 
 db = mysql.connector.connect(
     host="localhost",
@@ -84,6 +85,7 @@ async def main(db,mycursor):
 
         await asyncio.gather(*tasks)
 
+print(time.ctime(time.time()))
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(db,mycursor))    
 

@@ -1,8 +1,8 @@
 var crypto = require('crypto')
   , key = 'salt'
   , plaintext = 'valheim'
-  , cipher = crypto.createCipher('aes-256-cbc', key)
-  , decipher = crypto.createDecipher('aes-256-cbc', key);
+  , cipher = crypto.createCipheriv('aes-256-cbc', key)
+  , decipher = crypto.createDecipheriv('aes-256-cbc', key);
 
 
   var encryptedPassword = cipher.update(plaintext, 'utf8', 'base64');

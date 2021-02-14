@@ -15,7 +15,9 @@ mycursor.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_CONTACT CHECK (CHAR_LE
 mycursor.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_NAME CHECK (CHAR_LENGTH(name) >= 3)")
 mycursor.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_PSWD CHECK (CHAR_LENGTH(password) >= 3)")
 mycursor.execute("CREATE TABLE addresses (idad int PRIMARY KEY AUTO_INCREMENT, name varchar(90) NOT NULL UNIQUE, created datetime)")
+mycursor.execute("ALTER TABLE addresses ADD CONSTRAINT MINIMO_ADD CHECK (CHAR_LENGTH(name) = 81)")
 mycursor.execute("CREATE TABLE tags (idta int PRIMARY KEY AUTO_INCREMENT, name varchar(27) NOT NULL UNIQUE, created datetime)")
+mycursor.execute("ALTER TABLE tags ADD CONSTRAINT MINIMO_TAG CHECK (CHAR_LENGTH(name) = 27)")
 mycursor.execute("CREATE TABLE pkeys (idke int PRIMARY KEY AUTO_INCREMENT, name varchar(384) NOT NULL UNIQUE, created datetime)")
 # DEP mycursor.execute("CREATE TABLE hashes (idha int PRIMARY KEY AUTO_INCREMENT, name varchar(81) NOT NULL, idad int NOT NULL, idta int NOT NULL, timestamp varchar(100) NOT NULL)")
 # DEP mycursor.execute("CREATE TABLE add_connector (idadcon int PRIMARY KEY AUTO_INCREMENT, idcl int NOT NULL, idad int NOT NULL)")
@@ -30,4 +32,4 @@ mycursor.execute("CREATE TABLE pkey_names (idname int PRIMARY KEY AUTO_INCREMENT
 mycursor.execute("CREATE TABLE pkeys_adds (idka int PRIMARY KEY AUTO_INCREMENT, idke int NOT NULL, idcl int NOT NULL, idad int NOT NULL)")
 mycursor.execute("CREATE TABLE pkeys_tags (idkt int PRIMARY KEY AUTO_INCREMENT, idke int NOT NULL, idcl int NOT NULL, idta int NOT NULL)")
 
-#mycursor.execute("DROP DATABASE TFM_DB2")
+#mycursor.execute("DROP TABLE users")

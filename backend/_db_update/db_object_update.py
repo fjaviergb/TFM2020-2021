@@ -1,4 +1,5 @@
 import mysql.connector
+import time
 
 db = mysql.connector.connect(
     host="localhost",
@@ -55,5 +56,6 @@ def main(db,mycursor):
                             LIMIT 100000"
                 mycursor.execute(sql_update % (elem[0], elem[1]))
                 db.commit()
-  
+
+print(time.ctime(time.time()))
 main(db,mycursor)
