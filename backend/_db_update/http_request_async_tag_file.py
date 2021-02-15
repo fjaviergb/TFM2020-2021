@@ -6,12 +6,13 @@ import pandas as pd
 from pandas.io import sql
 from sqlalchemy import create_engine
 import time
+import config as NAME
 # NECESITA pip install PyMySQL y el conector
 
 engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
-                       .format(user="root",
-                               pw="PutosRusosSQL13186",
-                               db="TFM_DB2"))
+                       .format(user=NAME.USER,
+                               pw=NAME.PASSWORD,
+                               db=NAME.DATABASE))
 
 _headers = {
     'content-type': 'application/json',
@@ -59,10 +60,10 @@ async def main(db,mycursor,_key):
     await attachDB()
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="PutosRusosSQL13186",
-    database="TFM_DB2",
+    host=NAME.HOST,
+    user=NAME.USER,
+    passwd=NAME.PASSWORD,
+    database=NAME.DATABASE,
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)

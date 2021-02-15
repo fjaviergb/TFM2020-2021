@@ -1,0 +1,5 @@
+HOST = "localhost"
+USER = "root"
+PASSWORD = "PutosRusosSQL13186"
+DATABASE = "TFM_DB2"
+TIME_IN_BETWEEN = 60

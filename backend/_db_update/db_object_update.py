@@ -1,11 +1,12 @@
 import mysql.connector
 import time
+import config as NAME
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="PutosRusosSQL13186",
-    database="TFM_DB2",
+    host=NAME.HOST,
+    user=NAME.USER,
+    passwd=NAME.PASSWORD,
+    database=NAME.DATABASE,
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)
