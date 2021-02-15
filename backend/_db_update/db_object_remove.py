@@ -12,26 +12,26 @@ db = mysql.connector.connect(
 mycursor = db.cursor(buffered=True)
 
 def main(db,mycursor):
-    sql_rem_adds = "DELETE FROM TFM_DB2.addresses \
-                WHERE idad NOT IN (SELECT idad FROM TFM_DB2.add_names \
+    sql_rem_adds = "DELETE FROM addresses \
+                WHERE idad NOT IN (SELECT idad FROM add_names \
                 GROUP BY idad)"
     mycursor.execute(sql_rem_adds)
     db.commit()
-    sql_update = "UPDATE TFM_DB2.transactions \
+    sql_update = "UPDATE transactions \
             SET transactions.idad = NULL \
-            WHERE idad NOT IN (SELECT idad FROM TFM_DB2.add_names \
+            WHERE idad NOT IN (SELECT idad FROM add_names \
             GROUP BY idad)"
     mycursor.execute(sql_update)
     db.commit()
 
-    sql_rem_tags = "DELETE FROM TFM_DB2.tags \
-            WHERE idta NOT IN (SELECT idta FROM TFM_DB2.tag_names \
+    sql_rem_tags = "DELETE FROM tags \
+            WHERE idta NOT IN (SELECT idta FROM tag_names \
             GROUP BY idta)"
     mycursor.execute(sql_rem_tags)
     db.commit()
-    sql_update = "UPDATE TFM_DB2.transactions \
+    sql_update = "UPDATE transactions \
             SET transactions.idta = NULL \
-            WHERE idta NOT IN (SELECT idta FROM TFM_DB2.tag_names \
+            WHERE idta NOT IN (SELECT idta FROM tag_names \
             GROUP BY idta)"
     mycursor.execute(sql_update)
     db.commit()

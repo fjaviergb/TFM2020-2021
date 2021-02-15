@@ -82,7 +82,7 @@ async def main(db,mycursor):
             records_filtered = filter(lambda x: len(x[0])==81, iter)
             records_mapped = list(map(lambda x: x[0], records_filtered))
             tasks.append(asyncio.create_task(_client(db,mycursor,records_mapped)))
-            await asyncio.sleep(30)
+            await asyncio.sleep(NAME.TIME_IN_BETWEEN_SEARCH)
 
         await asyncio.gather(*tasks)
 

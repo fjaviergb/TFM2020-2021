@@ -14,20 +14,20 @@ mycursor = db.cursor(buffered=True)
 def main(db,mycursor):
     # ADDRESSES
         sql_check = "SELECT address \
-        FROM TFM_DB2.transactions \
+        FROM transactions \
         WHERE transactions.idad IS NULL \
             GROUP BY address"
         mycursor.execute(sql_check)
         _records = mycursor.fetchall()
 
         sql_search = "SELECT idad, name \
-                FROM TFM_DB2.addresses"
+                FROM addresses"
         mycursor.execute(sql_search)
         records = mycursor.fetchall()
         for elem in records:
             if ((elem[1],) in _records):
                 print('Updating %s tx'.format(elem[1]))
-                sql_update = "UPDATE TFM_DB2.transactions \
+                sql_update = "UPDATE transactions \
                             SET transactions.idad = %d \
                             WHERE transactions.address = '%s' \
                             AND transactions.idad IS NULL \
@@ -37,20 +37,20 @@ def main(db,mycursor):
 
     # TAGS
         sql_check = "SELECT tag \
-            FROM TFM_DB2.transactions \
+            FROM transactions \
             WHERE transactions.idta IS NULL \
                 GROUP BY tag"
         mycursor.execute(sql_check)
         _records = mycursor.fetchall()
 
         sql_search = "SELECT idta, name \
-                FROM TFM_DB2.tags"
+                FROM tags"
         mycursor.execute(sql_search)
         records = mycursor.fetchall()
         for elem in records:
             if ((elem[1],) in _records):
                 print('Updating %s tx' % (elem[1]))
-                sql_update = "UPDATE TFM_DB2.transactions \
+                sql_update = "UPDATE .transactions \
                             SET transactions.idta = %d \
                             WHERE transactions.tag = '%s' \
                             AND transactions.idta IS NULL \
