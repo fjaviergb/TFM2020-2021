@@ -22,7 +22,7 @@ def createTables(mycursor,db):
     mycursor.execute("CREATE TABLE temp_hashes (name varchar(81) PRIMARY KEY NOT NULL UNIQUE)")
 
 def saveConfig(config, PATH):
-    with open("{}/v20210217/config.txt".format(PATH), "w+") as outfile:
+    with open("{}/../config.txt".format(PATH), "w+") as outfile:
         json.dump(config, outfile)
 
 def main(PATH):
