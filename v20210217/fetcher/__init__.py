@@ -1,16 +1,18 @@
 import os
 import subprocess
 import asyncio
+import json
 
 PATH = os.getcwd()
 
-command = '{}\TFM13186\Scripts\python'.format(PATH)
+#command = '{}/TFM13186/Scripts/python'.format(PATH)
+command = 'C:\\python\\v3.8.6_MySQL\\Scripts\\python'
 
-paths = ["{}/_db_update/db_object_remove.py".format(PATH),
-"{}/_db_update/http_request_async_tag_file.py".format(PATH),
-"{}/_db_update/http_request_async_add_file.py".format(PATH),
-"{}/_db_update/db_object_creator.py".format(PATH),
-"{}/_db_update/db_object_update.py".format(PATH)]
+paths = ["{}/v20210217/fetcher/update/db_object_remove.py".format(PATH),
+"{}/v20210217/fetcher/update/http_request_async_tag_file.py".format(PATH),
+"{}/v20210217/fetcher/update/http_request_async_add_file.py".format(PATH),
+"{}/v20210217/fetcher/update/db_object_creator.py".format(PATH),
+"{}/v20210217/fetcher/update/db_object_update.py".format(PATH)]
 
 async def chrono ():
     print('Refreshing')
@@ -19,7 +21,7 @@ async def chrono ():
 async def exec():
     for script in paths:
         cron = subprocess.run([command, script], capture_output=True)
-        with open("{}/output.txt".format(PATH), "a") as text_file:
+        with open("{}/v20210217/output.txt".format(PATH), "a") as text_file:
             text_file.write('{}\n'.format(cron))
 	
 
