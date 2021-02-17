@@ -12,12 +12,14 @@ import math
 from pandas.io import sql
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
+import time
+import config as NAME
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="PutosRusosSQL13186",
-    database="TFM_DB",
+    host=NAME.HOST,
+    user=NAME.USER,
+    passwd=NAME.PASSWORD,
+    database=NAME.DATABASE,
     allow_local_infile=True
 )
 mycursor = db.cursor(buffered=True)
@@ -25,14 +27,14 @@ mycursor = db.cursor(buffered=True)
 engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
                        .format(user="root",
                                pw="PutosRusosSQL13186",
-                               db="TFM_DB"))
+                               db="TFM_DB2"))
 
 _headers = {
     'content-type': 'application/json',
     'X-IOTA-API-Version': '1'
 }
 
-_local = 'http://192.168.1.33:14265'
+_local = 'https://nodes.thetangle.org:443'
 _url = 'https://nodes.thetangle.org:443'
 
 
@@ -80,10 +82,11 @@ async def main(db,mycursor):
             records_filtered = filter(lambda x: len(x[0])==81, iter)
             records_mapped = list(map(lambda x: x[0], records_filtered))
             tasks.append(asyncio.create_task(_client(db,mycursor,records_mapped)))
-            await asyncio.sleep(30)
+            await asyncio.sleep(NAME.TIME_IN_BETWEEN_SEARCH)
 
         await asyncio.gather(*tasks)
 
+print(time.ctime(time.time()))
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main(db,mycursor))    
 

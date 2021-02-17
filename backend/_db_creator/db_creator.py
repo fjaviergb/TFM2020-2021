@@ -1,11 +1,12 @@
 import mysql.connector
 from datetime import datetime
+import config as NAME
 
 db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="PutosRusosSQL13186",
+    host=NAME.HOST,
+    user=NAME.USER,
+    passwd=NAME.PASSWORD,
 )
 
 mycursor = db.cursor()
-mycursor.execute('CREATE DATABASE TFM_DB')
+mycursor.execute('CREATE DATABASE {}'.format(NAME.DATABASE))
