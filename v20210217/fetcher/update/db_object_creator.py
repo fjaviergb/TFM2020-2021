@@ -30,10 +30,11 @@ db = mysql.connector.connect(
 
 mycursor = db.cursor(buffered=True)
 
-engine = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
-                       .format(user="root",
-                               pw="PutosRusosSQL13186",
-                               db="TFM_DB2"))
+engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
+                       .format(user=config['user'],
+                               pw=config['password'],
+                               host=config['host'],
+                               db=config['database']))
 
 _headers = {
     'content-type': 'application/json',

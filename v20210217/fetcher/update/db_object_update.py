@@ -58,7 +58,7 @@ def main(db,mycursor):
         for elem in records:
             if ((elem[1],) in _records):
                 print('Updating %s tx' % (elem[1]))
-                sql_update = "UPDATE .transactions \
+                sql_update = "UPDATE transactions \
                             SET transactions.idta = %d \
                             WHERE transactions.tag = '%s' \
                             AND transactions.idta IS NULL \
