@@ -35,5 +35,16 @@ async def main():
         except KeyboardInterrupt:
             break
 
+print('Do you want to use ("https://nodes.thetangle.org:443") or another node? (y/n)')
+ans = input()
+if (ans != "y"):
+    print("Write the new node")
+    server = input()
+else:
+    server = 'https://nodes.thetangle.org:443'
+
+with open("{}/../node.txt".format(PATH), "w+") as text_file:
+    text_file.write(server)
+
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())   

@@ -5,9 +5,9 @@ import os
 
 PATH = os.getcwd()
 
-with open("{}/config.txt".format(PATH)) as f:
+with open("{}/../config.txt".format(PATH)) as f:
   config = json.load(f)
-  
+
 db = mysql.connector.connect(
     host= config['host'],
     user= config['user'],

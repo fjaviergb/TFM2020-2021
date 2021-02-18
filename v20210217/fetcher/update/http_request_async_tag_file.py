@@ -9,8 +9,11 @@ import os
 
 PATH = os.getcwd()
 
-with open("{}/config.txt".format(PATH)) as f:
+with open("{}/../config.txt".format(PATH)) as f:
   config = json.load(f)
+
+with open("{}/../node.txt".format(PATH)) as f:
+  _local = f.read()
 
 db = mysql.connector.connect(
     host= config['host'],
@@ -31,9 +34,6 @@ _headers = {
     'content-type': 'application/json',
     'X-IOTA-API-Version': '1'
 }
-
-_local = 'https://nodes.thetangle.org:443'
-_url = 'http://92.22.55.226:14265'
 
 async def fetch(client,_key,row):
     _data = json.dumps({
