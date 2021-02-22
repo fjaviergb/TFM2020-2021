@@ -1,0 +1,27 @@
+TT from makigas:tutorales de programacion
+
+1. Sistema operativo Unix
+2. sudo add-apt-repository ppa:ansible/ansible
+    2.1. apt-get install sudo (en docker)
+    2.2. sudo apt-get install software-properties-common
+3. sudo apt update
+4. sudo apt install ansible
+5. "inventory": lista de todos los host (maquinas) que aprovisionar
+6. "aprovisionar": actuar sobre un servidor en concreto
+7. sudo vim /etc/ansible/hosts
+    7.1. Contiene el "inventory" global
+8. "task": tarea que debe realizar ansible
+9. "ad hoc commands": tareas de un solo uso hacia un host
+    9.1. ansible HOST -m COMANDO (-i ARCHIVOHOST) Ex: ansible localhost -m ping
+        9.1.1. Emplea SSH para la comm. Si no están unidos de esa manera ==> ERROR
+    9.2. -m indica que se emplea un modulo. Existen multitud de ellos. Si se omite, coge el módulo "command"
+    9.3. Ex: ansible localhost -m apt -a 'name=vim state=present' -b -K
+        9.3.1. modulo apt, instalar vim, con b ==> sudo (root) y K ==> pide contraseña
+10. "playbook": se escriben en yml y está escrito en key-values.
+    10.1. Ex: 
+            - host: all
+                - name: instalacion vim #simple nombre
+                  apt: name=vim state=present
+                  become: true #Superusuario
+    10.2. Se ejecuta con: ansible-playbook NOMBRE.yml
+    10.3. Se obtienen "facts"
