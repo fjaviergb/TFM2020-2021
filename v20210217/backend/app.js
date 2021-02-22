@@ -16,14 +16,17 @@ var path = require('path')
 var config = fs.readFileSync(`${path.resolve(process.cwd(), '..')}/config.txt`, 'utf8')
 config = JSON.parse(config)
 const configdb = {
-  connectionLimit: 10,
   host: config.host,
-  port: '3306',
   user: config.user,
   password: config.password,
   database: config.database,
 }
-const pool = mysql.createPool(configdb);
+const con = mysql.createConnection(configdb);
+
+con.connect( (err,res) => {
+  if (err) {console.log(err)
+  } else {console.log(res)}
+});
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -44,7 +47,7 @@ app.post(MODEL.LOGIN.ROUTE, (req, res) => {
     const cipher = crypto.createCipheriv(algorithm, key, iv);
     let encrypted = cipher.update(req.body.passwd, 'utf8', 'hex');
     encrypted += cipher.final('hex');
-    pool.query(MODEL.LOGIN.SQL({body: req.body, pswd: encrypted}), (err, result) => {
+    con.query(MODEL.LOGIN.SQL({body: req.body, pswd: encrypted}), (err, result) => {
         if (err) {
             res.status(404).json({ message: "Known error" });
         } else if (result.length > 0) {
@@ -61,7 +64,7 @@ app.post(MODEL.REGISTER.ROUTE, (req, res) => {
     let encrypted = cipher.update(req.body.password, 'utf8', 'hex');
     encrypted += cipher.final('hex');
 
-    pool.query(MODEL.REGISTER.SQL, MODEL.REGISTER.SQL_DATA({body: req.body, pswd: encrypted}), (err, result) => {
+    con.query(MODEL.REGISTER.SQL, MODEL.REGISTER.SQL_DATA({body: req.body, pswd: encrypted}), (err, result) => {
         if (err) {
           console.log(err)
           res.status(404).json({ type: false, message: `Known error ${err.sqlMessage}` });
@@ -73,7 +76,7 @@ app.post(MODEL.REGISTER.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.GETADDRESSES.ROUTE, (req,res) => {
-  pool.query(MODEL.GETADDRESSES.SQL(req.body.idcl), (err, result) => {
+  con.query(MODEL.GETADDRESSES.SQL(req.body.idcl), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -84,7 +87,7 @@ app.post(MODEL.GETADDRESSES.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.GETTAGS.ROUTE, (req,res) => {
-  pool.query(MODEL.GETTAGS.SQL(req.body.idcl), (err, result) => {
+  con.query(MODEL.GETTAGS.SQL(req.body.idcl), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -95,7 +98,7 @@ app.post(MODEL.GETTAGS.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.GETPUBLICKEYS.ROUTE, (req,res) => {
-  pool.query(MODEL.GETPUBLICKEYS.SQL(req.body.idcl), (err, result) => {
+  con.query(MODEL.GETPUBLICKEYS.SQL(req.body.idcl), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -106,7 +109,7 @@ app.post(MODEL.GETPUBLICKEYS.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.CHANGETAG.ROUTE, (req, res) => {
-  pool.query(MODEL.CHANGETAG.SQL, MODEL.CHANGETAG.SQL_DATA(req.body), (err, result) => {
+  con.query(MODEL.CHANGETAG.SQL, MODEL.CHANGETAG.SQL_DATA(req.body), (err, result) => {
       if (err) {
         console.log(err)
         res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -117,7 +120,7 @@ app.post(MODEL.CHANGETAG.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.CHANGEADDRESS.ROUTE, (req, res) => {
-  pool.query(MODEL.CHANGEADDRESS.SQL, MODEL.CHANGEADDRESS.SQL_DATA(req.body), (err, result) => {
+  con.query(MODEL.CHANGEADDRESS.SQL, MODEL.CHANGEADDRESS.SQL_DATA(req.body), (err, result) => {
       if (err) {
         console.log(err)
         res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -128,7 +131,7 @@ app.post(MODEL.CHANGEADDRESS.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.CHANGEPKEY.ROUTE, (req, res) => {
-  pool.query(MODEL.CHANGEPKEY.SQL, MODEL.CHANGEPKEY.SQL_DATA(req.body), (err, result) => {
+  con.query(MODEL.CHANGEPKEY.SQL, MODEL.CHANGEPKEY.SQL_DATA(req.body), (err, result) => {
       if (err) {
         console.log(err)
         res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -139,9 +142,9 @@ app.post(MODEL.CHANGEPKEY.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.NEWADDRESS.ROUTE, (req, res) => {
-  pool.query(MODEL.NEWADDRESS.SQL_CHECK(req.body), (err,_result) => {
+  con.query(MODEL.NEWADDRESS.SQL_CHECK(req.body), (err,_result) => {
     if (_result.length === 0) {
-      pool.query(MODEL.NEWADDRESS.SQL, MODEL.NEWADDRESS.SQL_DATA(req.body), (err, result) => {
+      con.query(MODEL.NEWADDRESS.SQL, MODEL.NEWADDRESS.SQL_DATA(req.body), (err, result) => {
           if (err) {
             console.log(err)
             res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -157,9 +160,9 @@ app.post(MODEL.NEWADDRESS.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.NEWTAG.ROUTE, (req, res) => {
-  pool.query(MODEL.NEWTAG.SQL_CHECK(req.body), (err,_result) => {
+  con.query(MODEL.NEWTAG.SQL_CHECK(req.body), (err,_result) => {
     if (_result.length === 0) {
-      pool.query(MODEL.NEWTAG.SQL, MODEL.NEWTAG.SQL_DATA(req.body), (err, result) => {
+      con.query(MODEL.NEWTAG.SQL, MODEL.NEWTAG.SQL_DATA(req.body), (err, result) => {
           if (err) {
             console.log(err)
             res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -175,9 +178,9 @@ app.post(MODEL.NEWTAG.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.NEWPKEY.ROUTE, (req, res) => {
-  pool.query(MODEL.NEWPKEY.SQL_CHECK(req.body), (err,_result) => {
+  con.query(MODEL.NEWPKEY.SQL_CHECK(req.body), (err,_result) => {
     if (_result.length === 0) {
-      pool.query(MODEL.NEWPKEY.SQL, MODEL.NEWPKEY.SQL_DATA(req.body), (err, result) => {
+      con.query(MODEL.NEWPKEY.SQL, MODEL.NEWPKEY.SQL_DATA(req.body), (err, result) => {
           if (err) {
             console.log(err)
             res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -194,7 +197,7 @@ app.post(MODEL.NEWPKEY.ROUTE, (req, res) => {
 });
 
 app.post(MODEL.DELTAG.ROUTE, (req,res) => {
-  pool.query(MODEL.DELTAG.SQL(req.body.idname), (err, result) => {
+  con.query(MODEL.DELTAG.SQL(req.body.idname), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -206,7 +209,7 @@ app.post(MODEL.DELTAG.ROUTE, (req,res) => {
 
 
 app.post(MODEL.DELADDRESS.ROUTE, (req,res) => {
-  pool.query(MODEL.DELADDRESS.SQL(req.body.idname), (err, result) => {
+  con.query(MODEL.DELADDRESS.SQL(req.body.idname), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -218,7 +221,7 @@ app.post(MODEL.DELADDRESS.ROUTE, (req,res) => {
 
 
 app.post(MODEL.DELPKEY.ROUTE, (req,res) => {
-  pool.query(MODEL.DELPKEY.SQL(req.body.idname), (err, result) => {
+  con.query(MODEL.DELPKEY.SQL(req.body.idname), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -229,7 +232,7 @@ app.post(MODEL.DELPKEY.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.PKEYONADD.ROUTE, (req,res) => {
-  pool.query(MODEL.PKEYONADD.SQL,MODEL.PKEYONADD.SQL_DATA(req.body), (err,result) => {
+  con.query(MODEL.PKEYONADD.SQL,MODEL.PKEYONADD.SQL_DATA(req.body), (err,result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -240,7 +243,7 @@ app.post(MODEL.PKEYONADD.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.PKEYONTAG.ROUTE, (req,res) => {
-  pool.query(MODEL.PKEYONTAG.SQL,MODEL.PKEYONTAG.SQL_DATA(req.body), (err,result) => {
+  con.query(MODEL.PKEYONTAG.SQL,MODEL.PKEYONTAG.SQL_DATA(req.body), (err,result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -251,7 +254,7 @@ app.post(MODEL.PKEYONTAG.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.PKEYOFFADD.ROUTE, (req,res) => {
-  pool.query(MODEL.PKEYOFFADD.SQL(req.body), (err, result) => {
+  con.query(MODEL.PKEYOFFADD.SQL(req.body), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -262,7 +265,7 @@ app.post(MODEL.PKEYOFFADD.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.PKEYOFFTAG.ROUTE, (req,res) => {
-  pool.query(MODEL.PKEYOFFTAG.SQL(req.body), (err, result) => {
+  con.query(MODEL.PKEYOFFTAG.SQL(req.body), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -273,7 +276,7 @@ app.post(MODEL.PKEYOFFTAG.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.CHECKADDKEY.ROUTE, (req,res) => {
-  pool.query(MODEL.CHECKADDKEY.SQL(req.body), (err,result) => {
+  con.query(MODEL.CHECKADDKEY.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
     } else if (result) {
@@ -283,7 +286,7 @@ app.post(MODEL.CHECKADDKEY.ROUTE, (req,res) => {
 })
 
 app.post(MODEL.CHECKTAGKEY.ROUTE, (req,res) => {
-  pool.query(MODEL.CHECKTAGKEY.SQL(req.body), (err,result) => {
+  con.query(MODEL.CHECKTAGKEY.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
     } else if (result) {
@@ -293,7 +296,7 @@ app.post(MODEL.CHECKTAGKEY.ROUTE, (req,res) => {
 })
 
 app.post(MODEL.QUERYALL.ROUTE, (req,res) => {
-  pool.query(MODEL.QUERYALL.SQL(req.body), (err,result) => {
+  con.query(MODEL.QUERYALL.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
     } else if (result) {
@@ -303,7 +306,7 @@ app.post(MODEL.QUERYALL.ROUTE, (req,res) => {
 })
 
 app.post(MODEL.QUERYPKEYS.ROUTE, (req,res) => {
-  pool.query(MODEL.QUERYPKEYS.SQL(req.body), (err,result) => {
+  con.query(MODEL.QUERYPKEYS.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
     } else if (result) {
@@ -313,7 +316,7 @@ app.post(MODEL.QUERYPKEYS.ROUTE, (req,res) => {
 })
 
 app.post(MODEL.REMOVEPKEYRELATIONSTAGS.ROUTE, (req,res) => {
-  pool.query(MODEL.REMOVEPKEYRELATIONSTAGS.SQL(req.body), (err, result) => {
+  con.query(MODEL.REMOVEPKEYRELATIONSTAGS.SQL(req.body), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -324,7 +327,7 @@ app.post(MODEL.REMOVEPKEYRELATIONSTAGS.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.REMOVEPKEYRELATIONSADDS.ROUTE, (req,res) => {
-  pool.query(MODEL.REMOVEPKEYRELATIONSADDS.SQL(req.body), (err, result) => {
+  con.query(MODEL.REMOVEPKEYRELATIONSADDS.SQL(req.body), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -335,7 +338,7 @@ app.post(MODEL.REMOVEPKEYRELATIONSADDS.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.REMOVEADDRESSRELATIONS.ROUTE, (req,res) => {
-  pool.query(MODEL.REMOVEADDRESSRELATIONS.SQL(req.body), (err, result) => {
+  con.query(MODEL.REMOVEADDRESSRELATIONS.SQL(req.body), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
@@ -346,7 +349,7 @@ app.post(MODEL.REMOVEADDRESSRELATIONS.ROUTE, (req,res) => {
 });
 
 app.post(MODEL.REMOVETAGRELATIONS.ROUTE, (req,res) => {
-  pool.query(MODEL.REMOVETAGRELATIONS.SQL(req.body), (err, result) => {
+  con.query(MODEL.REMOVETAGRELATIONS.SQL(req.body), (err, result) => {
     if(err) {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
