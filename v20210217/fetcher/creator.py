@@ -56,6 +56,14 @@ def main(PATH):
         mycursor = db.cursor()
         mycursor.execute("CREATE DATABASE {}".format(database))
 
+        db = mysql.connector.connect(
+            host=host,
+            user=user,
+            passwd=pswd,
+            database=database,
+        )
+
+        mycursor = db.cursor()
         createTables(mycursor,db)
         saveConfig(config, PATH)
 
