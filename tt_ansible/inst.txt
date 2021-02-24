@@ -25,3 +25,4 @@ TT from makigas:tutorales de programacion
                   become: true #Superusuario
     10.2. Se ejecuta con: ansible-playbook NOMBRE.yml
     10.3. Se obtienen "facts"
+11. apt-get install net-tool
