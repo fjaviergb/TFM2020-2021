@@ -72,3 +72,41 @@
           virtualenv_python:
 
 3. Instalar nodeJs 
+  Emplea NVM (Node Version Manager)
+  Fuente: https://github.com/morgangraphics/ansible-role-nvm
+          https://www.tderflinger.com/en/ansible-node
+
+  3.1. Descargar elementos necesarios en el archivo roles.
+
+
+
+
+  3.2. Utilizar ansible:
+
+    - name: Install curl and wget
+      gather_facts: 'no'
+      hosts: localhost
+      become: yes
+      remote_user: root
+
+      tasks:
+        - name: Install curl
+          yum:
+            name: curl
+            state: present
+
+        - name: Install wget
+          yum:
+            name: wget
+            state: present
+
+    - name: Create nvm
+      hosts: localhost
+
+      roles:
+        - role: ansible-role-nvm
+          nodejs_version: '10.16.0'
+          nvm_commands:
+          - "nvm exec default npm install"
+
+

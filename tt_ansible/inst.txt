@@ -26,3 +26,71 @@ TT from makigas:tutorales de programacion
     10.2. Se ejecuta con: ansible-playbook NOMBRE.yml
     10.3. Se obtienen "facts"
 11. apt-get install net-tool
+12. "Roles": Roles let you automatically load related vars_files, tasks, handlers, and other Ansible artifacts based on a known file structure.
+    12.1. Es un documento donde encuentras direcciones en las que Ansible busca un archivo "main.yml":
+        Example: # playbooks
+                   site.yml
+                   webservers.yml
+                   fooservers.yml
+                   roles/
+                     common/
+                       tasks/
+                     webservers/
+                       tasks/
+    
+    12.2 Existen varias maneras de invocar los roles, Ansible busca de manera determinada en:
+            A. roles/ #con respecto al playbook
+            B. /etc/ansible/roles 
+        
+        12.2.1. Opcion A.
+            i. En la misma carpeta donde se encuentra el playbook principal, crear una subcarpeta de nombre roles
+            ii. Crear en roles tantas subcarpetas como roles se deseen.
+            iii. Dentro de estas subcarpetas, crer una carpeta que se llame tasks (existen otros nombres como handlers, library,
+            files, templates, vars, defaults, meta)
+            iv. Dentro de esta subcarpeta, crear un main.yml con el código de una tarea de playbook.
+                Se conocen como rolebook porque no se explicita el host ni otros parametros
+            
+            Example:
+            - name: install virtualenv
+              pip:
+                name: virtualenv
+            - name: Install specified python requirements in indicated (virtualenv)
+              pip:
+                requirements: /usr/src/requirements.txt
+                virtualenv: /usr/src/TFM13186
+                virtualenv_python:              
+
+
+        12.2.2. Invocación directamente en el playbook, es la más empleada (y permite pasar otros argumentos a roles):
+            Example:
+                # Si se encuentran en los lugares de búsqueda predeterminados
+                - name: preparing fetcher
+                  hosts: localhost
+                  tasks:
+                  - name: installing pip3
+                    apt: 
+                      name: python3-pip
+                      state: present
+                - name: installing python depedencies
+                  hosts: localhost
+                  tasks:
+                  - name: install virtualenv
+                    pip:
+                      name: virtualenv
+                  - name: Install specified python requirements in indicated (virtualenv)
+                    pip:
+                      requirements: /usr/src/requirements.txt
+                      virtualenv: /usr/src/TFM13186
+                      virtualenv_python:
+
+
+                # Si se encuentran en otro lugar                          
+                - hosts: webservers
+                    roles:
+                      - role: '/path/to/my/roles/common'
+
+13. Archivo de "configuration": archivo donde se especifican la mayoría de parámetros de Ansible, tales como
+    los roles_path, inventory, etc. Se encuentra habitualmente en /etc/ansible.
+    Fuente: https://docs.ansible.com/ansible/2.4/intro_configuration.html#configuration-file
+
+
