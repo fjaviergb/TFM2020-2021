@@ -2,10 +2,12 @@ TT from makigas:tutorales de programacion
 
 1. Sistema operativo Unix
 2. sudo add-apt-repository ppa:ansible/ansible
-    2.1. apt-get install sudo (en docker)
-    2.2. sudo apt-get install software-properties-common
-3. sudo apt update
-4. sudo apt install ansible
+    2.1. apt-get update
+    2.2. apt-get upgrade -y
+    2.3. apt-get install sudo
+    2.4. sudo apt-get install software-properties-common -y
+3. sudo apt update -y
+4. sudo apt install ansible -y
 5. "inventory": lista de todos los host (maquinas) que aprovisionar
 6. "aprovisionar": actuar sobre un servidor en concreto
 7. sudo vim /etc/ansible/hosts

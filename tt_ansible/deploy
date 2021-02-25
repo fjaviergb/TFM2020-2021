@@ -72,41 +72,29 @@
           virtualenv_python:
 
 3. Instalar nodeJs 
-  Emplea NVM (Node Version Manager)
-  Fuente: https://github.com/morgangraphics/ansible-role-nvm
-          https://www.tderflinger.com/en/ansible-node
+  Fuente: https://stackoverflow.com/questions/45840664/installing-nodejs-lts-for-ansible
+  A. Puedes elegir distribucion y versión en las variables
 
-  3.1. Descargar elementos necesarios en el archivo roles.
+  Example: 
+  - hosts: localhost
+    become: yes
+    tasks:
+      - name: install node 
+        shell: |
+          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -y nodejs
+      - name: install npm
+        apt:
+          name: npm
+          state: present
 
+5. Instalar modulos a partir de package.json
+  Fuente: https://docs.ansible.com/ansible/2.8/modules/npm_module.html#npm-module
 
-
-
-  3.2. Utilizar ansible:
-
-    - name: Install curl and wget
-      gather_facts: 'no'
-      hosts: localhost
-      become: yes
-      remote_user: root
-
-      tasks:
-        - name: Install curl
-          yum:
-            name: curl
-            state: present
-
-        - name: Install wget
-          yum:
-            name: wget
-            state: present
-
-    - name: Create nvm
-      hosts: localhost
-
-      roles:
-        - role: ansible-role-nvm
-          nodejs_version: '10.16.0'
-          nvm_commands:
-          - "nvm exec default npm install"
-
+  Example:
+  - hosts: localhost
+    become: yes
+    tasks:
+      - name: Install packages based on package.json.
+        npm:
+          path: /usr/src/app/frotend
 
