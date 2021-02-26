@@ -4,7 +4,7 @@ TT from makigas:tutorales de programacion
 2. sudo add-apt-repository ppa:ansible/ansible
     2.1. apt-get update
     2.2. apt-get upgrade -y
-    2.3. apt-get install sudo
+    2.3. apt-get install sudo -y
     2.4. sudo apt-get install software-properties-common -y
 3. sudo apt update -y
 4. sudo apt install ansible -y
@@ -27,7 +27,7 @@ TT from makigas:tutorales de programacion
                   become: true #Superusuario
     10.2. Se ejecuta con: ansible-playbook NOMBRE.yml
     10.3. Se obtienen "facts"
-11. apt-get install net-tool
+11. apt-get install net-tools
 12. "Roles": Roles let you automatically load related vars_files, tasks, handlers, and other Ansible artifacts based on a known file structure.
     12.1. Es un documento donde encuentras direcciones en las que Ansible busca un archivo "main.yml":
         Example: # playbooks

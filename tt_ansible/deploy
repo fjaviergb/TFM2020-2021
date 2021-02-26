@@ -67,8 +67,8 @@
           name: virtualenv
       - name: Install specified python requirements in indicated (virtualenv)
         pip:
-          requirements: /usr/src/requirements.txt
-          virtualenv: /usr/src/TFM13186
+          requirements: /usr/src/app/requirements.txt
+          virtualenv: /usr/src/app/TFM13186
           virtualenv_python:
 
 3. Instalar nodeJs 
@@ -94,7 +94,9 @@
   - hosts: localhost
     become: yes
     tasks:
-      - name: Install packages based on package.json.
+      - name: Install packages from frontend
         npm:
           path: /usr/src/app/frotend
-
+      - name: install packages from backend
+        npm:
+          path: /usr/src/app/backend

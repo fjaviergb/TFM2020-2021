@@ -42,7 +42,7 @@ class LoginForm extends Component {
                 });
             }  
         })
-        .catch(err => {console.log(err.response.data.message)});
+        .catch(err => {console.log(err.response)});
     };
 
     render () {

@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require('mysql');
-const dbConfig = require('./db-config.js')
 const MODEL = require('./models.js');
 var crypto = require("crypto");
 const iv = Buffer.alloc(16, 0); // Initialization vector.
@@ -155,7 +154,7 @@ app.post(MODEL.NEWADDRESS.ROUTE, (req, res) => {
             
           } else {res.status(404).json({ message: "Unknown error; try again" });}
       });
-    } else {res.json({ idad: result[0]});}
+    } else {res.json({ idad: _result[0].idad});}
   })
 });
 
@@ -173,7 +172,7 @@ app.post(MODEL.NEWTAG.ROUTE, (req, res) => {
             
           } else {res.status(404).json({ message: "Unknown error; try again" });}
       });
-    } else {res.json({ idta: result[0].idta});}
+    } else {res.json({ idta: _result[0].idta});}
   })
 });
 
