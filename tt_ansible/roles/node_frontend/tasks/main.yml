@@ -1,0 +1,10 @@
+- name: install node 
+  shell: |
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -y nodejs
+- name: install npm   
+  apt:
+    name: npm
+    state: present
+- name: Install packages from frontend
+  npm:
+    path: /usr/src/frontend # PATH A

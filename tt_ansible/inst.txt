@@ -84,6 +84,10 @@ TT from makigas:tutorales de programacion
                       requirements: /usr/src/requirements.txt
                       virtualenv: /usr/src/TFM13186
                       virtualenv_python:
+                - hosts: localhost
+                  become: true
+                  roles:
+                    - carpeta dentro de roles
 
 
                 # Si se encuentran en otro lugar                          

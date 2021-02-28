@@ -1,0 +1,14 @@
+- name: installing pip3
+  apt: 
+    name: python3-pip
+    state: present
+- name: installing python depedencies
+  tasks:
+  - name: install virtualenv
+    pip:
+      name: virtualenv
+  - name: Install specified python requirements in indicated (virtualenv)
+    pip:
+      requirements: /usr/src/requirements.txt #PATH C
+      virtualenv: /usr/src/TFM13186 #PATH C
+      virtualenv_python:
