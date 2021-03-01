@@ -1,34 +1,20 @@
-- name: copying
-  tasks:
-  - name: copying frontend
-    hosts: localhost #SELECT YOUR MACHINE A
-    ansible.builtin.copy:
-      src: /usr/src/13186/frontend
-      dest: /usr/src #SELECT YOUR PATH A
-      owner: root
-      group: root
-      mode: 'preserve'
-  - name: copying backend
-    hosts: localhost #SELECT YOUR MACHINE B
-    ansible.builtin.copy:
-      src: /usr/src/13186/backend
-      dest: /usr/src #SELECT YOUR PATH B
-      owner: root
-      group: root
-      mode: 'preserve'
-  - name: copying fetcher
-    hosts: localhost #SELECT YOUR MACHINE C
-    ansible.builtin.copy:
-      src: /usr/src/13186/fetcher
-      dest: /usr/src #SELECT YOUR PATH C
-      owner: root
-      group: root
-      mode: 'preserve'
-  - name: copying requirements.txt
-    hosts: localhost #SELECT YOUR MACHINE
-    ansible.builtin.copy:
-      src: /usr/src/13186/requirements.txt
-      dest: /usr/src #SELECT YOUR PATH C
-      owner: root
-      group: root
-      mode: 'preserve'              
+---
+ - name: displaying backend
+   gather_facts: no
+   hosts: backend
+   roles:
+     - role: folders
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+
+ - name: displaying frontend
+   gather_facts: no
+   hosts: frontend
+   roles:
+     - role: folders
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+  
+  # FALTA REQ.TXT Y FETCHER.

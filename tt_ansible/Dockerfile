@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-WORKDIR /usr/src/13186
+WORKDIR /usr/src
 COPY . ./
 
 

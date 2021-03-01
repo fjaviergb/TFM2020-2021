@@ -1,15 +1,12 @@
-- name: installing node in both servers
-  become: yes
-
 - hosts: localhost # IP MACHINE A
   become: yes
   roles:
-    - node_frontend
+    - frontend
 
 - hosts: localhost # IP MACHINE B
   become: yes
   roles:
-    - node_backend
+    - backend
 
 
    
