@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-WORKDIR /usr/src
+WORKDIR /usr/src/TFM13186
 COPY . ./
 
 

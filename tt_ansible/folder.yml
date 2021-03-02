@@ -7,6 +7,14 @@
        vars:
          endpoint: "{{ point }}"
          path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ conf }}"
+         path: "{{ dir }}" 
+     - role: instnodejs
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
 
  - name: displaying frontend
    gather_facts: no
@@ -16,5 +24,28 @@
        vars:
          endpoint: "{{ point }}"
          path: "{{ dir }}"
-  
-  # FALTA REQ.TXT Y FETCHER.
+     - role: instnodejs
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+
+ - name: displaying fetcher
+   gather_facts: no
+   hosts: fetcher
+   roles:
+     - role: folders
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ reqs }}"
+         path: "{{ dir }}"  
+     - role: folders
+       vars:
+         endpoint: "{{ conf }}"
+         path: "{{ dir }}" 
+     - role: fetcher
+       vars:
+         endpoint: "{{ reqs }}"
+         path: "{{ dir }}" 

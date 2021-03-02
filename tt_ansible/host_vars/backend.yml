@@ -1,3 +1,4 @@
 ---
-dir: /usr/src/TFM13186
+dir: /usr/src/TFM
 point: backend
+conf: config.txt
