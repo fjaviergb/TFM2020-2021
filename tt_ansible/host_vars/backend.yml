@@ -2,3 +2,7 @@
 dir: /usr/src/TFM
 point: backend
 conf: config.txt
+cors: cors.js
+ansible_host: localhost
+ansible_user: root
+ansible_connection: local

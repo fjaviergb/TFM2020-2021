@@ -9,5 +9,5 @@
 - name: Install specified python requirements in indicated (virtualenv)
   pip:
     requirements: "/usr/src/TFM13186/{{ endpoint }}" #PATH C
-    virtualenv: "{{ path }}"/TFM13186 #PATH C
+    virtualenv: "{{ path }}/TFM13186" #PATH C
     virtualenv_python:

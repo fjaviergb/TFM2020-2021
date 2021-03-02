@@ -23,7 +23,7 @@ const configdb = {
 
 function handleDisconnect() {
   con = mysql.createConnection(configdb);
-  con.connect((res,err) => {
+  con.connect((err,res) => {
     if (err){
       console.log('Connection to mysql err');
       setTimeout(handleDisconnect,10000);
@@ -38,15 +38,11 @@ function handleDisconnect() {
 }
 
 handleDisconnect();
-// const con = mysql.createConnection(configdb);
 
-// con.connect( (err,res) => {
-//   if (err) {console.log(err)
-//   } else {console.log(res)}
-// });
+const HOSTS = require('./cors.js');
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: `${HOSTS.backend}`,
 };
 
 app.use(cors(corsOptions));

@@ -1,6 +1,8 @@
 import axios from "axios";
+const HOSTS = require('./cors.js');
+
 export default axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: `${HOSTS.frontend}`,
     headers: {
       "Content-type": "application/json"
     }

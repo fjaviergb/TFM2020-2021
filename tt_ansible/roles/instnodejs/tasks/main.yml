@@ -8,4 +8,4 @@
     state: present
 - name: install packages from "{{ endpoint }}"
   npm:
-    path: "{{ path }}" # PATH B 
+    path: "{{ path }}/{{ endpoint }}" # PATH B 

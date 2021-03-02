@@ -1,7 +1,7 @@
 - name: "{{ endpoint }}"
   become: yes
   ansible.builtin.copy:
-    src: /usr/src/TFM13186/"{{ endpoint }}"
+    src: "/usr/src/TFM13186/{{ endpoint }}"
     dest: "{{ path }}"
     owner: root
     group: root

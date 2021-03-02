@@ -15,6 +15,10 @@
        vars:
          endpoint: "{{ point }}"
          path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ cors }}"
+         path: "{{ dir }}/{{ point }}"
 
  - name: displaying frontend
    gather_facts: no
@@ -28,6 +32,10 @@
        vars:
          endpoint: "{{ point }}"
          path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ cors }}"
+         path: "{{ dir }}/{{ point }}/src"
 
  - name: displaying fetcher
    gather_facts: no
