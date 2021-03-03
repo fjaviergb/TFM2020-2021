@@ -33,6 +33,8 @@ def main(PATH):
         print("Tiene que tener, por lo menos, derecho a SELECT, INSERT, REMOVE Y UPDATE")
         print("Introduzca el host de su estancia Mysql (en caso de ser local --> 'localhost')")
         host = input()
+        print("Introduzca el puerto de su estancia Mysql/MariaDB (en caso de ser el predeterminado --> 3306)")
+        port = input()
         print("Introduzca el nombre del usuario que desea emplear")
         user = input()
         print("Introduzca la contraseña del usuario que desea emplear")
@@ -45,13 +47,14 @@ def main(PATH):
             'user': user,
             'password': pswd,
             'database': database,
+            'port':port
         }
 
         db = mysql.connector.connect(
             host=host,
+            port=port,
             user=user,
             passwd=pswd,
-            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -60,9 +63,9 @@ def main(PATH):
         db = mysql.connector.connect(
             host=host,
             user=user,
+            port=port,
             passwd=pswd,
             database=database,
-            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -72,14 +75,16 @@ def main(PATH):
     else: 
         print("Introduzca el host de su estancia Mysql (en caso de ser local --> 'localhost')")
         host = input()
+        print("Introduzca el puerto de su estancia Mysql/MariaDB (en caso de ser el predeterminado --> 3306)")
+        port = input()
         print("Introduzca la contraseña de su usuario root")
         rootpswd = input()
 
         db = mysql.connector.connect(
             host=host,
+            port=port,
             user="root",
             passwd=rootpswd,
-            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -89,20 +94,24 @@ def main(PATH):
         print("Introduzca la contraseña del usuario que desea crear")
         pswd = input()
 
-        mycursor.execute("CREATE USER '{}'@'localhost' IDENTIFIED WITH mysql_native_password BY '{}'".format(user, pswd))
+        mycursor.execute("CREATE USER '{}'@'localhost' IDENTIFIED BY '{}'".format(user, pswd))
+        mycursor.execute("CREATE USER '{}'@'%' IDENTIFIED BY '{}'".format(user, pswd))
+        mycursor.execute("GRANT ALL PRIVILEGES ON *.* TO '{}'@'localhost'".format(user))
+        mycursor.execute("GRANT ALL PRIVILEGES ON *.* TO '{}'@'%'".format(user))
 
         print("Introduzca el nombre de la base de datos donde desea almacenar la informacion")
         database = input()
 
         mycursor.execute("CREATE DATABASE {}".format(database))
-        mycursor.execute("GRANT ALL PRIVILEGES ON {}.* TO '{}'@'localhost'".format(database, user))
+        mycursor.execute("GRANT ALL PRIVILEGES ON {}.* TO '{}'@'localhost'".format(database,user))
+        mycursor.execute("GRANT ALL PRIVILEGES ON {}.* TO '{}'@'%'".format(database,user))
 
         db = mysql.connector.connect(
             host=host,
+            port=port,
             user=user,
             passwd=pswd,
             database=database,
-            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -111,6 +120,7 @@ def main(PATH):
 
         config = {
             'host':host,
+            'port':port,
             'user': user,
             'password': pswd,
             'database': database,

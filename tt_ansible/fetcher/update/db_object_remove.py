@@ -10,11 +10,10 @@ with open("{}/../config.txt".format(PATH)) as f:
 
 db = mysql.connector.connect(
     host= config['host'],
+    port= config['port'],
     user= config['user'],
     passwd= config['password'],
     database= config['database'],
-    allow_local_infile=True,
-    auth_plugin='mysql_native_password'
 )
 
 mycursor = db.cursor(buffered=True)

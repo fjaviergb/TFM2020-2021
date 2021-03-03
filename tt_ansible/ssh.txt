@@ -1,0 +1,10 @@
+Conexión remota entre servidores por el protocolo ssh.
+Fuentes: https://www.youtube.com/watch?v=QBkuTzMcFaQ&ab_channel=RenzoCaceresRossi
+         https://phoenixnap.com/kb/ssh-to-connect-to-remote-server-linux-or-windows
+
+1. Instalar ssh server: sudo apt-get install openssh-server
+2. Instalar ssh client: sudo apt-get install openssh-client
+
+{% comment %} 3. Crear el server: sudo apt-get install openssh-server ii. -y
+
+4. Check if okey: sudo service ssh status {% endcomment %}

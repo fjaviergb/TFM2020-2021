@@ -1,6 +1,6 @@
 ---
 dir: /usr/src/TFM
-point: backend
+point: fetcher
 conf: config.txt
 reqs: requirements.txt
 ansible_host: localhost

@@ -16,6 +16,7 @@ var config = fs.readFileSync(`${path.resolve(process.cwd(), '..')}/config.txt`, 
 config = JSON.parse(config)
 const configdb = {
   host: config.host,
+  port: config.port,
   user: config.user,
   password: config.password,
   database: config.database,

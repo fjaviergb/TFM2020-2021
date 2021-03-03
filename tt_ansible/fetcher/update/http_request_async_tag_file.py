@@ -17,18 +17,18 @@ with open("{}/../node.txt".format(PATH)) as f:
 
 db = mysql.connector.connect(
     host= config['host'],
+    port= config['port'],
     user= config['user'],
     passwd= config['password'],
     database= config['database'],
-    allow_local_infile=True,
-    auth_plugin='mysql_native_password'
 )
 
-engine = create_engine("mysql+pymysql://{user}:{pw}@{host}/{db}"
+engine = create_engine("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}"
                        .format(user=config['user'],
                                pw=config['password'],
                                host=config['host'],
-                               db=config['database']))
+                               db=config['database'],
+                               port=config['port']))
 
 
 _headers = {
