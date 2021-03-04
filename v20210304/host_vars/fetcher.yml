@@ -1,0 +1,8 @@
+---
+dir: /usr/src/TFM
+point: fetcher
+conf: config.txt
+reqs: requirements.txt
+ansible_host: localhost
+ansible_user: root
+ansible_connection: local

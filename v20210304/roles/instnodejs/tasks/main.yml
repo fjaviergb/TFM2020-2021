@@ -1,0 +1,11 @@
+- name: install node 
+  become: yes
+  shell: |
+    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -y nodejs
+- name: install npm
+  apt:
+    name: npm
+    state: present
+- name: install packages from "{{ endpoint }}"
+  npm:
+    path: "{{ path }}/{{ endpoint }}" # PATH B 
