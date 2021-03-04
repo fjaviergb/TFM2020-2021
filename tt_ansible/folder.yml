@@ -10,7 +10,7 @@
      - role: folders
        vars:
          endpoint: "{{ conf }}"
-         path: "{{ dir }}" 
+         path: "{{ dir }}"         
      - role: instnodejs
        vars:
          endpoint: "{{ point }}"
@@ -27,7 +27,7 @@
      - role: folders
        vars:
          endpoint: "{{ point }}"
-         path: "{{ dir }}"
+         path: "{{ dir }}"       
      - role: instnodejs
        vars:
          endpoint: "{{ point }}"

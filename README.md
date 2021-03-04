@@ -70,7 +70,7 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
     - folder.yml: *playbook* del sistema
     - group_vars: vacío a disposición del usuario
     - host_vars: un fichero yml por parte
-        - backend: a cambiar, **dir** (directorio del *host* de destino, predeterminado /usr/src/TFM), **ansible_connection** (tipo de conexión con el host, predeterminado local, pero puede ser *SSH*), **ansible_host** (*host* de destino, predeterminado localhost, pero puede ser cualquier otro conectado en red local y con *SSH*) y **ansible_user** (usuario del *host* de destino, puede ser cualquier otro). OPCIONAL: añadir **ansible_port** para especificar puerto del *host* destinatario.
+        - backend: a cambiar, **dir** (directorio del *host* de destino, predeterminado /usr/src/TFM), **ansible_connection** (tipo de conexión con el host, predeterminado local, pero puede ser *SSH*), **ansible_host** (*host* de destino, predeterminado localhost, pero puede ser cualquier otro conectado en red local y con *SSH*) y **ansible_user** (usuario del *host* de destino, puede ser cualquier otro). OPCIONAL: añadir **ansible_port** para especificar puerto del *host* destinatario y **ansible_ssh_pass** para especificar la contraseña del usuario de destino (requerirá la instalación en el *host* de origen de sshpass: sudo apt-get install sshpass)
         - fetcher. idem
         - frontend. idem.
     - roles: contiene las funciones a ejecutar por el playbook en diferentes *tasks*. NO CAMBIAR

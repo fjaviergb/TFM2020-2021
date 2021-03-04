@@ -4,7 +4,20 @@ Fuentes: https://www.youtube.com/watch?v=QBkuTzMcFaQ&ab_channel=RenzoCaceresRoss
 
 1. Instalar ssh server: sudo apt-get install openssh-server
 2. Instalar ssh client: sudo apt-get install openssh-client
-
+3. sudo apt-get install sshpass -y
 {% comment %} 3. Crear el server: sudo apt-get install openssh-server ii. -y
 
 4. Check if okey: sudo service ssh status {% endcomment %}
+
+RUN sed -i '/^#/!s/PermitRootLogin .*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sudo service ssh restart
+
+ON SERVER SIDE (AND DOCKER):
+/etc/ssh/sshd_config
+TCPKeepAlive yes
+ClientAliveInterval 3300 
+PermitRootLogin yes
+
+ON CLIENT (ANSIBLE) SIDE:
+vim /etc/ansible/ansible.cfg
+connect_timeout = 3300
