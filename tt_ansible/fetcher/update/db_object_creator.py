@@ -1,7 +1,6 @@
 import json
 import asyncio
 import aiohttp
-import mysql.connector
 from iota import TryteString
 import pandas as pd
 from iota.trits import int_from_trits
@@ -20,22 +19,13 @@ with open("{}/../config.txt".format(PATH)) as f:
 with open("{}/../node.txt".format(PATH)) as f:
   _local = f.read()
 
-db = mysql.connector.connect(
-    host= config['host'],
-    port= config['port'],
-    user= config['user'],
-    passwd= config['password'],
-    database= config['database'],
-)
-
-mycursor = db.cursor(buffered=True)
-
 engine = create_engine("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}"
                        .format(user=config['user'],
                                pw=config['password'],
                                host=config['host'],
                                db=config['database'],
                                port=config['port']))
+connection = engine.connect()
 
 _headers = {
     'content-type': 'application/json',
@@ -51,30 +41,30 @@ async def fetch(client,elem):
         #assert resp.status == 200
         return await resp.text()
 
-async def _transaction(_list,df,db,mycursor):
+async def _transaction(_list,df):
     df['trytes']=_list
     df[['timestamp','address','tag']]=list(map(lambda x: [int_from_trits(TryteString(x[2322:2331]).as_trits()),x[2187:2268],x[2592:2619]], _list))
     sql.to_sql(df,con=engine,name='transactions',if_exists='append',index = False,chunksize=100)
 
-async def _client(db,mycursor,records_mapped):
+async def _client(connection,records_mapped):
     df = pd.DataFrame(columns=['name','timestamp','address','tag','trytes'])
     df['name'] = records_mapped
     async with aiohttp.ClientSession() as client:
             html = await fetch(client,records_mapped)
             try:
                 print('Receiving per tick... %s' % len(json.loads(html)['trytes']))
-                await asyncio.create_task(_transaction(json.loads(html)['trytes'],df,db,mycursor))
+                await asyncio.create_task(_transaction(json.loads(html)['trytes'],df))
             except KeyError:
                 print("Empty; incomplete; etc")
 
-async def main(db,mycursor):
+async def main(connection):
         sql_join = "SELECT DISTINCT temp_hashes.name \
                     FROM temp_hashes \
                     WHERE temp_hashes.name \
                     NOT IN (SELECT transactions.name FROM transactions);"
-        mycursor.execute(sql_join)
+        records = connection.execute(sql_join)
 
-        records = mycursor.fetchall()
+        records = records.fetchall()
         print('Object creator %s objects' % len(records))
         if len(records) > 10000:
             iter_num = math.ceil(len(records) / 10000)
@@ -85,13 +75,13 @@ async def main(db,mycursor):
             print('Objects per tick... %s' % len(iter))
             records_filtered = filter(lambda x: len(x[0])==81, iter)
             records_mapped = list(map(lambda x: x[0], records_filtered))
-            tasks.append(asyncio.create_task(_client(db,mycursor,records_mapped)))
+            tasks.append(asyncio.create_task(_client(connection,records_mapped)))
             await asyncio.sleep(25)
 
         await asyncio.gather(*tasks)
 
 print(time.ctime(time.time()))
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(db,mycursor))    
-
+loop.run_until_complete(main(connection))    
+connection.close()
 

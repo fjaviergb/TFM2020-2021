@@ -54,14 +54,14 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
 
 4. **Recomendación**: disponer de un usuario con todos los privilegios en su base de datos de antemano y de una base de datos vacía e indicar sus características en el archivo *config.txt*.
     - Pasos de creación:
-    1. Solo MariaDB: SET old_passwords=0;
-    2. CREATE USER 'username'@'hostname' IDENTIFIED BY 'password';
+    1. (SOLO MARIADB) SET old_passwords=0;
+    2. CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
     3. CREATE USER 'username'@'%' IDENTIFIED BY 'password';
-    4. GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' IDENTIFIED BY 'password';
-    5. GRANT ALL PRIVILEGES ON *.* TO 'username'@'%' IDENTIFIED BY 'password';
-    6. CREATE DATABASE "database"
-    7. GRANT ALL PRIVILEGES ON "database".* TO 'username'@'localhost'
-    8. GRANT ALL PRIVILEGES ON "database".* TO 'username'@'%'
+    4. GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost';
+    5. GRANT ALL PRIVILEGES ON *.* TO 'username'@'%';
+    6. CREATE DATABASE db;
+    7. GRANT ALL PRIVILEGES ON db.* TO 'username'@'localhost';
+    8. GRANT ALL PRIVILEGES ON db.* TO 'username'@'%';
 
 - **Nota**: esta recomendación se debe a que, al desplegar posteriormente los distintos archivos mediante *Ansible*, el documento que facilita la creación de *config.txt*, del que se alimentan tanto el *backend* como el *fetcher*, únicamente se actualizará en el destino de la parte del *fetcher*.
 
@@ -108,7 +108,8 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
 
     1. En el directorio instalado, en backend/, ejecute: *npm start*
     2. En el directorio instalado, en frontend/, ejecute: *npm start*
-    3. En el directorio instalado, en fetcher/, ejecute: python3 __init__.py
+    3. En el directorio instalado, en fetcher/, ejecute: python3 __install__.py con un usuario ya existente en la base de datos y con derechos en localhost y en %.
+    4. En el directorio instalado, en fetcher/, ejecute: python3 __init__.py
 
 7. **Observaciones**:
 
