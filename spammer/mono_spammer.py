@@ -1,7 +1,7 @@
 from iota import Iota, TryteString, ProposedTransaction, Address, Tag
 import random
 
-api = Iota('https://iota.etsii.upm.es')
+api = Iota('https://nodes.thetangle.org:443')
 
 # SEED CREATED BY PSEUDO-RAND IN PYTHON - NOT SECURE
 seed = 'WVVBOHNRYPONH9GW9BXVAKGGYBULIUPCDVTFSUAFFJP99NTJTGGQRWQCXSWELVDQIRFINIQDMULGEXSWN'

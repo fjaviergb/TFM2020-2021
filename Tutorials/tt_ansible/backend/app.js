@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require('mysql');
-const dbConfig = require('./db-config.js')
 const MODEL = require('./models.js');
 var crypto = require("crypto");
 const iv = Buffer.alloc(16, 0); // Initialization vector.
@@ -17,19 +16,34 @@ var config = fs.readFileSync(`${path.resolve(process.cwd(), '..')}/config.txt`, 
 config = JSON.parse(config)
 const configdb = {
   host: config.host,
+  port: config.port,
   user: config.user,
   password: config.password,
   database: config.database,
 }
-const con = mysql.createConnection(configdb);
 
-con.connect( (err,res) => {
-  if (err) {console.log(err)
-  } else {console.log(res)}
-});
+function handleDisconnect() {
+  con = mysql.createConnection(configdb);
+  con.connect((err,res) => {
+    if (err){
+      console.log('Connection to mysql err');
+      setTimeout(handleDisconnect,10000);
+    } else {console.log(res)}
+  });
+  con.on('error', (err) => {
+    console.log('db error', err);
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect();
+    } else {throw err}
+  })
+}
+
+handleDisconnect();
+
+const HOSTS = require('./cors.js');
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: `${HOSTS.backend}`,
 };
 
 app.use(cors(corsOptions));
@@ -152,10 +166,10 @@ app.post(MODEL.NEWADDRESS.ROUTE, (req, res) => {
             console.log(result)
             res.json({ idad: result.insertId});
           } else if (err.errno===1062) { console.log(err.data)
-            
+            res.status(404).json({ message: err.data });
           } else {res.status(404).json({ message: "Unknown error; try again" });}
       });
-    } else {res.json({ idad: result[0]});}
+    } else {res.json({ idad: _result[0].idad});}
   })
 });
 
@@ -170,10 +184,10 @@ app.post(MODEL.NEWTAG.ROUTE, (req, res) => {
             console.log(result)
             res.json({ idta: result.insertId});
           } else if (err.errno===1062) { console.log(err.data)
-            
+            res.status(404).json({ message: err.data });
           } else {res.status(404).json({ message: "Unknown error; try again" });}
       });
-    } else {res.json({ idta: result[0].idta});}
+    } else {res.json({ idta: _result[0].idta});}
   })
 });
 
@@ -188,7 +202,7 @@ app.post(MODEL.NEWPKEY.ROUTE, (req, res) => {
             console.log(result)
             res.json({ idke: result.insertId});
           } else if (err.errno===1062) { console.log(err.data)
-            
+            res.status(404).json({ message: err.data });
           } else {res.status(404).json({ message: "Unknown error; try again" });}
       });
     } else {
@@ -279,6 +293,7 @@ app.post(MODEL.CHECKADDKEY.ROUTE, (req,res) => {
   con.query(MODEL.CHECKADDKEY.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
+      res.status(404).json({ message: `Known error ${err.sqlMessage}` });
     } else if (result) {
       res.send({len: result.length});
     }
@@ -289,6 +304,7 @@ app.post(MODEL.CHECKTAGKEY.ROUTE, (req,res) => {
   con.query(MODEL.CHECKTAGKEY.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
+      res.status(404).json({ message: `Known error ${err.sqlMessage}` });
     } else if (result) {
       res.send({len: result.length});
     }
@@ -299,6 +315,7 @@ app.post(MODEL.QUERYALL.ROUTE, (req,res) => {
   con.query(MODEL.QUERYALL.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
+      res.status(404).json({ message: `Known error ${err.sqlMessage}` });
     } else if (result) {
       res.send({result: result});
     }
@@ -309,6 +326,7 @@ app.post(MODEL.QUERYPKEYS.ROUTE, (req,res) => {
   con.query(MODEL.QUERYPKEYS.SQL(req.body), (err,result) => {
     if(err) {
       console.log(err);
+      res.status(404).json({ message: `Known error ${err.sqlMessage}` });
     } else if (result) {
       res.send({result: result});
     }

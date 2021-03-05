@@ -1,0 +1,12 @@
+Para emplear una base de datos remota, realizar:
+
+1. Asegurarse en la configuración de la base de datos que el parámetro bind-address está comentado.
+
+2. Creación de usuario con todos los privilegios, tanto para el localhost, como con la wildcard:
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;
+
+3. "Degradar" la versión de sha para dicho usuario ==> compatibilidad con conectores
+ALTER USER 'user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+ALTER USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';

@@ -1,0 +1,102 @@
+1. Disponer de cada folder en el nodo/máquina deseada
+    Fuente: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+
+    1. En /etc/ansible/hosts, añadir servidores a emplear
+    2. Crear un playbook con:
+        - name: Copy file with owner and permissions
+          hosts: host afectado
+          tasks:
+          - name: another one
+            ansible.builtin.copy:
+              src: /path/to/folder/from/origin
+              dest: /path/to/folder/from/dest
+              owner: root
+              group: root
+              mode: 'preserve'
+    Ejemplo:
+        - name: copying
+          hosts: localhost
+          tasks:
+          - name: copying frontend
+            ansible.builtin.copy:
+              src: /usr/src/app/frontend
+              dest: /usr/src
+              owner: root
+              group: root
+              mode: 'preserve'
+          - name: copying backend
+            ansible.builtin.copy:
+              src: /usr/src/app/backend
+              dest: /usr/src
+              owner: root
+              group: root
+              mode: 'preserve'
+          - name: copying fetcher
+            ansible.builtin.copy:
+              src: /usr/src/app/fetcher
+              dest: /usr/src
+              owner: root
+              group: root
+              mode: 'preserve'
+          - name: copying requirements.txt
+            ansible.builtin.copy:
+              src: /usr/src/requirements.txt
+              dest: /usr/src
+              owner: root
+              group: root
+              mode: 'preserve'              
+
+2. Instalar requirements.txt en el nodo/máquina donde se disponga el fetcher:
+    Fuente: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+            https://stackoverflow.com/questions/26402123/ansible-creating-a-virtualenv
+            https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
+    Ejemplo:
+    - name: preparing fetcher
+      hosts: localhost
+      tasks:
+      - name: installing pip3
+        apt: 
+          name: python3-pip
+          state: present
+    - name: installing python depedencies
+      hosts: localhost
+      tasks:
+      - name: install virtualenv
+        pip:
+          name: virtualenv
+      - name: Install specified python requirements in indicated (virtualenv)
+        pip:
+          requirements: /usr/src/app/requirements.txt
+          virtualenv: /usr/src/app/TFM13186
+          virtualenv_python:
+
+3. Instalar nodeJs 
+  Fuente: https://stackoverflow.com/questions/45840664/installing-nodejs-lts-for-ansible
+  A. Puedes elegir distribucion y versión en las variables
+
+  Example: 
+  - hosts: localhost
+    become: yes
+    tasks:
+      - name: install node 
+        shell: |
+          curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - && sudo apt-get install -y nodejs
+      - name: install npm
+        apt:
+          name: npm
+          state: present
+
+5. Instalar modulos a partir de package.json
+  Fuente: https://docs.ansible.com/ansible/2.8/modules/npm_module.html#npm-module
+
+  Example:
+  - hosts: localhost
+    become: yes
+    tasks:
+      - name: Install packages from frontend
+        npm:
+          path: /usr/src/app/frotend
+      - name: install packages from backend
+        npm:
+          path: /usr/src/app/backend

@@ -1,0 +1,9 @@
+FROM ubuntu:latest
+WORKDIR /usr/src/TFM13186
+COPY . ./
+EXPOSE 8080
+EXPOSE 8081
+EXPOSE 3306
+
+
+

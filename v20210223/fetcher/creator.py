@@ -51,6 +51,7 @@ def main(PATH):
             host=host,
             user=user,
             passwd=pswd,
+            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -61,6 +62,7 @@ def main(PATH):
             user=user,
             passwd=pswd,
             database=database,
+            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -77,6 +79,7 @@ def main(PATH):
             host=host,
             user="root",
             passwd=rootpswd,
+            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()
@@ -98,7 +101,8 @@ def main(PATH):
             host=host,
             user=user,
             passwd=pswd,
-            database=database
+            database=database,
+            auth_plugin='mysql_native_password'
         )
 
         mycursor = db.cursor()

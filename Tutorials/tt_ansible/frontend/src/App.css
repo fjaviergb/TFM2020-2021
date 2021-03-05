@@ -1,0 +1,361 @@
+/* ALL */
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    --accept: lightgreen;
+    font-size: medium;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+#root {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* APP */
+#front {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* LOGINFORM */
+#login {
+    display: flex;
+    flex-direction: column;
+}
+
+#login .header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#login .header button {
+    background-color: #333;
+    color:white;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+#login .body form {
+    display: grid;
+    grid-template: 1 fr 1fr 1fr / 1fr;
+}
+
+#login .body button {
+    background-color: var(--accept);
+    border: 2px solid var(--accept);
+    cursor: pointer;
+}
+
+/* REGISTERFORM */
+
+#register {
+    background-color:blueviolet;
+}
+
+#register .header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#register .header button {
+    background-color: #333;
+    color:white;
+    border: 1px solid white;
+    cursor: pointer;    
+}
+
+
+#register .body form {
+    display: grid;
+    grid-template: 1fr 1fr 1fr 1fr / 1fr;
+}
+
+#register .body button {
+    background-color: var(--accept);
+    border: 2px solid var(--accept);
+    cursor: pointer;
+}
+
+/* PREFERENCEFORM */
+
+ #preference {
+    width: 90vw;
+    margin-top: 15vh;
+} 
+
+#preference .header {
+    position: fixed;
+    overflow: hidden;
+    background-color: #333;
+    top:0vh;
+    width: 90vw;
+}
+
+#preference .header button {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    padding: 1% 2% 1% 2%;
+    background-color: #333;
+    cursor: pointer;
+    border: 2px solid #333;
+}
+
+#preference .header .selected {
+    border: 2px solid white;
+    border-left: 2px solid #333;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+}
+
+#preference .header #logout {
+    float: right;
+    cursor: pointer;
+}
+
+#preference #totop {
+    position: fixed;
+    overflow: hidden;
+    background-color: red;
+    color: black;
+    top:90vh;
+    left: 90vw; 
+    cursor: pointer;
+}
+
+#preference .body .param {
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#preference .body .param h2 {
+    border-bottom: 2px solid #333;
+    margin-bottom: 3vh;
+}
+
+#preference .body .param .new{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3vh;
+    margin-left: 3vh;
+}
+
+#preference .body .param .new form{
+    display: grid;
+    width: 90vw;
+    grid-template: 1fr / 9fr 1fr;
+}
+
+#preference .body .param .new form input {
+    border: none;
+    border-bottom: 1px dotted #333;
+}
+
+#preference .body .param .new form button {
+    background-color: var(--accept);
+    border: none;
+}
+
+#preference .body .list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3vh;
+    margin-left: 3vh;
+}
+
+#preference .body .list h3 {
+    text-decoration: underline;
+    margin-bottom: 2vh;
+}
+
+#preference .body .list .elem .front{
+    border: 2px solid #333;
+    border-radius: 5px;
+    margin-bottom: 2vh;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+#preference .body .list .elem .front .fronttitle{
+    margin: 2vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#preference .body .list .elem .front .frontcont{
+    margin-left: 8vh;
+    margin-bottom: 2vh;
+    margin-right: 4vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* MAIN */
+
+#main {
+    width: 90vw;
+    margin-top: 15vh;
+} 
+
+#main .header {
+    position: fixed;
+    overflow: hidden;
+    background-color: #333;
+    top:0vh;
+    width: 90vw;
+}
+
+#main .header .selected {
+    border: 2px solid white;
+    background-color: white;
+    border-left: 2px solid #333;
+    color: #333;
+    cursor: pointer;
+}
+#main .header button {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    padding: 1% 2% 1% 2%;
+    background-color: #333;
+    border: 2px solid #333;
+    cursor: pointer;
+}
+
+#main .header #logout {
+    float: right;
+    cursor: pointer;
+}
+
+#main #totop {
+    position: fixed;
+    overflow: hidden;
+    background-color: red;
+    color: black;
+    top:90vh;
+    left: 90vw; 
+    cursor: pointer;
+}
+
+#main .body .param {
+    margin-bottom: 8vh;
+}
+
+#main .body .param h2 {
+    border-bottom: 2px solid #333;
+    margin-bottom: 3vh;
+}
+
+#main .body .param .form .add {
+    display: grid;
+    grid-template: 1fr 2fr / 1fr;
+    border: none;
+}
+
+#main .body .param .form .add .elems {
+    display: flex;
+    flex-direction: column;
+}
+
+#main .body .param .form .add .elems .elem .front{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#main .body .param .form .add .elems .elem .front button {
+    background-color: lightyellow;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+#preference .body .param .new .submitnew {
+    cursor: pointer;
+}
+
+#main .body .param .form {   
+    display: grid;
+    grid-template: 1fr / 9fr 1fr;
+    margin-left: 3vh;
+}
+
+#main .body .param .form #search {   
+    background-color: var(--accept);
+    border: none;
+    cursor: pointer;
+}
+
+#main .body .param .form textarea {   
+    border: none;
+    border-bottom: 1px dotted #333;
+    text-decoration: underline dotted;
+    resize: none;
+}
+
+#main .body .list h2 {
+    border-bottom: 2px solid #333;
+    margin-bottom: 5vh;
+}
+
+#main .body .list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3vh;
+}
+
+#main .body .list h3 {
+    text-decoration: underline;
+    margin-bottom: 2vh;
+}
+
+#main .body .list .elem .front{
+    border: 2px solid #333;
+    border-radius: 5px;
+    margin-bottom: 2vh;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+#main .body .list .elem .front .fronttitle{
+    margin: 2vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#main .body .list .elem .front .frontcont{
+    margin-left: 8vh;
+    margin-bottom: 2vh;
+    margin-right: 4vh;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+
