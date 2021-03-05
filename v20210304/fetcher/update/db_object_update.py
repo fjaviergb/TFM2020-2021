@@ -1,37 +1,34 @@
-import mysql.connector
 import time
 import json
 import os
+from sqlalchemy import create_engine
 
 PATH = os.getcwd()
 
 with open("{}/../config.txt".format(PATH)) as f:
   config = json.load(f)
 
+engine = create_engine("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}"
+                       .format(user=config['user'],
+                               pw=config['password'],
+                               host=config['host'],
+                               db=config['database'],
+                               port=config['port']))
+connection = engine.connect()
 
-db = mysql.connector.connect(
-    host= config['host'],
-    user= config['user'],
-    port= config['port'],
-    passwd= config['password'],
-    database= config['database'],
-)
-
-mycursor = db.cursor(buffered=True)
-
-def main(db,mycursor):
+def main(connection):
     # ADDRESSES
         sql_check = "SELECT address \
         FROM transactions \
         WHERE transactions.idad IS NULL \
             GROUP BY address"
-        mycursor.execute(sql_check)
-        _records = mycursor.fetchall()
+        _records = connection.execute(sql_check)
+        _records = _records.fetchall()
 
         sql_search = "SELECT idad, name \
                 FROM addresses"
-        mycursor.execute(sql_search)
-        records = mycursor.fetchall()
+        records = connection.execute(sql_search)
+        records = records.fetchall()
         for elem in records:
             if ((elem[1],) in _records):
                 print('Updating %s tx'.format(elem[1]))
@@ -40,21 +37,20 @@ def main(db,mycursor):
                             WHERE transactions.address = '%s' \
                             AND transactions.idad IS NULL \
                             LIMIT 100000"
-                mycursor.execute(sql_update % (elem[0], elem[1]))
-                db.commit()
+                connection.execute(sql_update % (elem[0], elem[1]))
 
     # TAGS
         sql_check = "SELECT tag \
             FROM transactions \
             WHERE transactions.idta IS NULL \
                 GROUP BY tag"
-        mycursor.execute(sql_check)
-        _records = mycursor.fetchall()
+        _records = connection.execute(sql_check)
+        _records = _records.fetchall()
 
         sql_search = "SELECT idta, name \
                 FROM tags"
-        mycursor.execute(sql_search)
-        records = mycursor.fetchall()
+        records = connection.execute(sql_search)
+        records = records.fetchall()
         for elem in records:
             if ((elem[1],) in _records):
                 print('Updating %s tx' % (elem[1]))
@@ -63,8 +59,8 @@ def main(db,mycursor):
                             WHERE transactions.tag = '%s' \
                             AND transactions.idta IS NULL \
                             LIMIT 100000"
-                mycursor.execute(sql_update % (elem[0], elem[1]))
-                db.commit()
+                connection.execute(sql_update % (elem[0], elem[1]))
 
 print(time.ctime(time.time()))
-main(db,mycursor)
+main(connection)
+connection.close()

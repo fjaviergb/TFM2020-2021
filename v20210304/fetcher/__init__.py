@@ -1,12 +1,10 @@
 import os
 import subprocess
 import asyncio
-import json
 
 PATH = os.getcwd()
 
 command = '{}/../TFM13186/bin/python'.format(PATH)
-#command = 'C:\\python\\v3.8.6_MySQL\\Scripts\\python'
 
 paths = ["{}/update/db_object_remove.py".format(PATH),
 "{}/update/http_request_async_tag_file.py".format(PATH),

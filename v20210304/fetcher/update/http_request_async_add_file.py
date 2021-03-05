@@ -16,20 +16,13 @@ with open("{}/../config.txt".format(PATH)) as f:
 with open("{}/../node.txt".format(PATH)) as f:
   _local = f.read()
 
-db = mysql.connector.connect(
-    host= config['host'],
-    port= config['port'],
-    user= config['user'],
-    passwd= config['password'],
-    database= config['database'],
-)
-
 engine = create_engine("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}"
                        .format(user=config['user'],
                                pw=config['password'],
                                host=config['host'],
                                db=config['database'],
                                port=config['port']))
+connection = engine.connect()
 
 _headers = {
     'content-type': 'application/json',
@@ -50,7 +43,7 @@ async def attachDB():
     connection.execute("INSERT IGNORE INTO temp_hashes SELECT * FROM temp_table")
     connection.close()
 
-async def _client(db,mycursor,_key,row):
+async def _client(connection,_key,row):
     async with aiohttp.ClientSession() as client:
         html = await fetch(client,_key,row)
         try:
@@ -61,21 +54,20 @@ async def _client(db,mycursor,_key,row):
         except KeyError:
             print("Exception empty; incomplete; etc")
 
-async def main(db,mycursor,_key):
+async def main(connection,_key):
     sql_query = "SELECT * FROM %s" % _key
-    mycursor.execute(sql_query)
-    records = mycursor.fetchall()
+    records = connection.execute(sql_query)
+    records = records.fetchall()
     tasks=[]
 
     for row in records:
-        tasks.append(asyncio.create_task(_client(db,mycursor,_key,row)))
+        tasks.append(asyncio.create_task(_client(connection,_key,row)))
     await asyncio.gather(*tasks)
     await attachDB()
-
-mycursor = db.cursor(buffered=True)
 
 print(time.ctime(time.time()))
 df_temp = pd.DataFrame(columns=['name'])
 df_temp.to_sql('temp_table', engine, if_exists ='replace',index=False)
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main(db,mycursor,'addresses'))
+loop.run_until_complete(main(connection,'addresses'))
+connection.close()
