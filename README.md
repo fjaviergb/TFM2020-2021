@@ -11,7 +11,7 @@
 
 ## **Fichero de interés**
 El único fichero de interés es la más reciente de las carpetas nombradas con v.* (e.g. v20210223).
-El resto de documentos se encuentran obsoletos y se han empleado como aprendizaje, testeo y revisión.
+El resto de documentos se encuentran obsoletos y se han empleado como aprendizaje, testeo y revisión, a excepción de la carpeta *spammer*, donde se puede encontrar un sistema fácil de enviar al *tangle* dos tipos de transacciones encriptadas con su clave pública.
 
 ## **Arquitectura**
 Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
@@ -52,7 +52,7 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
 
 **Nota**: no modificar los puertos, pues requeriría modificar las variables de entorno de nodejs para la inicialización.
 
-4. **Recomendación**: disponer de un usuario con todos los privilegios en su base de datos de antemano y de una base de datos vacía e indicar sus características en el archivo *config.txt*.
+4. **Recomendación**: disponer de un usuario con todos los privilegios en su base de datos de antemano. Proceso de creación con los permisos necesarios
     - Pasos de creación:
     1. (SOLO MARIADB) SET old_passwords=0;
     2. CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
@@ -63,40 +63,38 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
     7. GRANT ALL PRIVILEGES ON db.* TO 'username'@'localhost';
     8. GRANT ALL PRIVILEGES ON db.* TO 'username'@'%';
 
-- **Nota**: esta recomendación se debe a que, al desplegar posteriormente los distintos archivos mediante *Ansible*, el documento que facilita la creación de *config.txt*, del que se alimentan tanto el *backend* como el *fetcher*, únicamente se actualizará en el destino de la parte del *fetcher*.
-
-5. En /v.*: *ansible-playbook folder.yml -i hosts.yml*
+5. En /v.XXXX se encuentran distintas carpetas con contenido de interés/modificable:
+ 
     - hosts.yml: partes del sistema, divididos en distintos *hosts* para una disposición flexible
     - folder.yml: *playbook* del sistema
     - group_vars: vacío a disposición del usuario
     - host_vars: un fichero yml por parte
         - backend: a cambiar, **dir** (directorio del *host* de destino, predeterminado /usr/src/TFM), **ansible_connection** (tipo de conexión con el host, predeterminado local, pero puede ser *SSH*), **ansible_host** (*host* de destino, predeterminado localhost, pero puede ser cualquier otro conectado en red local y con *SSH*) y **ansible_user** (usuario del *host* de destino, puede ser cualquier otro). OPCIONAL: añadir **ansible_port** para especificar puerto del *host* destinatario y **ansible_ssh_pass** para especificar la contraseña del usuario de destino (requerirá la instalación en el *host* de origen de sshpass: sudo apt-get install sshpass)
-        - fetcher. idem
+        - fetcher. idem + particularidades de la base de datos: **fet_ifuser** (si yes ~ empleará dicho usuario; si otra cosa, se creará un usuario a partir del *root*), **fet_host** (el *host* donde se encuentra el gestor de la base de datos), **fet_port** (el puerto que escucha la base de datos; en MySQL o MariaDB, es el 3306 por defecto), **fet_user** (usuario que dispone de los privilegios necesarios), **fet_pass** (contraseña de dicho usuario), **fet_db** (nombre de la base de datos que desea crear y almacenar la informacion), **fet_rootpass** (contraseña del *root*, en caso de necesitarse).
         - frontend. idem.
     - roles: contiene las funciones a ejecutar por el playbook en diferentes *tasks*. NO CAMBIAR
         - fetcher/tasks/main.yml
         - folders/tasks/main.yml
         - instnodejs/tasks/main.yml
 
+6. Ejecute en el directorio general: *ansible-playbook folder.yml -i hosts.yml*
+
 **Nota**: si todo ha salido correctamente, debería de disponer de todos los archivos en las direcciones que se han especificado en el *playbook*. En concreto, tres directorios:
 
-    1. Contiene
-        - backend
+    1.  - backend
             - app.js
             - models.js
             - package.json
             - cors.js
         - config.txt
 
-    2. Contiene:
-        - frontned
+    2.  - frontned
             - public
             - src
                 - cors.js
             - package.json
 
-    3. Contiene:
-        - fetcher
+    3.  - fetcher
             - update/
             - __init__.py
             - __install__.py
@@ -104,15 +102,12 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
         - requirements.txt
         - config.txt
 
-6. Inicialice todas las partes:
 
+7. Inicialice todas las partes:
     1. En el directorio instalado, en backend/, ejecute: *npm start*
     2. En el directorio instalado, en frontend/, ejecute: *npm start*
-    3. En el directorio instalado, en fetcher/, ejecute: python3 __install__.py con un usuario ya existente en la base de datos y con derechos en localhost y en %.
     4. En el directorio instalado, en fetcher/, ejecute: python3 __init__.py
 
-7. **Observaciones**:
-
-- El programa __install__.py del *fetcher* le ayuda a conectarse a la base de datos, ofreciéndole paso a paso la creación del usuario (a partir del *root*) y de una nueva base de datos. Además, le modifica correctamente el archivo *config.txt*, aunque si ya se encuentra desplegado, deberá modificar manualmente el respectivo archivo dentro del *backend*.
+8. **Observaciones**:
 - El programa __init__.py del *fetcher* le preguntará a que nodo desea conectarse; creará un archivo txt con el resultado del que se alimentarán el resto de programas de dicha parte. De forma predeterminada, se conectará con thetangle.org:443.
 - El programa __init__.py crea un archivo output.txt donde puede comprobar el resultado (satisfactorio o no), de los procesos asíncronos que se llevan a cabo en la actualización.

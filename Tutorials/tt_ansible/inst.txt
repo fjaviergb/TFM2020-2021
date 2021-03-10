@@ -9,6 +9,7 @@ TT from makigas:tutorales de programacion
 3. sudo apt update -y
 4. sudo apt install ansible -y
    sudo apt-get install vim -y
+   sudo apt-get install sshpass -y
 5. "inventory": lista de todos los host (maquinas) que aprovisionar
 6. "aprovisionar": actuar sobre un servidor en concreto
 7. sudo vim /etc/ansible/hosts
