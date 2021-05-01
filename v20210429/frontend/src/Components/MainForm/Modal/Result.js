@@ -26,11 +26,11 @@ class Addresses extends Component {
                         </button>
                     <div className="contentstruct">
                         <h3>{this.props.result.name}</h3>
-                        <div>Message: <br/>{this.props.result.message}</div><br/>
-                        <div>Address: <br/>{this.props.result.address}</div><br/>
-                        <div>Tag: <br/>{this.props.result.tag}</div><br/>
-                        <div>Date: <br/><GetDate timestamp={this.props.result.timestamp}/></div><br/>
-  
+                        <div><b>Message</b>: <br/>{this.props.result.message}</div><br/>
+                        <div><b>Address</b>: <br/>{this.props.result.address}</div><br/>
+                        <div><b>Tag</b>: <br/>{this.props.result.tag}</div><br/>
+                        <div><b>Date</b>: <br/><GetDate timestamp={this.props.result.timestamp}/></div><br/>
+                        <div><b>Bundlehash</b>: {this.props.result.bundlehash}</div>
                     </div>
                     <div className="actions-results">
                         <div id="actions-results-con">

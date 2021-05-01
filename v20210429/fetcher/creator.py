@@ -11,7 +11,7 @@ def createTables(connection):
     connection.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_NAME CHECK (CHAR_LENGTH(name) >= 3)")
     connection.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_PSWD CHECK (CHAR_LENGTH(password) >= 3)")
     connection.execute("CREATE TABLE addresses (idad int PRIMARY KEY AUTO_INCREMENT, name varchar(90) NOT NULL UNIQUE, created datetime)")
-    connection.execute("ALTER TABLE addresses ADD CONSTRAINT MINIMO_ADD CHECK (CHAR_LENGTH(name) = 81 OR 90")
+    connection.execute("ALTER TABLE addresses ADD CONSTRAINT MINIMO_ADD CHECK (CHAR_LENGTH(name) = 81 OR CHAR_LENGTH(name) = 90)")
     connection.execute("CREATE TABLE tags (idta int PRIMARY KEY AUTO_INCREMENT, name varchar(27) NOT NULL UNIQUE, created datetime)")
     connection.execute("ALTER TABLE tags ADD CONSTRAINT MINIMO_TAG CHECK (CHAR_LENGTH(name) = 27)")
     connection.execute("CREATE TABLE pkeys (idke int PRIMARY KEY AUTO_INCREMENT, name varchar(384) NOT NULL UNIQUE, created datetime)")

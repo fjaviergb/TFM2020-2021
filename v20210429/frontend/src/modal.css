@@ -171,6 +171,7 @@ cursor: pointer;
 }
 
 .modal .contentstruct {
+  padding: 1rem;
   max-width: inherit;
   word-break: break-all;
   overflow-y: scroll;
@@ -180,4 +181,12 @@ cursor: pointer;
 .modal select {
   overflow: auto;
   border: none;
+}
+
+.param .filterObj {
+  padding-left: 2%;
+  padding-right: 2%;
+  margin: 2%;
+  border: double;
+  border-radius: 25%;
 }
