@@ -44,7 +44,7 @@ async def fetch(client,elem):
 async def _transaction(_list,df):
     df['trytes']=_list
     df[['timestamp','address','tag','bundlehash','bundleindex']]=list(map(lambda x: [int_from_trits(TryteString(x[2322:2331]).as_trits()),
-                                                      x[2187:2268],x[2592:2619],x[2340:2421],
+                                                      x[2187:2268],x[2592:2619],x[2349:2430],
                                                       int_from_trits(TryteString(x[2331:2340]).as_trits())],
                                                       _list))
     sql.to_sql(df,con=engine,name='transactions',if_exists='append',index = False,chunksize=100)

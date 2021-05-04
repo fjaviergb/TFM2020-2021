@@ -70,7 +70,7 @@ class MainForm extends Component{
                     })
                         var trytes = ''
                         this.state.resultsTemp[key].forEach((el) => {
-                            trytes += TRYTES.TRYTESTOASCII(el.trytes.slice(0,2187))
+                            trytes += el.trytes.slice(0,2187)
                             Service.queryPkeys({idta: el.idta, idad: el.idad, idcl:this.props.token.idcl})
                             .then(_res => {
                                 if (_res.data.result.length > 0) {
@@ -79,7 +79,7 @@ class MainForm extends Component{
                                         if (key.length > 0) {
                                             let key_public = new NodeRSA(key[0].name)
                                             try {
-                                                var decryptedData = key_public.decryptPublic(trytes, 'utf8')
+                                                var decryptedData = key_public.decryptPublic(TRYTES.TRYTESTOASCII(trytes), 'utf8')
                                             } catch (err) {decryptedData = ''}
                                             if (decryptedData) {
                                                 el.message = decryptedData;
@@ -91,7 +91,8 @@ class MainForm extends Component{
                                         this.setState({results: [...this.state.results,el]})
                                     }
                                 } else {
-                                    el.message = trytes;
+                                    el.message = TRYTES.TRYTESTOASCII(trytes);
+                                    el.trytes = trytes;
                                     if (el.message && el.bundleindex === this.state.resultsTemp[key].length - 1) {
                                         this.setState({results: [...this.state.results,el]})
                                     }
