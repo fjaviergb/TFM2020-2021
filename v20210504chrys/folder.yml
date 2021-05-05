@@ -1,0 +1,71 @@
+---
+ - name: displaying fetcher
+   gather_facts: no
+   hosts: fetcher
+   roles:
+     - role: folders
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ reqs }}"
+         path: "{{ dir }}"  
+     - role: folders
+       vars:
+         endpoint: "{{ lib }}"
+         path: "{{ dir }}"  
+     - role: fetcher
+       vars:
+         endpoint: "{{ reqs }}"
+         path: "{{ dir }}" 
+     - role: __install__
+       vars:
+         path: "{{ dir }}"
+         endpoint: "{{ point }}"
+         objective: "{{ conf }}"
+         fetifuser: "{{ fet_ifuser }}"
+         fethost: "{{ fet_host }}"
+         fetport: "{{ fet_port }}"
+         fetuser: "{{ fet_user }}"
+         fetpass: "{{ fet_pass }}"
+         fetdb: "{{ fet_db }}"
+         fetrootpass: "{{ fet_rootpass }}"
+ - name: displaying backend
+   gather_facts: no
+   hosts: backend
+   roles:
+     - role: folders
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ conf }}"
+         path: "{{ dir }}"         
+     - role: instnodejs
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ cors }}"
+         path: "{{ dir }}/{{ point }}"
+
+ - name: displaying frontend
+   gather_facts: no
+   hosts: frontend
+   roles:
+     - role: folders
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"       
+     - role: instnodejs
+       vars:
+         endpoint: "{{ point }}"
+         path: "{{ dir }}"
+     - role: folders
+       vars:
+         endpoint: "{{ cors }}"
+         path: "{{ dir }}/{{ point }}/src"
+

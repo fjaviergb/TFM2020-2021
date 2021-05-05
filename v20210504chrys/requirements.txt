@@ -1,0 +1,9 @@
+pandas
+numpy
+PyOTA
+mysql-connector-python
+sqlalchemy
+PyMySQL
+aiohttp
+asyncio
+iota_core_python-0.2.0_alpha.3-cp36-abi3-linux_x86_64.whl
