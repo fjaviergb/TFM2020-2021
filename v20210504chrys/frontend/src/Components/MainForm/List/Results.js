@@ -18,7 +18,7 @@ class Results extends Component {
             return <div className="elem">
                 <div onClick={this.closeModal}
                      className="front">
-                         <div className="fronttitle"><b>Hash:</b> {this.props.result.name}</div>
+                         <div className="fronttitle"><b>Index:</b> {this.props.result.name}</div>
                          <div className="frontcont"><b>Message:</b> {this.props.result.message}</div>
                          <div className="frontcont"><b>Timestamp:</b> {this.props.result.timestamp}</div>
                 </div>
@@ -29,7 +29,7 @@ class Results extends Component {
             return <div className="elem">
                 <div onClick={this.openModal}
                      className="front">
-                        <div className="fronttitle"><b>Hash:</b> {this.props.result.name}</div>
+                        <div className="fronttitle"><b>Index:</b> {this.props.result.name}</div>
                         <div className="frontcont"><b>Message:</b> {this.props.result.message}</div>
                         <div className="frontcont"><b>Timestamp:</b> {this.props.result.timestamp}</div>
                 </div>

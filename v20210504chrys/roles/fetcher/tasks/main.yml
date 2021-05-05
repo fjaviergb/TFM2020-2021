@@ -11,3 +11,8 @@
     requirements: "{{ path }}/{{ endpoint }}" #PATH C
     virtualenv: "{{ path }}/TFM13186" #PATH C
     virtualenv_python:
+- name: Install python chrysalis lib in indicated (virtualenv)
+  pip:
+    name: "{{ path }}/{{ lib }}" #PATH C
+    virtualenv: "{{ path }}/TFM13186" #PATH C
+    virtualenv_python:    

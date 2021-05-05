@@ -24,16 +24,21 @@ connection = engine.connect()
 
 async def _client(connection,_key,row):
     brute_data = client.find_messages([row[1]])
+    sql_query = "SELECT name FROM messages"
+    records = connection.execute(sql_query)
+    records = records.fetchall()
+    df = pd.DataFrame(columns=['name','milestone','timestamp','identifier','data','idid'])
+    brute_df = pd.DataFrame(brute_data)
+    print("Requesting {}, length {}".format(row[0],len(brute_data)))
+    if len(records) > 0:
+        brute_df = brute_df[~brute_df['message_id'].isin(map(lambda x: x[0], records))]
     try:
-        print("Requesting {}, length {}".format(row[0],len(brute_data)))
-        df = pd.DataFrame(columns=['name','milestone','timestamp','identifier','data'])
-        brute_df = pd.DataFrame(brute_data)
         df['name'] = brute_df['message_id']
-        df['data'] = brute_df['payload'].apply(lambda x: str(x['indexation'][0]['data']),1)
+        df['data'] = brute_df['payload'].apply(lambda x: bytearray(x['indexation'][0]['data']),1)
         df['milestone'] = brute_df['message_id'].apply(lambda x: client.get_message_metadata(x)['referenced_by_milestone_index'],1)
         df['timestamp'] = df['milestone'].apply(lambda x: client.get_milestone(x)['timestamp'],1)
         df.loc[:,'identifier'] = row[1]
-        df.to_sql('messages', engine, if_exists ='replace',index=False)
+        df.to_sql('messages', engine, if_exists ='append',index=False)
     except KeyError:
         print("Exception empty; incomplete; etc")
 

@@ -27,7 +27,7 @@ class Result extends Component {
                     <div className="contentstruct">
                         <h3>{this.props.result.name}</h3>
                         <div><b>Message</b>: <br/>{this.props.result.message}</div><br/>
-                        <div><b>Ident</b>: <br/>{this.props.result.ident}</div><br/>
+                        <div><b>Identifier</b>: <br/>{this.props.result.identifier}</div><br/>
                         <div><b>Date</b>: <br/><GetDate timestamp={this.props.result.timestamp}/></div><br/>
                     </div>
                     <div className="actions-results">

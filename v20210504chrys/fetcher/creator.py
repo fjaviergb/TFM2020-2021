@@ -13,7 +13,7 @@ def createTables(connection):
     connection.execute("CREATE TABLE identifiers (idid int PRIMARY KEY AUTO_INCREMENT, name varchar(100) NOT NULL UNIQUE, created datetime)")
     connection.execute("ALTER TABLE identifiers ADD CONSTRAINT MINIMO_IDENT CHECK (CHAR_LENGTH(name) >= 3)")
     connection.execute("CREATE TABLE pkeys (idke int PRIMARY KEY AUTO_INCREMENT, name varchar(384) NOT NULL UNIQUE, created datetime)")
-    connection.execute("CREATE TABLE messages (name varchar(64) PRIMARY KEY NOT NULL UNIQUE, milestone int NOT NULL, timestamp int NOT NULL, identifier varchar(100) NOT NULL, data varchar(6000) NOT NULL, idid int)")
+    connection.execute("CREATE TABLE messages (name varchar(64) PRIMARY KEY NOT NULL UNIQUE, milestone int NOT NULL, timestamp int NOT NULL, identifier varchar(100) NOT NULL, data BLOB NOT NULL, idid int)")
     connection.execute("CREATE TABLE ident_names (idname int PRIMARY KEY AUTO_INCREMENT, alias varchar(100) NOT NULL, idcl int NOT NULL, idid int NOT NULL)")
     connection.execute("CREATE TABLE pkey_names (idname int PRIMARY KEY AUTO_INCREMENT, alias varchar(384) NOT NULL, idcl int NOT NULL, idke int NOT NULL)")
     connection.execute("CREATE TABLE pkeys_ident (idkt int PRIMARY KEY AUTO_INCREMENT, idke int NOT NULL, idcl int NOT NULL, idid int NOT NULL)")
