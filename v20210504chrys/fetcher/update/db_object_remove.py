@@ -28,7 +28,7 @@ def main(connection):
             GROUP BY idid)"
     connection.execute(sql_update)
 
-    print('Addresses & Tags removed succesfully')
+    print('Identifiers removed succesfully')
 
 print(time.ctime(time.time()))
 main(connection)   
