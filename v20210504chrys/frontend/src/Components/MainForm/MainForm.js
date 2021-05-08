@@ -4,6 +4,7 @@ import Service from '../../services/service.js';
 import Results from './List/Results.js'
 import Filter from './List/Filter.js'
 import NodeRSA  from 'node-rsa';
+import Wrapper from './List/Wrapper.js'
 
 class MainForm extends Component{
     state = {
@@ -135,16 +136,16 @@ class MainForm extends Component{
                     })}
                 </div>
                 <div className="list">
-                    <h2>RESULTS</h2>
+                    <Wrapper>
                     {this.state.results.sort((a,b)=>{return b.timestamp-a.timestamp;}).map((el) => {
                         var value = 0;
                         this.state.filters.forEach((elem) => {
                             value = value + el.message.includes(elem);
                         })
                         if (value > 0 || this.state.filters.length == 0){
-                            return <Results key={el.name} result={el}/>
+                            return <Results key={el.name} result={el}/>    
                         }
-                    })}
+                    })}</Wrapper>
                 </div>
                 <button onClick={this.toTheTop}
                             id="totop">Top</button> 

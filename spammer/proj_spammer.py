@@ -19,11 +19,11 @@ privKeyPEM = keyPair.exportKey()
 print(privKeyPEM.decode('ascii'))
 
 msg = b'A message for encryption'
-encryptor = PKCS1_OAEP.new(pubKey)
+encryptor = PKCS1_OAEP.new(pubKeyPEM.decode('ascii'))
 encrypted = encryptor.encrypt(msg)
 print("Encrypted:", binascii.hexlify(encrypted))
 
-decryptor = PKCS1_OAEP.new(keyPair)
+decryptor = PKCS1_OAEP.new(privKeyPEM.decode('ascii'))
 decrypted = decryptor.decrypt(encrypted)
 print('Decrypted:', decrypted)
 

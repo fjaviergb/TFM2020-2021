@@ -231,6 +231,7 @@ app.post(MODEL.QUERYALL.ROUTE, (req,res) => {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
     } else if (result) {
+      console.log('Queryall sent')
       res.send({result: result});
     }
   });
@@ -242,6 +243,7 @@ app.post(MODEL.QUERYPKEYS.ROUTE, (req,res) => {
       console.log(err);
       res.status(404).json({ message: `Known error ${err.sqlMessage}` });
     } else if (result) {
+      console.log('Querypkeys sent')
       res.send({result: result});
     }
   });

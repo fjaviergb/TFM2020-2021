@@ -26,17 +26,18 @@ async def _client(connection,_key,row):
     sql_query = "SELECT name FROM messages"
     records = connection.execute(sql_query)
     records = records.fetchall()
-    df = pd.DataFrame(columns=['name','milestone','timestamp','identifier','data','idid'])
+    df = pd.DataFrame(columns=['name','milestone','timestamp','identifier','data','idid','created'])
     brute_df = pd.DataFrame(brute_data)
     print("Requesting {}, length {}".format(row[0],len(brute_data)))
     if len(records) > 0:
         brute_df = brute_df[~brute_df['message_id'].isin(map(lambda x: x[0], records))]
     try:
         df['name'] = brute_df['message_id']
-        df['data'] = brute_df['payload'].apply(lambda x: bytearray(x['indexation'][0]['data']),1)
+        df['data'] = brute_df['payload'].apply(lambda x: bytearray(x['indexation'][0]['data']).decode('utf-8'),1)
         df['milestone'] = brute_df['message_id'].apply(lambda x: client.get_message_metadata(x)['referenced_by_milestone_index'],1)
         df['timestamp'] = df['milestone'].apply(lambda x: client.get_milestone(x)['timestamp'],1)
         df.loc[:,'identifier'] = row[1]
+        df.loc[:,'created'] = time.time()
         df.to_sql('messages', engine, if_exists ='append',index=False)
     except KeyError:
         print("Exception empty; incomplete; etc")
