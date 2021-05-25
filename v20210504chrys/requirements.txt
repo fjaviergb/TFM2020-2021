@@ -1,6 +1,5 @@
 pandas
 numpy
-mysql-connector-python
 sqlalchemy
 PyMySQL
 aiohttp
