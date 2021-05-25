@@ -1,4 +1,8 @@
 ---
+ - name: displaying variables
+   hosts: localhost
+   roles:
+     - role: variables
  - name: displaying fetcher
    gather_facts: no
    hosts: fetcher
