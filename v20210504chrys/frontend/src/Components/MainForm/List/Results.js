@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import Result from '../Modal/Result.js'
 
+const GetDate = (props) => {
+    const {timestamp} = props;
+    var date = `${new Date(timestamp * 1000)}`
+    return (<span>{date}</span>)
+};
+
 class Results extends Component {
     state = {
         show: false
@@ -20,7 +26,7 @@ class Results extends Component {
                      className="front">
                          <div className="fronttitle"><b>Index:</b> {this.props.result.name}</div>
                          <div className="frontcont"><b>Message:</b> {this.props.result.message}</div>
-                         <div className="frontcont"><b>Timestamp:</b> {this.props.result.timestamp}</div>
+                         <div className="frontcont"><b>Timestamp:</b> <GetDate timestamp={this.props.result.timestamp}/></div>
                 </div>
                 <Result result={this.props.result}
                         closeModal={this.closeModal}/>
@@ -31,7 +37,7 @@ class Results extends Component {
                      className="front">
                         <div className="fronttitle"><b>Index:</b> {this.props.result.name}</div>
                         <div className="frontcont"><b>Message:</b> {this.props.result.message}</div>
-                        <div className="frontcont"><b>Timestamp:</b> {this.props.result.timestamp}</div>
+                        <div className="frontcont"><b>Timestamp:</b> <GetDate timestamp={this.props.result.timestamp}/></div>
                 </div>
             </div>
         };

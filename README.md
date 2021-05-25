@@ -77,7 +77,7 @@ Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
         - folders/tasks/main.yml
         - instnodejs/tasks/main.yml
 
-6. Ejecute en el directorio general: *ansible-playbook folder.yml -i hosts.yml*
+6. Ejecute en el directorio general: *ansible-playbook -v folder.yml -i hosts.yml*
 
 **Nota**: si todo ha salido correctamente, debería de disponer de todos los archivos en las direcciones que se han especificado en el *playbook*. En concreto, tres directorios:
 
