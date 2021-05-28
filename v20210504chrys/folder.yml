@@ -4,7 +4,7 @@
    roles:
      - role: variables
  - name: displaying fetcher
-   gather_facts: no
+   gather_facts: True
    hosts: fetcher
    roles:
      - role: folders
@@ -36,7 +36,7 @@
          fetdb: "{{ fet_db }}"
          fetrootpass: "{{ fet_rootpass }}"
  - name: displaying backend
-   gather_facts: no
+   gather_facts: True
    hosts: backend
    roles:
      - role: folders
@@ -57,7 +57,7 @@
          path: "{{ dir }}/{{ point }}"
 
  - name: displaying frontend
-   gather_facts: no
+   gather_facts: True
    hosts: frontend
    roles:
      - role: folders
