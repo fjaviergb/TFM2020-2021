@@ -1,0 +1,32 @@
+version: "3.9"
+services: 
+ database:
+  build: ./mysql
+  ports:
+   - 5500:3306
+  container_name: tfm13186_database
+  image: tfm13186_database
+ backend:
+  build: ./backend
+  ports:
+   - 8080:8080
+  depends_on:
+   - database
+  container_name: tfm13186_backend
+  image: tfm13186_backend
+ frontend:
+  build: ./frontend
+  ports:
+  - 8081:8081
+  depends_on:
+  - database
+  - backend
+  container_name: tfm13186_frontend
+  image: tfm13186_frontend
+ fetcher:
+  build: ./fetcher
+  depends_on:
+   - database
+  container_name: tfm13186_fetcher
+  image: tfm13186_fetcher
+  command: python3 __init__.py
