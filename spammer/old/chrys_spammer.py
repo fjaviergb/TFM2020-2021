@@ -11,8 +11,8 @@ import random
 IOTA_SEED_SECRET = '702f9dba423a4889f1bd3e5f6c48734f6eedc991f86af89137addd2991d981e3'
 
 # GENERATING ADDRESS
-client = iota_client.Client()
-print(client)
+client = iota_client.Client(local_pow=False)
+print(client.get_info())
 # address_changed_list = client.get_addresses(
 #     seed=IOTA_SEED_SECRET,
 #     account_index=0,
@@ -48,9 +48,11 @@ print(client)
 # # print(client.get_milestone(228527))
 # print(brutedf)
 
-mensaje = '"En la Ciencia la única verdad sagrada, es que no hay verdades sagradas" - Carl Sagan' 
+mensaje = 'Ruido' 
 mensaje = mensaje.encode('utf-8')
 message = client.message(
-    index='Carl Sagan', data=mensaje
+    index='FJAVIGB_NECORAS', data=mensaje
 )
-print(message)
+print(message['message_id'])
+print(client.get_message_metadata(message['message_id']))
+print(client.get_message_data(message['message_id']))
