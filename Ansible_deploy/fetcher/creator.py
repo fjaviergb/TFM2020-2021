@@ -6,16 +6,23 @@ import sys
 _args = sys.argv
 
 def createTables(connection):
+    connection.execute('DROP TABLE IF EXISTS users')
     connection.execute("CREATE TABLE users (idcl int PRIMARY KEY AUTO_INCREMENT, name varchar(100) NOT NULL UNIQUE, password varchar (100) NOT NULL, created datetime, contact varchar(100) NOT NULL UNIQUE)")
     connection.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_CONTACT CHECK (CHAR_LENGTH(contact) >= 1)")
     connection.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_NAME CHECK (CHAR_LENGTH(name) >= 1)")
     connection.execute("ALTER TABLE users ADD CONSTRAINT MINIMO_PSWD CHECK (CHAR_LENGTH(password) >= 1)")
+    connection.execute('DROP TABLE IF EXISTS identifiers')
     connection.execute("CREATE TABLE identifiers (idid int PRIMARY KEY AUTO_INCREMENT, name varchar(100) NOT NULL UNIQUE, created datetime)")
     connection.execute("ALTER TABLE identifiers ADD CONSTRAINT MINIMO_IDENT CHECK (CHAR_LENGTH(name) >= 1)")
+    connection.execute('DROP TABLE IF EXISTS pkeys')
     connection.execute("CREATE TABLE pkeys (idke int PRIMARY KEY AUTO_INCREMENT, name varchar(384) NOT NULL UNIQUE, created datetime)")
+    connection.execute('DROP TABLE IF EXISTS messages')
     connection.execute("CREATE TABLE messages (name varchar(64) PRIMARY KEY NOT NULL UNIQUE, milestone int NOT NULL, timestamp int NOT NULL, identifier varchar(100) NOT NULL, data varchar(10000) NOT NULL, idid int, created int)")
+    connection.execute('DROP TABLE IF EXISTS ident_names')
     connection.execute("CREATE TABLE ident_names (idname int PRIMARY KEY AUTO_INCREMENT, alias varchar(100) NOT NULL, idcl int NOT NULL, idid int NOT NULL)")
+    connection.execute('DROP TABLE IF EXISTS pkey_names')
     connection.execute("CREATE TABLE pkey_names (idname int PRIMARY KEY AUTO_INCREMENT, alias varchar(384) NOT NULL, idcl int NOT NULL, idke int NOT NULL)")
+    connection.execute('DROP TABLE IF EXISTS pkeys_ident')
     connection.execute("CREATE TABLE pkeys_ident (idkt int PRIMARY KEY AUTO_INCREMENT, idke int NOT NULL, idcl int NOT NULL, idid int NOT NULL)")
 
     connection.close()
@@ -48,7 +55,7 @@ def main(PATH):
                                     port=config['port']))
 
         connection = engine.connect()
-        connection.execute("CREATE DATABASE {}".format(database))
+        connection.execute("CREATE DATABASE IF NOT EXISTS {}".format(database))
         connection.close()
 
         engine = create_engine("mysql+pymysql://{user}:{pw}@{host}:{port}/{db}"
@@ -81,7 +88,7 @@ def main(PATH):
         connection.execute("GRANT ALL PRIVILEGES ON *.* TO '{}'@'localhost'".format(user))
         connection.execute("GRANT ALL PRIVILEGES ON *.* TO '{}'@'%%'".format(user))
 
-        connection.execute("CREATE DATABASE {}".format(database))
+        connection.execute("CREATE DATABASE IF NOT EXISTS {}".format(database))
         connection.execute("GRANT ALL PRIVILEGES ON {}.* TO '{}'@'localhost'".format(database,user))
         connection.execute("GRANT ALL PRIVILEGES ON {}.* TO '{}'@'%%'".format(database,user))
         connection.close()
