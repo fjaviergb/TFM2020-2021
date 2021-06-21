@@ -10,8 +10,8 @@
 * En caso de emplear múltiples nodos u ordenadores, requerirán de una conexión *SSH* para el funcionamiento de *Ansible*.
 
 ## **Fichero de interés**
-El único fichero de interés es la más reciente de las carpetas nombradas con v.* (e.g. v20210223).
-El resto de documentos se encuentran obsoletos y se han empleado como aprendizaje, testeo y revisión, a excepción de la carpeta *spammer*, donde se puede encontrar un sistema fácil de enviar al *tangle* dos tipos de transacciones encriptadas con su clave pública.
+Los únicos ficheros de interés son *Ansible_deploy* y *Docker_deploy*, en función del método de instalación a emplear.
+El resto de documentos se encuentran obsoletos y se han empleado como aprendizaje, testeo y revisión, a excepción de la carpeta *spammer*, donde se puede encontrar el sistema empleado para emitir los mensajes de la tesis a la *testnet* de Chrysalis.
 
 ## **Arquitectura**
 Ampliamente inspirado en: https://bezkoder.com/react-node-express-mysql/
