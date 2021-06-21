@@ -1,0 +1,1 @@
+{"host": "localhost", "user": "qwe", "password": "qwe", "database": "qwe"}

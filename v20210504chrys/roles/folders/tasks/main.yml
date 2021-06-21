@@ -1,8 +1,0 @@
-- name: "{{ endpoint }}"
-  become: yes
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/{{ endpoint }}"
-    dest: "{{ path }}"
-    owner: root
-    group: root
-    mode: 'preserve'

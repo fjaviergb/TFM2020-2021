@@ -1,8 +1,0 @@
-pandas
-numpy
-PyOTA
-mysql-connector-python
-sqlalchemy
-PyMySQL
-aiohttp
-asyncio

@@ -1,7 +1,0 @@
-#!/bin/bash
-
-python db_object_remove.py > output.txt
-python http_request_async_tag_file.py >> output.txt
-python http_request_async_add_file.py >> output.txt
-python db_object_creator.py >> output.txt
-python db_object_update.py >> output.txt

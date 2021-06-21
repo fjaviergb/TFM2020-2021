@@ -1,9 +1,0 @@
----
-- name: exec __install__.py
-  command: "python3 {{ path }}/{{ endpoint }}/__install__.py {{fetifuser}} {{fethost}} {{fetport}} {{fetuser}} {{fetpass}} {{fetdb}} {{fetrootpass}}"
-- name: "fetching {{ objective }}"
-  become: yes
-  ansible.builtin.fetch:
-    src: "{{ path }}/{{ endpoint }}/{{ objective }}"
-    dest: "{{ playbook_dir }}/"
-    flat: true

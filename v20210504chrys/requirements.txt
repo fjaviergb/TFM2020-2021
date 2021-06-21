@@ -1,6 +1,0 @@
-pandas
-numpy
-sqlalchemy
-PyMySQL
-aiohttp
-asyncio

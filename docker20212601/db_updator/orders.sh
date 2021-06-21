@@ -1,2 +1,0 @@
-#!/bin/bash
-echo 'Updator working' && python3 /db_object_remove.py > output.txt && echo 'Updator - Removing Objects' && python3 /http_request_async_tag_file.py >> output.txt && echo 'Updator - Searching Tags' && python3 /http_request_async_add_file.py >> output.txt && echo 'Updator - Searching addresses' && python3 /db_object_creator.py >> output.txt && echo 'Updator - Creating objects' && python3 /db_object_update.py >> output.txt && echo 'Updator - Updating objects'

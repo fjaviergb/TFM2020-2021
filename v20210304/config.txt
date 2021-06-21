@@ -1,1 +1,0 @@
-{"host": "192.168.1.36", "port":3306, "user": "fjavigb", "password": "13186", "database": "myriam"}
